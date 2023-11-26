@@ -25,22 +25,24 @@ class _MyAppState extends State<MyApp> {
       create: (context) => _authRep,
       child: BlocProvider(
         create: (_) => _authCubit,
-        child: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            routeInformationParser:
-                _appRouter.defaultRouteParser(includePrefixMatches: true),
-            routerDelegate: AutoRouterDelegate.declarative(
-              _appRouter,
-              routes: (_) => [
-                if (state.logged()) const HomeRoute() else const LoginRoute()
-              ],
-            ),
-            builder: (context, child) {
-              return child!;
-            },
-          );
-        }),
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              routeInformationParser:
+                  _appRouter.defaultRouteParser(includePrefixMatches: true),
+              routerDelegate: AutoRouterDelegate.declarative(
+                _appRouter,
+                routes: (_) => [
+                  if (state.logged()) const HomeRoute() else const LoginRoute()
+                ],
+              ),
+              builder: (context, child) {
+                return child!;
+              },
+            );
+          },
+        ),
       ),
     );
   }
