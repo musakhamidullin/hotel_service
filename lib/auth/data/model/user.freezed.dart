@@ -20,7 +20,18 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
+  int get id => throw _privateConstructorUsedError;
+  int get ownerId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String get gender => throw _privateConstructorUsedError;
+  String get surname => throw _privateConstructorUsedError;
+  String get guid => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
+  String get notes => throw _privateConstructorUsedError;
+  String get position => throw _privateConstructorUsedError;
+  String get secondName => throw _privateConstructorUsedError;
+  DateTime? get birthdayDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -32,7 +43,19 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String name});
+  $Res call(
+      {int id,
+      int ownerId,
+      String name,
+      String gender,
+      String surname,
+      String guid,
+      String username,
+      String role,
+      String notes,
+      String position,
+      String secondName,
+      DateTime? birthdayDate});
 }
 
 /// @nodoc
@@ -48,96 +71,314 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? ownerId = null,
     Object? name = null,
+    Object? gender = null,
+    Object? surname = null,
+    Object? guid = null,
+    Object? username = null,
+    Object? role = null,
+    Object? notes = null,
+    Object? position = null,
+    Object? secondName = null,
+    Object? birthdayDate = freezed,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as String,
+      surname: null == surname
+          ? _value.surname
+          : surname // ignore: cast_nullable_to_non_nullable
+              as String,
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondName: null == secondName
+          ? _value.secondName
+          : secondName // ignore: cast_nullable_to_non_nullable
+              as String,
+      birthdayDate: freezed == birthdayDate
+          ? _value.birthdayDate
+          : birthdayDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
-      __$$_UserCopyWithImpl<$Res>;
+abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$UserImplCopyWith(
+          _$UserImpl value, $Res Function(_$UserImpl) then) =
+      __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name});
+  $Res call(
+      {int id,
+      int ownerId,
+      String name,
+      String gender,
+      String surname,
+      String guid,
+      String username,
+      String role,
+      String notes,
+      String position,
+      String secondName,
+      DateTime? birthdayDate});
 }
 
 /// @nodoc
-class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
-    implements _$$_UserCopyWith<$Res> {
-  __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
+class __$$UserImplCopyWithImpl<$Res>
+    extends _$UserCopyWithImpl<$Res, _$UserImpl>
+    implements _$$UserImplCopyWith<$Res> {
+  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? ownerId = null,
     Object? name = null,
+    Object? gender = null,
+    Object? surname = null,
+    Object? guid = null,
+    Object? username = null,
+    Object? role = null,
+    Object? notes = null,
+    Object? position = null,
+    Object? secondName = null,
+    Object? birthdayDate = freezed,
   }) {
-    return _then(_$_User(
+    return _then(_$UserImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as String,
+      surname: null == surname
+          ? _value.surname
+          : surname // ignore: cast_nullable_to_non_nullable
+              as String,
+      guid: null == guid
+          ? _value.guid
+          : guid // ignore: cast_nullable_to_non_nullable
+              as String,
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as String,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as String,
+      secondName: null == secondName
+          ? _value.secondName
+          : secondName // ignore: cast_nullable_to_non_nullable
+              as String,
+      birthdayDate: freezed == birthdayDate
+          ? _value.birthdayDate
+          : birthdayDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_User implements _User {
-  const _$_User({this.name = ''});
+class _$UserImpl implements _User {
+  const _$UserImpl(
+      {required this.id,
+      required this.ownerId,
+      this.name = '',
+      this.gender = '',
+      this.surname = '',
+      this.guid = '',
+      this.username = '',
+      this.role = '',
+      this.notes = '',
+      this.position = '',
+      this.secondName = '',
+      this.birthdayDate});
 
-  factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
+  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserImplFromJson(json);
 
+  @override
+  final int id;
+  @override
+  final int ownerId;
   @override
   @JsonKey()
   final String name;
+  @override
+  @JsonKey()
+  final String gender;
+  @override
+  @JsonKey()
+  final String surname;
+  @override
+  @JsonKey()
+  final String guid;
+  @override
+  @JsonKey()
+  final String username;
+  @override
+  @JsonKey()
+  final String role;
+  @override
+  @JsonKey()
+  final String notes;
+  @override
+  @JsonKey()
+  final String position;
+  @override
+  @JsonKey()
+  final String secondName;
+  @override
+  final DateTime? birthdayDate;
 
   @override
   String toString() {
-    return 'User(name: $name)';
+    return 'User(id: $id, ownerId: $ownerId, name: $name, gender: $gender, surname: $surname, guid: $guid, username: $username, role: $role, notes: $notes, position: $position, secondName: $secondName, birthdayDate: $birthdayDate)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_User &&
-            (identical(other.name, name) || other.name == name));
+            other is _$UserImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.surname, surname) || other.surname == surname) &&
+            (identical(other.guid, guid) || other.guid == guid) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.position, position) ||
+                other.position == position) &&
+            (identical(other.secondName, secondName) ||
+                other.secondName == secondName) &&
+            (identical(other.birthdayDate, birthdayDate) ||
+                other.birthdayDate == birthdayDate));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name);
+  int get hashCode => Object.hash(runtimeType, id, ownerId, name, gender,
+      surname, guid, username, role, notes, position, secondName, birthdayDate);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserCopyWith<_$_User> get copyWith =>
-      __$$_UserCopyWithImpl<_$_User>(this, _$identity);
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserToJson(
+    return _$$UserImplToJson(
       this,
     );
   }
 }
 
 abstract class _User implements User {
-  const factory _User({final String name}) = _$_User;
+  const factory _User(
+      {required final int id,
+      required final int ownerId,
+      final String name,
+      final String gender,
+      final String surname,
+      final String guid,
+      final String username,
+      final String role,
+      final String notes,
+      final String position,
+      final String secondName,
+      final DateTime? birthdayDate}) = _$UserImpl;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
+  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
+  @override
+  int get id;
+  @override
+  int get ownerId;
   @override
   String get name;
   @override
+  String get gender;
+  @override
+  String get surname;
+  @override
+  String get guid;
+  @override
+  String get username;
+  @override
+  String get role;
+  @override
+  String get notes;
+  @override
+  String get position;
+  @override
+  String get secondName;
+  @override
+  DateTime? get birthdayDate;
+  @override
   @JsonKey(ignore: true)
-  _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

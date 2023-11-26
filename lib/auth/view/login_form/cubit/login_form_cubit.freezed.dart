@@ -68,21 +68,22 @@ class _$LoginFormStateCopyWithImpl<$Res, $Val extends LoginFormState>
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res>
+abstract class _$$InitialImplCopyWith<$Res>
     implements $LoginFormStateCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String email, String password});
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$LoginFormStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$LoginFormStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -91,7 +92,7 @@ class __$$_InitialCopyWithImpl<$Res>
     Object? email = null,
     Object? password = null,
   }) {
-    return _then(_$_Initial(
+    return _then(_$InitialImpl(
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -106,11 +107,11 @@ class __$$_InitialCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Initial extends _Initial {
-  const _$_Initial({this.email = '', this.password = ''}) : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl({this.email = '', this.password = ''}) : super._();
 
-  factory _$_Initial.fromJson(Map<String, dynamic> json) =>
-      _$$_InitialFromJson(json);
+  factory _$InitialImpl.fromJson(Map<String, dynamic> json) =>
+      _$$InitialImplFromJson(json);
 
   @override
   @JsonKey()
@@ -128,7 +129,7 @@ class _$_Initial extends _Initial {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Initial &&
+            other is _$InitialImpl &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password));
@@ -141,12 +142,12 @@ class _$_Initial extends _Initial {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InitialCopyWith<_$_Initial> get copyWith =>
-      __$$_InitialCopyWithImpl<_$_Initial>(this, _$identity);
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_InitialToJson(
+    return _$$InitialImplToJson(
       this,
     );
   }
@@ -154,10 +155,10 @@ class _$_Initial extends _Initial {
 
 abstract class _Initial extends LoginFormState {
   const factory _Initial({final String email, final String password}) =
-      _$_Initial;
+      _$InitialImpl;
   const _Initial._() : super._();
 
-  factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
+  factory _Initial.fromJson(Map<String, dynamic> json) = _$InitialImpl.fromJson;
 
   @override
   String get email;
@@ -165,6 +166,6 @@ abstract class _Initial extends LoginFormState {
   String get password;
   @override
   @JsonKey(ignore: true)
-  _$$_InitialCopyWith<_$_Initial> get copyWith =>
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

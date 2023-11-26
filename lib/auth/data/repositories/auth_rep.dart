@@ -1,20 +1,18 @@
+import '../model/user.dart';
 import 'i_auth_rep.dart';
 
 class AuthRep implements IAuthRep {
+  User? _user;
 
-  AuthRep._();
-
-  static final AuthRep _current = AuthRep._();
-
-  static AuthRep get current => _current;
-
-  String _token = '';
-
-  String get token => _token;
+  User get user => _user!;
 
   @override
-  Future<void> signIn({required String email, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     await Future.delayed(const Duration(seconds: 1));
-    _token = 'test';
+    //todo user null check
+    _user = User(
+      id: 1,
+      ownerId: 181,
+    );
   }
 }
