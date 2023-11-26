@@ -14,7 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   final IAuthRep authRep;
 
-  Future<void> signIn({
+  Future<void> login({
     required String email,
     required String password,
   }) async {
