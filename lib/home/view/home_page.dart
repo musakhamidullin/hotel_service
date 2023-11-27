@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../auth/data/repositories/auth_rep.dart';
 import '../cubit/home_cubit.dart';
+import '../data/repositories/catalog_rep.dart';
 import '../data/repositories/hotel_rep.dart';
 import 'widgets/my_search_bar.dart';
 import 'widgets/rooms_list.dart';
@@ -18,9 +19,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final _user = context.read<AuthRep>().user;
+  late final _catalog = context.read<CatalogRep>();
   late final _homeCubit = HomeCubit(
     user: _user,
     hotelRep: HotelRep(),
+    catalogRep: _catalog,
   );
 
   final _scrollController = ScrollController();
@@ -49,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _homeCubit..fetchHotel(),
+      create: (context) => _homeCubit..fetchFirstHotelPage(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Номера'),

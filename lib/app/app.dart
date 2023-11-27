@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/data/repositories/auth_rep.dart';
+import '../home/data/repositories/catalog_rep.dart';
 import 'router/router.dart';
 import 'router/router.gr.dart';
 
@@ -17,12 +18,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _appRouter = AppRouter();
   final _authRep = AuthRep();
+  final _catalogRep = CatalogRep();
   late final _authCubit = AuthCubit(authRep: _authRep);
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => _authRep,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (_) => _authRep,
+        ),
+        RepositoryProvider(
+          create: (_) => _catalogRep,
+        ),
+      ],
       child: BlocProvider(
         create: (_) => _authCubit,
         child: BlocBuilder<AuthCubit, AuthState>(
@@ -30,11 +39,13 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routeInformationParser:
-                  _appRouter.defaultRouteParser(includePrefixMatches: true),
+              _appRouter.defaultRouteParser(includePrefixMatches: true),
               routerDelegate: AutoRouterDelegate.declarative(
                 _appRouter,
-                routes: (_) => [
-                  if (state.logged()) const HomeRoute() else const LoginRoute()
+                routes: (_) =>
+                [
+                  if (state.logged()) const HomeRoute() else
+                    const LoginRoute()
                 ],
               ),
               builder: (context, child) {

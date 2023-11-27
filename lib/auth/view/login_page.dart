@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const _InputHeader(text: 'Логин'),
                           const SizedBox(
-                            height: 16,
+                            height: 4,
                           ),
                           TextFormField(
                             initialValue: formState.email,
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const _InputHeader(text: 'Пароль'),
                           const SizedBox(
-                            height: 16,
+                            height: 4,
                           ),
                           _PasswordInput(
                             initValue: formState.password,

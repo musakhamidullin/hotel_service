@@ -1,26 +1,30 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hotel_service/auth/data/model/user.dart';
-import 'package:hotel_service/home/data/repositories/hotel_rep.dart';
 
+import '../../auth/data/model/user.dart';
 import '../data/models/room.dart';
-
-part 'home_state.dart';
+import '../data/repositories/catalog_rep.dart';
+import '../data/repositories/hotel_rep.dart';
 
 part 'home_cubit.freezed.dart';
+part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required this.user,
     required this.hotelRep,
+    required this.catalogRep,
   }) : super(const HomeState());
 
   final User user;
   final HotelRep hotelRep;
+  final CatalogRep catalogRep;
 
-  Future<void> fetchHotel() async {
+  Future<void> fetchFirstHotelPage() async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
+
+      await catalogRep.fetchCleanStatuses();
       final result = await hotelRep.fetchHotel();
 
       if (result.isEmpty) throw Exception();
@@ -41,7 +45,9 @@ class HomeCubit extends Cubit<HomeState> {
           rooms: rooms,
         ),
       );
-    } catch (_) {
+    } catch (e, t) {
+      print(e);
+      print(t);
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }

@@ -219,8 +219,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Person {
-  int get id => throw _privateConstructorUsedError;
-  int? get ownerId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError; //todo should remove 1366
+  int get ownerId => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get patronymic => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
@@ -243,7 +243,7 @@ abstract class $PersonCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      int? ownerId,
+      int ownerId,
       String firstName,
       String patronymic,
       String gender,
@@ -267,7 +267,7 @@ class _$PersonCopyWithImpl<$Res, $Val extends Person>
   @override
   $Res call({
     Object? id = null,
-    Object? ownerId = freezed,
+    Object? ownerId = null,
     Object? firstName = null,
     Object? patronymic = null,
     Object? gender = null,
@@ -281,10 +281,10 @@ class _$PersonCopyWithImpl<$Res, $Val extends Person>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      ownerId: freezed == ownerId
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -326,7 +326,7 @@ abstract class _$$PersonImplCopyWith<$Res> implements $PersonCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      int? ownerId,
+      int ownerId,
       String firstName,
       String patronymic,
       String gender,
@@ -348,7 +348,7 @@ class __$$PersonImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? ownerId = freezed,
+    Object? ownerId = null,
     Object? firstName = null,
     Object? patronymic = null,
     Object? gender = null,
@@ -362,10 +362,10 @@ class __$$PersonImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      ownerId: freezed == ownerId
+      ownerId: null == ownerId
           ? _value.ownerId
           : ownerId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
@@ -403,7 +403,7 @@ class __$$PersonImplCopyWithImpl<$Res>
 class _$PersonImpl implements _Person {
   const _$PersonImpl(
       {required this.id,
-      this.ownerId,
+      this.ownerId = 1366,
       this.firstName = '',
       this.patronymic = '',
       this.gender = '',
@@ -417,8 +417,10 @@ class _$PersonImpl implements _Person {
 
   @override
   final int id;
+//todo should remove 1366
   @override
-  final int? ownerId;
+  @JsonKey()
+  final int ownerId;
   @override
   @JsonKey()
   final String firstName;
@@ -488,7 +490,7 @@ class _$PersonImpl implements _Person {
 abstract class _Person implements Person {
   const factory _Person(
       {required final int id,
-      final int? ownerId,
+      final int ownerId,
       final String firstName,
       final String patronymic,
       final String gender,
@@ -501,8 +503,8 @@ abstract class _Person implements Person {
 
   @override
   int get id;
-  @override
-  int? get ownerId;
+  @override //todo should remove 1366
+  int get ownerId;
   @override
   String get firstName;
   @override

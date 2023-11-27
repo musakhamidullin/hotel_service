@@ -28,7 +28,7 @@ Json? _$JsonConverterToJson<Json, Value>(
 
 _$PersonImpl _$$PersonImplFromJson(Map<String, dynamic> json) => _$PersonImpl(
       id: json['id'] as int,
-      ownerId: json['ownerId'] as int?,
+      ownerId: json['ownerId'] as int? ?? 1366,
       firstName: json['firstName'] as String? ?? '',
       patronymic: json['patronymic'] as String? ?? '',
       gender: json['gender'] as String? ?? '',
