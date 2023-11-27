@@ -15,14 +15,16 @@ class AuthCubit extends Cubit<AuthState> {
   final IAuthRep authRep;
 
   Future<void> login({
-    required String email,
+    required String name,
     required String password,
   }) async {
     try {
       emit(state.copyWith(authStatus: AuthStatus.loading));
-      await authRep.login(email: email, password: password);
+      await authRep.login(name: name, password: password);
       emit(state.copyWith(authStatus: AuthStatus.authenticated));
-    } catch (_) {
+    } catch (e, t) {
+      print(e);
+      print(t);
       emit(state.copyWith(authStatus: AuthStatus.failure));
     }
   }

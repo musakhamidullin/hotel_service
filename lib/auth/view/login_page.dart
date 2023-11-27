@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                                         true)) return;
 
                                     context.read<AuthCubit>().login(
-                                          email: formState.email,
+                                          name: formState.email,
                                           password: formState.password,
                                         );
                                   },

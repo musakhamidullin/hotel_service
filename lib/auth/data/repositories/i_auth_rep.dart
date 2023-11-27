@@ -1,3 +1,3 @@
 abstract interface class IAuthRep {
-  Future<void> login({required String email, required String password});
+  Future<void> login({required String name, required String password});
 }
