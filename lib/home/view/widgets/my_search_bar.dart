@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/widgets/modals.dart';
+import 'filter_sheet.dart';
+
 class MySearchBar extends StatelessWidget {
   const MySearchBar({super.key});
 
@@ -37,7 +40,13 @@ class MySearchBar extends StatelessWidget {
           width: 8,
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Modals.showBottomSheet(
+              context,
+              const FilterSheet(),
+              showDragHandle: true,
+            );
+          },
           icon: const Icon(Icons.filter_alt_rounded),
         )
       ],
