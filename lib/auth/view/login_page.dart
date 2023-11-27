@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                               builder: (context, state) {
-                                return ElevatedButton(
+                                return FilledButton.tonal(
                                   onPressed: () {
                                     if (!(_formKey.currentState?.validate() ??
                                         true)) return;

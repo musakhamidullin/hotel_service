@@ -22,10 +22,13 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(authStatus: AuthStatus.loading));
       await authRep.login(name: name, password: password);
       emit(state.copyWith(authStatus: AuthStatus.authenticated));
-    } catch (e, t) {
-      print(e);
-      print(t);
+    } catch (_) {
       emit(state.copyWith(authStatus: AuthStatus.failure));
     }
+  }
+
+  void logout() {
+    authRep.logout();
+    emit(state.copyWith(authStatus: AuthStatus.unauthenticated));
   }
 }

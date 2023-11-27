@@ -19,4 +19,7 @@ class AuthRep implements IAuthRep {
 
     _user = User.fromJson(result.data);
   }
+
+  @override
+  void logout() => _user = null;
 }

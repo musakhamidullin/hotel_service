@@ -6,6 +6,7 @@ import '../../auth/data/repositories/auth_rep.dart';
 import '../cubit/home_cubit.dart';
 import '../data/repositories/catalog_rep.dart';
 import '../data/repositories/hotel_rep.dart';
+import 'widgets/logout_button.dart';
 import 'widgets/my_search_bar.dart';
 import 'widgets/rooms_list.dart';
 
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Номера'),
+          actions: const [LogoutButton()],
         ),
         body: NestedScrollView(
           controller: _scrollController,

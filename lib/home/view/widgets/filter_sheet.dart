@@ -78,7 +78,7 @@ class _FilterSheetState extends State<FilterSheet> {
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
-                  child: ElevatedButton(
+                  child: OutlinedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
