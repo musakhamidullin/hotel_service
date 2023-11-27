@@ -1,5 +1,4 @@
-import 'package:hotel_service/app/dio_client.dart';
-
+import '../../../app/dio_client.dart';
 import '../model/user.dart';
 import 'i_auth_rep.dart';
 
@@ -10,10 +9,13 @@ class AuthRep implements IAuthRep {
 
   @override
   Future<void> login({required String name, required String password}) async {
-    final result = await DioClient().post<Map<String, dynamic>>(path: 'MobileAuth/Login', data: {
-      "Login": name,
-      "Password": password,
-    });
+    final result = await DioClient().post<Map<String, dynamic>>(
+      path: 'MobileAuth/Login',
+      data: {
+        "Login": name,
+        "Password": password,
+      },
+    );
 
     _user = User.fromJson(result.data);
   }

@@ -10,10 +10,11 @@ part 'user.freezed.dart';
 
 @freezed
 class User with _$User {
-  const factory User(
-      {@JsonKey(name: 'UserId') required String userId,
-      @JsonKey(name: 'personInfo') required Person personInfo,
-      @ImageConverter() Uint8List? image}) = _User;
+  const factory User({
+    @JsonKey(name: 'UserId') required String userId,
+    @JsonKey(name: 'personInfo') required Person personInfo,
+    @ImageConverter() Uint8List? image,
+  }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
@@ -22,7 +23,8 @@ class User with _$User {
 class Person with _$Person {
   const factory Person({
     required int id,
-    int? ownerId,
+    //todo should remove 1366
+    @Default(1366) int ownerId,
     @Default('') String firstName,
     @Default('') String patronymic,
     @Default('') String gender,

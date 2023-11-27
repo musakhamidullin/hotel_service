@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotel_service/auth/data/repositories/auth_rep.dart';
-import 'package:hotel_service/home/cubit/home_cubit.dart';
-import 'package:hotel_service/home/data/repositories/hotel_rep.dart';
-import 'package:hotel_service/home/view/widgets/rooms_list.dart';
 
+import '../../auth/data/repositories/auth_rep.dart';
+import '../cubit/home_cubit.dart';
+import '../data/repositories/hotel_rep.dart';
 import 'widgets/my_search_bar.dart';
+import 'widgets/rooms_list.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
