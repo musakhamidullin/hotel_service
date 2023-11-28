@@ -7,14 +7,60 @@ class AppRouter extends $AppRouter {
   @override
   final List<AutoRoute> routes = [
     AutoRoute(page: LoginRoute.page),
-    AutoRoute(page: HomeBranch.page, children: [
-      AutoRoute(page: HomeRoute.page),
-      AutoRoute(page: RoomRoute.page),
-    ]),
+    AutoRoute(
+      page: AutoTabRoute.page,
+      path: '/',
+      children: [
+        AutoRoute(
+          page: HomeTab.page,
+          path: '',
+          children: [
+            AutoRoute(
+              path: '',
+              page: HomeRoute.page,
+            ),
+            AutoRoute(
+              path: '',
+              page: RoomRoute.page,
+            ),
+          ],
+        ),
+        AutoRoute(
+          page: StatisticsTab.page,
+          path: '',
+          children: [
+            AutoRoute(
+              path: '',
+              page: StatisticsRoute.page,
+            ),
+          ],
+        ),
+        AutoRoute(
+          page: ProfileTab.page,
+          path: '',
+          children: [
+            AutoRoute(
+              path: '',
+              page: ProfileRoute.page,
+            ),
+          ],
+        ),
+      ],
+    ),
   ];
 }
 
-@RoutePage(name: 'HomeBranch')
-class HomeWrapper extends AutoRouter {
-  const HomeWrapper({super.key});
+@RoutePage(name: 'HomeTab')
+class HomeScreen extends AutoRouter {
+  const HomeScreen({super.key});
+}
+
+@RoutePage(name: 'StatisticsTab')
+class StatisticsScreen extends AutoRouter {
+  const StatisticsScreen({super.key});
+}
+
+@RoutePage(name: 'ProfileTab')
+class ProfileScreen extends AutoRouter {
+  const ProfileScreen({super.key});
 }

@@ -39,12 +39,13 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routeInformationParser:
-              _appRouter.defaultRouteParser(includePrefixMatches: true),
+                  _appRouter.defaultRouteParser(includePrefixMatches: true),
               routerDelegate: AutoRouterDelegate.declarative(
                 _appRouter,
-                routes: (_) =>
-                [
-                  if (state.logged()) const HomeRoute() else
+                routes: (_) => [
+                  if (state.logged())
+                    const AutoTabRoute()
+                  else
                     const LoginRoute()
                 ],
               ),
