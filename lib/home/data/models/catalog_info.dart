@@ -6,10 +6,11 @@ part 'catalog_info.freezed.dart';
 
 @freezed
 class CatalogInfo with _$CatalogInfo {
+  @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory CatalogInfo({
-    @JsonKey(name: 'Id') required int id,
-    @JsonKey(name: 'ShortDesc') required String shortDesc,
-    @JsonKey(name: 'LongDesc') required String longDesc,
+    required int id,
+    required String shortDesc,
+    required String longDesc,
   }) = _CatalogInfo;
 
   factory CatalogInfo.fromJson(Map<String, dynamic> json) =>

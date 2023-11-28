@@ -21,9 +21,11 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Room {
   int get id => throw _privateConstructorUsedError;
-  int get floor => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
-  int get number => throw _privateConstructorUsedError;
+  String get floor => throw _privateConstructorUsedError;
+  int get cleanStatusId => throw _privateConstructorUsedError;
+  int get cleaningType => throw _privateConstructorUsedError;
+  String get roomNumber => throw _privateConstructorUsedError;
+  bool get roomStatus => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,13 @@ abstract class $RoomCopyWith<$Res> {
   factory $RoomCopyWith(Room value, $Res Function(Room) then) =
       _$RoomCopyWithImpl<$Res, Room>;
   @useResult
-  $Res call({int id, int floor, String status, int number});
+  $Res call(
+      {int id,
+      String floor,
+      int cleanStatusId,
+      int cleaningType,
+      String roomNumber,
+      bool roomStatus});
 }
 
 /// @nodoc
@@ -53,8 +61,10 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
   $Res call({
     Object? id = null,
     Object? floor = null,
-    Object? status = null,
-    Object? number = null,
+    Object? cleanStatusId = null,
+    Object? cleaningType = null,
+    Object? roomNumber = null,
+    Object? roomStatus = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -64,15 +74,23 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as int,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String,
-      number: null == number
-          ? _value.number
-          : number // ignore: cast_nullable_to_non_nullable
+      cleanStatusId: null == cleanStatusId
+          ? _value.cleanStatusId
+          : cleanStatusId // ignore: cast_nullable_to_non_nullable
               as int,
+      cleaningType: null == cleaningType
+          ? _value.cleaningType
+          : cleaningType // ignore: cast_nullable_to_non_nullable
+              as int,
+      roomNumber: null == roomNumber
+          ? _value.roomNumber
+          : roomNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      roomStatus: null == roomStatus
+          ? _value.roomStatus
+          : roomStatus // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -84,7 +102,13 @@ abstract class _$$RoomImplCopyWith<$Res> implements $RoomCopyWith<$Res> {
       __$$RoomImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int floor, String status, int number});
+  $Res call(
+      {int id,
+      String floor,
+      int cleanStatusId,
+      int cleaningType,
+      String roomNumber,
+      bool roomStatus});
 }
 
 /// @nodoc
@@ -99,8 +123,10 @@ class __$$RoomImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? floor = null,
-    Object? status = null,
-    Object? number = null,
+    Object? cleanStatusId = null,
+    Object? cleaningType = null,
+    Object? roomNumber = null,
+    Object? roomStatus = null,
   }) {
     return _then(_$RoomImpl(
       id: null == id
@@ -110,27 +136,38 @@ class __$$RoomImplCopyWithImpl<$Res>
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as int,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String,
-      number: null == number
-          ? _value.number
-          : number // ignore: cast_nullable_to_non_nullable
+      cleanStatusId: null == cleanStatusId
+          ? _value.cleanStatusId
+          : cleanStatusId // ignore: cast_nullable_to_non_nullable
               as int,
+      cleaningType: null == cleaningType
+          ? _value.cleaningType
+          : cleaningType // ignore: cast_nullable_to_non_nullable
+              as int,
+      roomNumber: null == roomNumber
+          ? _value.roomNumber
+          : roomNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      roomStatus: null == roomStatus
+          ? _value.roomStatus
+          : roomStatus // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.pascal)
 class _$RoomImpl implements _Room {
   const _$RoomImpl(
       {required this.id,
       required this.floor,
-      required this.status,
-      required this.number});
+      required this.cleanStatusId,
+      required this.cleaningType,
+      required this.roomNumber,
+      required this.roomStatus});
 
   factory _$RoomImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomImplFromJson(json);
@@ -138,15 +175,19 @@ class _$RoomImpl implements _Room {
   @override
   final int id;
   @override
-  final int floor;
+  final String floor;
   @override
-  final String status;
+  final int cleanStatusId;
   @override
-  final int number;
+  final int cleaningType;
+  @override
+  final String roomNumber;
+  @override
+  final bool roomStatus;
 
   @override
   String toString() {
-    return 'Room(id: $id, floor: $floor, status: $status, number: $number)';
+    return 'Room(id: $id, floor: $floor, cleanStatusId: $cleanStatusId, cleaningType: $cleaningType, roomNumber: $roomNumber, roomStatus: $roomStatus)';
   }
 
   @override
@@ -156,13 +197,20 @@ class _$RoomImpl implements _Room {
             other is _$RoomImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.floor, floor) || other.floor == floor) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.number, number) || other.number == number));
+            (identical(other.cleanStatusId, cleanStatusId) ||
+                other.cleanStatusId == cleanStatusId) &&
+            (identical(other.cleaningType, cleaningType) ||
+                other.cleaningType == cleaningType) &&
+            (identical(other.roomNumber, roomNumber) ||
+                other.roomNumber == roomNumber) &&
+            (identical(other.roomStatus, roomStatus) ||
+                other.roomStatus == roomStatus));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, floor, status, number);
+  int get hashCode => Object.hash(runtimeType, id, floor, cleanStatusId,
+      cleaningType, roomNumber, roomStatus);
 
   @JsonKey(ignore: true)
   @override
@@ -181,20 +229,26 @@ class _$RoomImpl implements _Room {
 abstract class _Room implements Room {
   const factory _Room(
       {required final int id,
-      required final int floor,
-      required final String status,
-      required final int number}) = _$RoomImpl;
+      required final String floor,
+      required final int cleanStatusId,
+      required final int cleaningType,
+      required final String roomNumber,
+      required final bool roomStatus}) = _$RoomImpl;
 
   factory _Room.fromJson(Map<String, dynamic> json) = _$RoomImpl.fromJson;
 
   @override
   int get id;
   @override
-  int get floor;
+  String get floor;
   @override
-  String get status;
+  int get cleanStatusId;
   @override
-  int get number;
+  int get cleaningType;
+  @override
+  String get roomNumber;
+  @override
+  bool get roomStatus;
   @override
   @JsonKey(ignore: true)
   _$$RoomImplCopyWith<_$RoomImpl> get copyWith =>

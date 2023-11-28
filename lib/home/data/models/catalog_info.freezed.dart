@@ -20,11 +20,8 @@ CatalogInfo _$CatalogInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CatalogInfo {
-  @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'ShortDesc')
   String get shortDesc => throw _privateConstructorUsedError;
-  @JsonKey(name: 'LongDesc')
   String get longDesc => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,10 +36,7 @@ abstract class $CatalogInfoCopyWith<$Res> {
           CatalogInfo value, $Res Function(CatalogInfo) then) =
       _$CatalogInfoCopyWithImpl<$Res, CatalogInfo>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'Id') int id,
-      @JsonKey(name: 'ShortDesc') String shortDesc,
-      @JsonKey(name: 'LongDesc') String longDesc});
+  $Res call({int id, String shortDesc, String longDesc});
 }
 
 /// @nodoc
@@ -87,10 +81,7 @@ abstract class _$$CatalogInfoImplCopyWith<$Res>
       __$$CatalogInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'Id') int id,
-      @JsonKey(name: 'ShortDesc') String shortDesc,
-      @JsonKey(name: 'LongDesc') String longDesc});
+  $Res call({int id, String shortDesc, String longDesc});
 }
 
 /// @nodoc
@@ -126,24 +117,20 @@ class __$$CatalogInfoImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.pascal)
 class _$CatalogInfoImpl implements _CatalogInfo {
   const _$CatalogInfoImpl(
-      {@JsonKey(name: 'Id') required this.id,
-      @JsonKey(name: 'ShortDesc') required this.shortDesc,
-      @JsonKey(name: 'LongDesc') required this.longDesc});
+      {required this.id, required this.shortDesc, required this.longDesc});
 
   factory _$CatalogInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$CatalogInfoImplFromJson(json);
 
   @override
-  @JsonKey(name: 'Id')
   final int id;
   @override
-  @JsonKey(name: 'ShortDesc')
   final String shortDesc;
   @override
-  @JsonKey(name: 'LongDesc')
   final String longDesc;
 
   @override
@@ -183,22 +170,18 @@ class _$CatalogInfoImpl implements _CatalogInfo {
 
 abstract class _CatalogInfo implements CatalogInfo {
   const factory _CatalogInfo(
-          {@JsonKey(name: 'Id') required final int id,
-          @JsonKey(name: 'ShortDesc') required final String shortDesc,
-          @JsonKey(name: 'LongDesc') required final String longDesc}) =
-      _$CatalogInfoImpl;
+      {required final int id,
+      required final String shortDesc,
+      required final String longDesc}) = _$CatalogInfoImpl;
 
   factory _CatalogInfo.fromJson(Map<String, dynamic> json) =
       _$CatalogInfoImpl.fromJson;
 
   @override
-  @JsonKey(name: 'Id')
   int get id;
   @override
-  @JsonKey(name: 'ShortDesc')
   String get shortDesc;
   @override
-  @JsonKey(name: 'LongDesc')
   String get longDesc;
   @override
   @JsonKey(ignore: true)

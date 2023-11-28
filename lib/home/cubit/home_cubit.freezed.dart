@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
-  Map<int, List<Room>> get rooms => throw _privateConstructorUsedError;
+  Map<String, List<Room>> get rooms => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -29,7 +29,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({FetchStatus fetchStatus, Map<int, List<Room>> rooms});
+  $Res call({FetchStatus fetchStatus, Map<String, List<Room>> rooms});
 }
 
 /// @nodoc
@@ -56,7 +56,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       rooms: null == rooms
           ? _value.rooms
           : rooms // ignore: cast_nullable_to_non_nullable
-              as Map<int, List<Room>>,
+              as Map<String, List<Room>>,
     ) as $Val);
   }
 }
@@ -69,7 +69,7 @@ abstract class _$$InitialImplCopyWith<$Res>
       __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FetchStatus fetchStatus, Map<int, List<Room>> rooms});
+  $Res call({FetchStatus fetchStatus, Map<String, List<Room>> rooms});
 }
 
 /// @nodoc
@@ -94,7 +94,7 @@ class __$$InitialImplCopyWithImpl<$Res>
       rooms: null == rooms
           ? _value._rooms
           : rooms // ignore: cast_nullable_to_non_nullable
-              as Map<int, List<Room>>,
+              as Map<String, List<Room>>,
     ));
   }
 }
@@ -104,17 +104,17 @@ class __$$InitialImplCopyWithImpl<$Res>
 class _$InitialImpl extends _Initial {
   const _$InitialImpl(
       {this.fetchStatus = FetchStatus.init,
-      final Map<int, List<Room>> rooms = const <int, List<Room>>{}})
+      final Map<String, List<Room>> rooms = const <String, List<Room>>{}})
       : _rooms = rooms,
         super._();
 
   @override
   @JsonKey()
   final FetchStatus fetchStatus;
-  final Map<int, List<Room>> _rooms;
+  final Map<String, List<Room>> _rooms;
   @override
   @JsonKey()
-  Map<int, List<Room>> get rooms {
+  Map<String, List<Room>> get rooms {
     if (_rooms is EqualUnmodifiableMapView) return _rooms;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_rooms);
@@ -149,13 +149,13 @@ class _$InitialImpl extends _Initial {
 abstract class _Initial extends HomeState {
   const factory _Initial(
       {final FetchStatus fetchStatus,
-      final Map<int, List<Room>> rooms}) = _$InitialImpl;
+      final Map<String, List<Room>> rooms}) = _$InitialImpl;
   const _Initial._() : super._();
 
   @override
   FetchStatus get fetchStatus;
   @override
-  Map<int, List<Room>> get rooms;
+  Map<String, List<Room>> get rooms;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>

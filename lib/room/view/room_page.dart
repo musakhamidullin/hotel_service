@@ -33,7 +33,7 @@ class _RoomPageState extends State<RoomPage> {
       create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Номер ${widget.room.number}'),
+          title: Text('Номер ${widget.room.roomNumber}'),
         ),
       ),
     );

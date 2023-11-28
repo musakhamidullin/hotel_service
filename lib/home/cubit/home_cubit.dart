@@ -32,7 +32,7 @@ class HomeCubit extends Cubit<HomeState> {
 
       if (result.isEmpty) throw Exception();
 
-      final rooms = <int, List<Room>>{};
+      final rooms = <String, List<Room>>{};
 
       for (final e in result) {
         if (rooms.containsKey(e.floor)) {
