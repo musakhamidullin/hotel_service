@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'clean_status.dart';
+part of 'catalog_info.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-CleanStatus _$CleanStatusFromJson(Map<String, dynamic> json) {
-  return _CleanStatus.fromJson(json);
+CatalogInfo _$CatalogInfoFromJson(Map<String, dynamic> json) {
+  return _CatalogInfo.fromJson(json);
 }
 
 /// @nodoc
-mixin _$CleanStatus {
+mixin _$CatalogInfo {
   @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'ShortDesc')
@@ -29,15 +29,15 @@ mixin _$CleanStatus {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $CleanStatusCopyWith<CleanStatus> get copyWith =>
+  $CatalogInfoCopyWith<CatalogInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CleanStatusCopyWith<$Res> {
-  factory $CleanStatusCopyWith(
-          CleanStatus value, $Res Function(CleanStatus) then) =
-      _$CleanStatusCopyWithImpl<$Res, CleanStatus>;
+abstract class $CatalogInfoCopyWith<$Res> {
+  factory $CatalogInfoCopyWith(
+          CatalogInfo value, $Res Function(CatalogInfo) then) =
+      _$CatalogInfoCopyWithImpl<$Res, CatalogInfo>;
   @useResult
   $Res call(
       {@JsonKey(name: 'Id') int id,
@@ -46,9 +46,9 @@ abstract class $CleanStatusCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CleanStatusCopyWithImpl<$Res, $Val extends CleanStatus>
-    implements $CleanStatusCopyWith<$Res> {
-  _$CleanStatusCopyWithImpl(this._value, this._then);
+class _$CatalogInfoCopyWithImpl<$Res, $Val extends CatalogInfo>
+    implements $CatalogInfoCopyWith<$Res> {
+  _$CatalogInfoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -80,11 +80,11 @@ class _$CleanStatusCopyWithImpl<$Res, $Val extends CleanStatus>
 }
 
 /// @nodoc
-abstract class _$$CleanStatusImplCopyWith<$Res>
-    implements $CleanStatusCopyWith<$Res> {
-  factory _$$CleanStatusImplCopyWith(
-          _$CleanStatusImpl value, $Res Function(_$CleanStatusImpl) then) =
-      __$$CleanStatusImplCopyWithImpl<$Res>;
+abstract class _$$CatalogInfoImplCopyWith<$Res>
+    implements $CatalogInfoCopyWith<$Res> {
+  factory _$$CatalogInfoImplCopyWith(
+          _$CatalogInfoImpl value, $Res Function(_$CatalogInfoImpl) then) =
+      __$$CatalogInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -94,11 +94,11 @@ abstract class _$$CleanStatusImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CleanStatusImplCopyWithImpl<$Res>
-    extends _$CleanStatusCopyWithImpl<$Res, _$CleanStatusImpl>
-    implements _$$CleanStatusImplCopyWith<$Res> {
-  __$$CleanStatusImplCopyWithImpl(
-      _$CleanStatusImpl _value, $Res Function(_$CleanStatusImpl) _then)
+class __$$CatalogInfoImplCopyWithImpl<$Res>
+    extends _$CatalogInfoCopyWithImpl<$Res, _$CatalogInfoImpl>
+    implements _$$CatalogInfoImplCopyWith<$Res> {
+  __$$CatalogInfoImplCopyWithImpl(
+      _$CatalogInfoImpl _value, $Res Function(_$CatalogInfoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -108,7 +108,7 @@ class __$$CleanStatusImplCopyWithImpl<$Res>
     Object? shortDesc = null,
     Object? longDesc = null,
   }) {
-    return _then(_$CleanStatusImpl(
+    return _then(_$CatalogInfoImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -127,14 +127,14 @@ class __$$CleanStatusImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CleanStatusImpl implements _CleanStatus {
-  const _$CleanStatusImpl(
+class _$CatalogInfoImpl implements _CatalogInfo {
+  const _$CatalogInfoImpl(
       {@JsonKey(name: 'Id') required this.id,
       @JsonKey(name: 'ShortDesc') required this.shortDesc,
       @JsonKey(name: 'LongDesc') required this.longDesc});
 
-  factory _$CleanStatusImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CleanStatusImplFromJson(json);
+  factory _$CatalogInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CatalogInfoImplFromJson(json);
 
   @override
   @JsonKey(name: 'Id')
@@ -148,14 +148,14 @@ class _$CleanStatusImpl implements _CleanStatus {
 
   @override
   String toString() {
-    return 'CleanStatus(id: $id, shortDesc: $shortDesc, longDesc: $longDesc)';
+    return 'CatalogInfo(id: $id, shortDesc: $shortDesc, longDesc: $longDesc)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CleanStatusImpl &&
+            other is _$CatalogInfoImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.shortDesc, shortDesc) ||
                 other.shortDesc == shortDesc) &&
@@ -170,26 +170,26 @@ class _$CleanStatusImpl implements _CleanStatus {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CleanStatusImplCopyWith<_$CleanStatusImpl> get copyWith =>
-      __$$CleanStatusImplCopyWithImpl<_$CleanStatusImpl>(this, _$identity);
+  _$$CatalogInfoImplCopyWith<_$CatalogInfoImpl> get copyWith =>
+      __$$CatalogInfoImplCopyWithImpl<_$CatalogInfoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CleanStatusImplToJson(
+    return _$$CatalogInfoImplToJson(
       this,
     );
   }
 }
 
-abstract class _CleanStatus implements CleanStatus {
-  const factory _CleanStatus(
+abstract class _CatalogInfo implements CatalogInfo {
+  const factory _CatalogInfo(
           {@JsonKey(name: 'Id') required final int id,
           @JsonKey(name: 'ShortDesc') required final String shortDesc,
           @JsonKey(name: 'LongDesc') required final String longDesc}) =
-      _$CleanStatusImpl;
+      _$CatalogInfoImpl;
 
-  factory _CleanStatus.fromJson(Map<String, dynamic> json) =
-      _$CleanStatusImpl.fromJson;
+  factory _CatalogInfo.fromJson(Map<String, dynamic> json) =
+      _$CatalogInfoImpl.fromJson;
 
   @override
   @JsonKey(name: 'Id')
@@ -202,6 +202,6 @@ abstract class _CleanStatus implements CleanStatus {
   String get longDesc;
   @override
   @JsonKey(ignore: true)
-  _$$CleanStatusImplCopyWith<_$CleanStatusImpl> get copyWith =>
+  _$$CatalogInfoImplCopyWith<_$CatalogInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotel_service/home/data/repositories/catalog_rep.dart';
 
 import '../../data/models/filter_value.dart';
+import '../../data/repositories/catalog_rep.dart';
 
 class FilterSheet extends StatefulWidget {
   const FilterSheet({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class _FilterSheetState extends State<FilterSheet> {
       DraggableScrollableController();
 
   late final cleanStatuses = context.read<CatalogRep>().cleanStatuses;
+  late final cleanTypes = context.read<CatalogRep>().cleanTypes;
   var _filter = const FilterValue();
 
   @override
@@ -55,13 +56,35 @@ class _FilterSheetState extends State<FilterSheet> {
                   ...cleanStatuses.map(
                     (e) => CheckboxListTile(
                       title: Text(e.longDesc),
-                      value: e.id == _filter.cleanStatus,
+                      value: e == _filter.cleanStatus,
                       onChanged: (_) {
                         setState(() {
-                          if (_filter.cleanStatus == e.id) {
-                            _filter = _filter.copyWith(cleanStatus: -1);
+                          if (_filter.cleanStatus == e) {
+                            _filter = _filter.copyWith(cleanStatus: null);
                           } else {
-                            _filter = _filter.copyWith(cleanStatus: e.id);
+                            _filter = _filter.copyWith(cleanStatus: e);
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      'Тип уборки',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  ...cleanTypes.map(
+                        (e) => CheckboxListTile(
+                      title: Text(e.longDesc),
+                      value: e == _filter.cleanType,
+                      onChanged: (_) {
+                        setState(() {
+                          if (_filter.cleanType == e) {
+                            _filter = _filter.copyWith(cleanType: null);
+                          } else {
+                            _filter = _filter.copyWith(cleanType: e);
                           }
                         });
                       },
@@ -78,6 +101,7 @@ class _FilterSheetState extends State<FilterSheet> {
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),
+                  color: theme.canvasColor,
                   child: OutlinedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -100,7 +124,7 @@ class _AppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Align(
+    return Container(
       alignment: Alignment.topCenter,
       child: Text(
         'Фильтр',

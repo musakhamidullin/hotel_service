@@ -7,6 +7,7 @@ import '../data/repositories/catalog_rep.dart';
 import '../data/repositories/hotel_rep.dart';
 
 part 'home_cubit.freezed.dart';
+
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -25,6 +26,8 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
       await catalogRep.fetchCleanStatuses();
+      await catalogRep.fetchCleanTypes(user.personInfo.ownerId);
+
       final result = await hotelRep.fetchHotel();
 
       if (result.isEmpty) throw Exception();

@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FilterValue {
-  int get cleanStatus => throw _privateConstructorUsedError;
+  CatalogInfo? get cleanStatus => throw _privateConstructorUsedError;
+  CatalogInfo? get cleanType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FilterValueCopyWith<FilterValue> get copyWith =>
@@ -29,7 +30,10 @@ abstract class $FilterValueCopyWith<$Res> {
           FilterValue value, $Res Function(FilterValue) then) =
       _$FilterValueCopyWithImpl<$Res, FilterValue>;
   @useResult
-  $Res call({int cleanStatus});
+  $Res call({CatalogInfo? cleanStatus, CatalogInfo? cleanType});
+
+  $CatalogInfoCopyWith<$Res>? get cleanStatus;
+  $CatalogInfoCopyWith<$Res>? get cleanType;
 }
 
 /// @nodoc
@@ -45,14 +49,43 @@ class _$FilterValueCopyWithImpl<$Res, $Val extends FilterValue>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? cleanStatus = null,
+    Object? cleanStatus = freezed,
+    Object? cleanType = freezed,
   }) {
     return _then(_value.copyWith(
-      cleanStatus: null == cleanStatus
+      cleanStatus: freezed == cleanStatus
           ? _value.cleanStatus
           : cleanStatus // ignore: cast_nullable_to_non_nullable
-              as int,
+              as CatalogInfo?,
+      cleanType: freezed == cleanType
+          ? _value.cleanType
+          : cleanType // ignore: cast_nullable_to_non_nullable
+              as CatalogInfo?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CatalogInfoCopyWith<$Res>? get cleanStatus {
+    if (_value.cleanStatus == null) {
+      return null;
+    }
+
+    return $CatalogInfoCopyWith<$Res>(_value.cleanStatus!, (value) {
+      return _then(_value.copyWith(cleanStatus: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CatalogInfoCopyWith<$Res>? get cleanType {
+    if (_value.cleanType == null) {
+      return null;
+    }
+
+    return $CatalogInfoCopyWith<$Res>(_value.cleanType!, (value) {
+      return _then(_value.copyWith(cleanType: value) as $Val);
+    });
   }
 }
 
@@ -64,7 +97,12 @@ abstract class _$$FilterValueImplCopyWith<$Res>
       __$$FilterValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int cleanStatus});
+  $Res call({CatalogInfo? cleanStatus, CatalogInfo? cleanType});
+
+  @override
+  $CatalogInfoCopyWith<$Res>? get cleanStatus;
+  @override
+  $CatalogInfoCopyWith<$Res>? get cleanType;
 }
 
 /// @nodoc
@@ -78,13 +116,18 @@ class __$$FilterValueImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? cleanStatus = null,
+    Object? cleanStatus = freezed,
+    Object? cleanType = freezed,
   }) {
     return _then(_$FilterValueImpl(
-      cleanStatus: null == cleanStatus
+      cleanStatus: freezed == cleanStatus
           ? _value.cleanStatus
           : cleanStatus // ignore: cast_nullable_to_non_nullable
-              as int,
+              as CatalogInfo?,
+      cleanType: freezed == cleanType
+          ? _value.cleanType
+          : cleanType // ignore: cast_nullable_to_non_nullable
+              as CatalogInfo?,
     ));
   }
 }
@@ -92,15 +135,16 @@ class __$$FilterValueImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FilterValueImpl implements _FilterValue {
-  const _$FilterValueImpl({this.cleanStatus = -1});
+  const _$FilterValueImpl({this.cleanStatus, this.cleanType});
 
   @override
-  @JsonKey()
-  final int cleanStatus;
+  final CatalogInfo? cleanStatus;
+  @override
+  final CatalogInfo? cleanType;
 
   @override
   String toString() {
-    return 'FilterValue(cleanStatus: $cleanStatus)';
+    return 'FilterValue(cleanStatus: $cleanStatus, cleanType: $cleanType)';
   }
 
   @override
@@ -109,11 +153,13 @@ class _$FilterValueImpl implements _FilterValue {
         (other.runtimeType == runtimeType &&
             other is _$FilterValueImpl &&
             (identical(other.cleanStatus, cleanStatus) ||
-                other.cleanStatus == cleanStatus));
+                other.cleanStatus == cleanStatus) &&
+            (identical(other.cleanType, cleanType) ||
+                other.cleanType == cleanType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, cleanStatus);
+  int get hashCode => Object.hash(runtimeType, cleanStatus, cleanType);
 
   @JsonKey(ignore: true)
   @override
@@ -123,10 +169,14 @@ class _$FilterValueImpl implements _FilterValue {
 }
 
 abstract class _FilterValue implements FilterValue {
-  const factory _FilterValue({final int cleanStatus}) = _$FilterValueImpl;
+  const factory _FilterValue(
+      {final CatalogInfo? cleanStatus,
+      final CatalogInfo? cleanType}) = _$FilterValueImpl;
 
   @override
-  int get cleanStatus;
+  CatalogInfo? get cleanStatus;
+  @override
+  CatalogInfo? get cleanType;
   @override
   @JsonKey(ignore: true)
   _$$FilterValueImplCopyWith<_$FilterValueImpl> get copyWith =>

@@ -52,13 +52,15 @@ class _LoginPageState extends State<LoginPage> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset('assets/images/logo.png'),
-                          const SizedBox(
-                            height: 32,
-                          ),
                           Text(
-                            'Авторизация',
+                            'HIT HOUSEKEEPING',
                             style: theme.textTheme.headlineSmall,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Text(
+                            'Добро пожаловать',
                           ),
                           const SizedBox(
                             height: 32,
