@@ -16,6 +16,11 @@ class RoomsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
+        if (state.nothingFound()) {
+          return const Center(
+            child: Text('Ничего не найдено'),
+          );
+        }
         if (state.loading() && state.rooms.isEmpty) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -25,14 +30,20 @@ class RoomsList extends StatelessWidget {
             onPressed: () {},
           );
         }
-        return ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: state.rooms.length,
-          itemBuilder: (context, index) {
-            final floor = state.rooms.keys.toList()[index];
-            final rooms = state.rooms.values.toList()[index];
-            return _FloorItem(floor: floor.toString(), rooms: rooms);
-          },
+        return Stack(
+          children: [
+            if (state.searching())
+              const Center(child: CircularProgressIndicator()),
+            ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: state.rooms.length,
+              itemBuilder: (context, index) {
+                final floor = state.rooms.keys.toList()[index];
+                final rooms = state.rooms.values.toList()[index];
+                return _FloorItem(floor: floor.toString(), rooms: rooms);
+              },
+            ),
+          ],
         );
       },
     );

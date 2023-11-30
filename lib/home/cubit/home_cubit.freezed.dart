@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Map<int, List<Room>> get rooms => throw _privateConstructorUsedError;
+  String get query => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -29,7 +30,8 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({FetchStatus fetchStatus, Map<int, List<Room>> rooms});
+  $Res call(
+      {FetchStatus fetchStatus, Map<int, List<Room>> rooms, String query});
 }
 
 /// @nodoc
@@ -47,6 +49,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? fetchStatus = null,
     Object? rooms = null,
+    Object? query = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
@@ -57,6 +60,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.rooms
           : rooms // ignore: cast_nullable_to_non_nullable
               as Map<int, List<Room>>,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -69,7 +76,8 @@ abstract class _$$InitialImplCopyWith<$Res>
       __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FetchStatus fetchStatus, Map<int, List<Room>> rooms});
+  $Res call(
+      {FetchStatus fetchStatus, Map<int, List<Room>> rooms, String query});
 }
 
 /// @nodoc
@@ -85,6 +93,7 @@ class __$$InitialImplCopyWithImpl<$Res>
   $Res call({
     Object? fetchStatus = null,
     Object? rooms = null,
+    Object? query = null,
   }) {
     return _then(_$InitialImpl(
       fetchStatus: null == fetchStatus
@@ -95,6 +104,10 @@ class __$$InitialImplCopyWithImpl<$Res>
           ? _value._rooms
           : rooms // ignore: cast_nullable_to_non_nullable
               as Map<int, List<Room>>,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -104,7 +117,8 @@ class __$$InitialImplCopyWithImpl<$Res>
 class _$InitialImpl extends _Initial {
   const _$InitialImpl(
       {this.fetchStatus = FetchStatus.init,
-      final Map<int, List<Room>> rooms = const <int, List<Room>>{}})
+      final Map<int, List<Room>> rooms = const <int, List<Room>>{},
+      this.query = ''})
       : _rooms = rooms,
         super._();
 
@@ -121,8 +135,12 @@ class _$InitialImpl extends _Initial {
   }
 
   @override
+  @JsonKey()
+  final String query;
+
+  @override
   String toString() {
-    return 'HomeState(fetchStatus: $fetchStatus, rooms: $rooms)';
+    return 'HomeState(fetchStatus: $fetchStatus, rooms: $rooms, query: $query)';
   }
 
   @override
@@ -132,12 +150,13 @@ class _$InitialImpl extends _Initial {
             other is _$InitialImpl &&
             (identical(other.fetchStatus, fetchStatus) ||
                 other.fetchStatus == fetchStatus) &&
-            const DeepCollectionEquality().equals(other._rooms, _rooms));
+            const DeepCollectionEquality().equals(other._rooms, _rooms) &&
+            (identical(other.query, query) || other.query == query));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, fetchStatus, const DeepCollectionEquality().hash(_rooms));
+  int get hashCode => Object.hash(runtimeType, fetchStatus,
+      const DeepCollectionEquality().hash(_rooms), query);
 
   @JsonKey(ignore: true)
   @override
@@ -149,13 +168,16 @@ class _$InitialImpl extends _Initial {
 abstract class _Initial extends HomeState {
   const factory _Initial(
       {final FetchStatus fetchStatus,
-      final Map<int, List<Room>> rooms}) = _$InitialImpl;
+      final Map<int, List<Room>> rooms,
+      final String query}) = _$InitialImpl;
   const _Initial._() : super._();
 
   @override
   FetchStatus get fetchStatus;
   @override
   Map<int, List<Room>> get rooms;
+  @override
+  String get query;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
