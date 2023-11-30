@@ -10,24 +10,23 @@ import '../../data/models/room.dart';
 class RoomsList extends StatelessWidget {
   const RoomsList({
     super.key,
-    required this.scrollController,
   });
-
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        if (state.loading()) {
+        if (state.loading() && state.rooms.isEmpty) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state.failure()) {
+        }
+
+        if (state.failure()) {
           return FailureWidget(
             onPressed: () {},
           );
         }
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           itemCount: state.rooms.length,
           itemBuilder: (context, index) {
             final floor = state.rooms.keys.toList()[index];
@@ -59,7 +58,7 @@ class _FloorItemState extends State<_FloorItem> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         TextButton(
           onPressed: () {
@@ -85,13 +84,13 @@ class _FloorItemState extends State<_FloorItem> {
                 final Color? color;
                 switch (e.cleanStatusId) {
                   case 1:
-                    color = Colors.green[400];
+                    color = Colors.green[100];
                   case 2:
-                    color = Colors.red[200];
+                    color = Colors.red[100];
                   case 3:
-                    color = Colors.blue[200];
+                    color = Colors.blue[100];
                   case 4:
-                    color = Colors.yellow[600];
+                    color = Colors.yellow[100];
                   default:
                     color = null;
                 }
@@ -105,7 +104,7 @@ class _FloorItemState extends State<_FloorItem> {
                       context.router.push(RoomRoute(room: e));
                     },
                     child: Container(
-                      height: 50,
+                      height: 60,
                       width: 100,
                       alignment: Alignment.center,
                       child: Text(e.roomNumber),

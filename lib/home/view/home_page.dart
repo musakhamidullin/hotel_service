@@ -26,27 +26,10 @@ class _HomePageState extends State<HomePage> {
     catalogRep: _catalog,
   );
 
-  final _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_loadNewPage);
-  }
-
   @override
   void dispose() {
     _homeCubit.close();
-    _scrollController.removeListener(_loadNewPage);
-    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _loadNewPage() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _homeCubit.fetchNewPage();
-    }
   }
 
   @override
@@ -57,20 +40,27 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('Номера'),
         ),
-        body: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              const SliverAppBar(
-                titleSpacing: 8,
-                automaticallyImplyLeading: false,
-                floating: true,
-                title: MySearchBar(),
-              ),
-            ];
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (value) {
+            if (value.metrics.pixels >= value.metrics.maxScrollExtent &&
+                !value.metrics.outOfRange) {
+              _homeCubit.fetchNewPage();
+            }
+            return true;
           },
-          body: RoomsList(
-            scrollController: _scrollController,
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                const SliverAppBar(
+                  titleSpacing: 8,
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                  title: MySearchBar(),
+                ),
+              ];
+            },
+            body: const RoomsList(),
           ),
         ),
       ),

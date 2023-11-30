@@ -10,7 +10,7 @@ class HotelRep {
       path: 'HouseKeeping/PagedRoomdListGet',
       data: {
         "Page": page,
-        "PageSize": 10,
+        "PageSize": 20,
         "RoomNumber": "",
         "OwnerId": ownerId,
       },
