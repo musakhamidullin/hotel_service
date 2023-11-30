@@ -6,7 +6,6 @@ import '../../auth/data/repositories/auth_rep.dart';
 import '../cubit/home_cubit.dart';
 import '../data/repositories/catalog_rep.dart';
 import '../data/repositories/hotel_rep.dart';
-import '../../profile/view/widgets/logout_button.dart';
 import 'widgets/my_search_bar.dart';
 import 'widgets/rooms_list.dart';
 
@@ -46,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   void _loadNewPage() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      print('new page');
+      _homeCubit.fetchNewPage();
     }
   }
 
