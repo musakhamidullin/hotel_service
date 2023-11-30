@@ -34,14 +34,19 @@ class RoomsList extends StatelessWidget {
           children: [
             if (state.searching())
               const Center(child: CircularProgressIndicator()),
-            ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: state.rooms.length,
-              itemBuilder: (context, index) {
-                final floor = state.rooms.keys.toList()[index];
-                final rooms = state.rooms.values.toList()[index];
-                return _FloorItem(floor: floor.toString(), rooms: rooms);
+            RefreshIndicator(
+              onRefresh: () async {
+                await context.read<HomeCubit>().fetchFirstHotelPage();
               },
+              child: ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount: state.rooms.length,
+                itemBuilder: (context, index) {
+                  final floor = state.rooms.keys.toList()[index];
+                  final rooms = state.rooms.values.toList()[index];
+                  return _FloorItem(floor: floor.toString(), rooms: rooms);
+                },
+              ),
             ),
           ],
         );
