@@ -32,7 +32,7 @@ class RoomsList extends StatelessWidget {
           itemBuilder: (context, index) {
             final floor = state.rooms.keys.toList()[index];
             final rooms = state.rooms.values.toList()[index];
-            return _FloorItem(floor: floor, rooms: rooms);
+            return _FloorItem(floor: floor.toString(), rooms: rooms);
           },
         );
       },

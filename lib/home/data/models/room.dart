@@ -9,7 +9,7 @@ class Room with _$Room {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory Room({
     required int id,
-    required String floor,
+    required int floor,
     required int cleanStatusId,
     required int cleaningType,
     required String roomNumber,

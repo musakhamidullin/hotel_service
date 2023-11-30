@@ -37,7 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
 
       _pages = pages;
-      final rooms = <String, List<Room>>{};
+      final rooms = <int, List<Room>>{};
 
       for (final e in data) {
         if (rooms.containsKey(e.floor)) {
@@ -70,7 +70,7 @@ class HomeCubit extends Cubit<HomeState> {
         ownerId: user.personInfo.ownerId,
       );
 
-      final rooms = <String, List<Room>>{...state.rooms};
+      final rooms = <int, List<Room>>{...state.rooms};
 
       for (final e in data) {
         if (rooms.containsKey(e.floor)) {

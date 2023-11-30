@@ -21,7 +21,7 @@ Room _$RoomFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Room {
   int get id => throw _privateConstructorUsedError;
-  String get floor => throw _privateConstructorUsedError;
+  int get floor => throw _privateConstructorUsedError;
   int get cleanStatusId => throw _privateConstructorUsedError;
   int get cleaningType => throw _privateConstructorUsedError;
   String get roomNumber => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $RoomCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String floor,
+      int floor,
       int cleanStatusId,
       int cleaningType,
       String roomNumber,
@@ -74,7 +74,7 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       cleanStatusId: null == cleanStatusId
           ? _value.cleanStatusId
           : cleanStatusId // ignore: cast_nullable_to_non_nullable
@@ -104,7 +104,7 @@ abstract class _$$RoomImplCopyWith<$Res> implements $RoomCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String floor,
+      int floor,
       int cleanStatusId,
       int cleaningType,
       String roomNumber,
@@ -136,7 +136,7 @@ class __$$RoomImplCopyWithImpl<$Res>
       floor: null == floor
           ? _value.floor
           : floor // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       cleanStatusId: null == cleanStatusId
           ? _value.cleanStatusId
           : cleanStatusId // ignore: cast_nullable_to_non_nullable
@@ -175,7 +175,7 @@ class _$RoomImpl implements _Room {
   @override
   final int id;
   @override
-  final String floor;
+  final int floor;
   @override
   final int cleanStatusId;
   @override
@@ -229,7 +229,7 @@ class _$RoomImpl implements _Room {
 abstract class _Room implements Room {
   const factory _Room(
       {required final int id,
-      required final String floor,
+      required final int floor,
       required final int cleanStatusId,
       required final int cleaningType,
       required final String roomNumber,
@@ -240,7 +240,7 @@ abstract class _Room implements Room {
   @override
   int get id;
   @override
-  String get floor;
+  int get floor;
   @override
   int get cleanStatusId;
   @override

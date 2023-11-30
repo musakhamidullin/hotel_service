@@ -8,7 +8,7 @@ part of 'room.dart';
 
 _$RoomImpl _$$RoomImplFromJson(Map<String, dynamic> json) => _$RoomImpl(
       id: json['Id'] as int,
-      floor: json['Floor'] as String,
+      floor: json['Floor'] as int,
       cleanStatusId: json['CleanStatusId'] as int,
       cleaningType: json['CleaningType'] as int,
       roomNumber: json['RoomNumber'] as String,
