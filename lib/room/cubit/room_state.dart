@@ -4,9 +4,10 @@ enum FetchStatus { init, loading, success, failure }
 
 @freezed
 class RoomState with _$RoomState {
-  const factory RoomState({
-    @Default(FetchStatus.init) FetchStatus fetchStatus,
-  }) = _Initial;
+  const factory RoomState(
+          {@Default(FetchStatus.init) FetchStatus fetchStatus,
+          @Default(<(int, List<XFile>, String)>[]) List<(int, List<XFile>, String)> issues}) =
+      _RoomState;
 
   const RoomState._();
 

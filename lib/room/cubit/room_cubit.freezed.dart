@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
+  List<(int, List<XFile>, String)> get issues =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateCopyWith<RoomState> get copyWith =>
@@ -28,7 +30,7 @@ abstract class $RoomStateCopyWith<$Res> {
   factory $RoomStateCopyWith(RoomState value, $Res Function(RoomState) then) =
       _$RoomStateCopyWithImpl<$Res, RoomState>;
   @useResult
-  $Res call({FetchStatus fetchStatus});
+  $Res call({FetchStatus fetchStatus, List<(int, List<XFile>, String)> issues});
 }
 
 /// @nodoc
@@ -45,90 +47,122 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
   @override
   $Res call({
     Object? fetchStatus = null,
+    Object? issues = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
               as FetchStatus,
+      issues: null == issues
+          ? _value.issues
+          : issues // ignore: cast_nullable_to_non_nullable
+              as List<(int, List<XFile>, String)>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res>
+abstract class _$$RoomStateImplCopyWith<$Res>
     implements $RoomStateCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+  factory _$$RoomStateImplCopyWith(
+          _$RoomStateImpl value, $Res Function(_$RoomStateImpl) then) =
+      __$$RoomStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FetchStatus fetchStatus});
+  $Res call({FetchStatus fetchStatus, List<(int, List<XFile>, String)> issues});
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$RoomStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$RoomStateImplCopyWithImpl<$Res>
+    extends _$RoomStateCopyWithImpl<$Res, _$RoomStateImpl>
+    implements _$$RoomStateImplCopyWith<$Res> {
+  __$$RoomStateImplCopyWithImpl(
+      _$RoomStateImpl _value, $Res Function(_$RoomStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? fetchStatus = null,
+    Object? issues = null,
   }) {
-    return _then(_$InitialImpl(
+    return _then(_$RoomStateImpl(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
               as FetchStatus,
+      issues: null == issues
+          ? _value._issues
+          : issues // ignore: cast_nullable_to_non_nullable
+              as List<(int, List<XFile>, String)>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$InitialImpl extends _Initial {
-  const _$InitialImpl({this.fetchStatus = FetchStatus.init}) : super._();
+class _$RoomStateImpl extends _RoomState {
+  const _$RoomStateImpl(
+      {this.fetchStatus = FetchStatus.init,
+      final List<(int, List<XFile>, String)> issues = const <(
+        int,
+        List<XFile>,
+        String
+      )>[]})
+      : _issues = issues,
+        super._();
 
   @override
   @JsonKey()
   final FetchStatus fetchStatus;
+  final List<(int, List<XFile>, String)> _issues;
+  @override
+  @JsonKey()
+  List<(int, List<XFile>, String)> get issues {
+    if (_issues is EqualUnmodifiableListView) return _issues;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_issues);
+  }
 
   @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus)';
+    return 'RoomState(fetchStatus: $fetchStatus, issues: $issues)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InitialImpl &&
+            other is _$RoomStateImpl &&
             (identical(other.fetchStatus, fetchStatus) ||
-                other.fetchStatus == fetchStatus));
+                other.fetchStatus == fetchStatus) &&
+            const DeepCollectionEquality().equals(other._issues, _issues));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fetchStatus);
+  int get hashCode => Object.hash(
+      runtimeType, fetchStatus, const DeepCollectionEquality().hash(_issues));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
-      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
+  _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>
+      __$$RoomStateImplCopyWithImpl<_$RoomStateImpl>(this, _$identity);
 }
 
-abstract class _Initial extends RoomState {
-  const factory _Initial({final FetchStatus fetchStatus}) = _$InitialImpl;
-  const _Initial._() : super._();
+abstract class _RoomState extends RoomState {
+  const factory _RoomState(
+      {final FetchStatus fetchStatus,
+      final List<(int, List<XFile>, String)> issues}) = _$RoomStateImpl;
+  const _RoomState._() : super._();
 
   @override
   FetchStatus get fetchStatus;
   @override
+  List<(int, List<XFile>, String)> get issues;
+  @override
   @JsonKey(ignore: true)
-  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+  _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
