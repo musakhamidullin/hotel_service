@@ -6,11 +6,22 @@ part 'room_state.dart';
 part 'room_cubit.freezed.dart';
 
 extension AddImage on List<XFile> {
-  // TODO refactor
-  List<XFile> addImage((int, XFile?) image, List<XFile> images) {
-    final mutabledImages = images..add(image.$2 ?? XFile(''));
+  List<XFile> addImage((int, XFile?) image, List<XFile> images) =>
+      images..add(image.$2 ?? XFile(''));
+}
 
-    return mutabledImages;
+extension DeleteImage on List<(int, List<XFile>, String)> {
+  List<(int, List<XFile>, String)> deleteIssue(
+      List<(int, List<XFile>, String)> issues, int i) {
+    final mutabledIssues = [...issues]..removeWhere((e) => e.$1 == i);
+
+    final List<(int, List<XFile>, String)> updatedIssues = [];
+
+    for (var i = 0; i < mutabledIssues.length; i++) {
+      updatedIssues.add((i, mutabledIssues[i].$2, mutabledIssues[i].$3));
+    }
+
+    return updatedIssues;
   }
 }
 
@@ -39,7 +50,7 @@ class RoomCubit extends Cubit<RoomState> {
       ]));
 
   Future<void> onDeleteIssuePressed(int i) async =>
-      emit(state.copyWith(issues: state.issues..removeWhere((e) => e.$1 == i)));
+      emit(state.copyWith(issues: state.issues.deleteIssue(state.issues, i)));
 
   Future<void> onFlushPressed(int i) async => emit(state.copyWith(
       issues: state.issues

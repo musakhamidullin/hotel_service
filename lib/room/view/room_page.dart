@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../home/data/models/room.dart';
@@ -118,205 +119,231 @@ class _RoomPageState extends State<RoomPage> {
                   builder: (context, state) {
                     return state.issues.isNotEmpty
                         ? ListView.builder(
-                          physics: const ScrollPhysics(),
-                          controller: _scrollController,
+                            physics: const ScrollPhysics(),
+                            controller: _scrollController,
                             padding: const EdgeInsets.only(bottom: 100),
                             itemCount: state.issues.length,
                             shrinkWrap: true,
                             itemBuilder: (_, i) {
-                              return Card(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              showModalBottomSheet(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    final theme =
-                                                        Theme.of(context);
-                                                    return StatefulBuilder(
-                                                      builder:
-                                                          (_, setModalState) =>
-                                                              RoomBuilder(
-                                                        bloc: _roomCubit,
+                              return Slidable(
+                                startActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        icon: Icons.delete,
+                                        onPressed: (_) {
+                                          _roomCubit.onDeleteIssuePressed(i);
+                                        },
+                                        borderRadius: BorderRadius.circular(10),
+                                        backgroundColor: Colors.red,
+                                      )
+                                    ]),
+                                endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        icon: Icons.delete,
+                                        onPressed: (_) {
+                                          _roomCubit.onDeleteIssuePressed(i);
+                                        },
+                                        borderRadius: BorderRadius.circular(10),
+                                        backgroundColor: Colors.red,
+                                      )
+                                    ]),
+                                child: Card(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      final theme =
+                                                          Theme.of(context);
+                                                      return StatefulBuilder(
                                                         builder:
-                                                            (context, state) {
-                                                          final images = state
-                                                              .issues[i].$2;
-                                                          return Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              if (images
-                                                                  .isNotEmpty)
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .only(
-                                                                      top: 16,
-                                                                      bottom:
-                                                                          10,
-                                                                      left:
-                                                                          12),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                        'Прикрепленные фото',
-                                                                        style: theme
-                                                                            .textTheme
-                                                                            .titleMedium,
-                                                                      ),
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            _roomCubit.onFlushPressed(i);
-                                                                          },
-                                                                          child:
-                                                                              const Text('Очистить'))
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              if (images
-                                                                  .isNotEmpty)
-                                                                Expanded(
-                                                                  child: ListView
-                                                                      .separated(
+                                                            (_, setModalState) =>
+                                                                RoomBuilder(
+                                                          bloc: _roomCubit,
+                                                          builder:
+                                                              (context, state) {
+                                                            final images = state
+                                                                .issues[i].$2;
+                                                            return Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                if (images
+                                                                    .isNotEmpty)
+                                                                  Padding(
                                                                     padding: const EdgeInsets
                                                                         .only(
+                                                                        top: 16,
+                                                                        bottom:
+                                                                            10,
                                                                         left:
-                                                                            12,
-                                                                        right:
                                                                             12),
-                                                                    separatorBuilder:
-                                                                        (_, i) =>
-                                                                            const SizedBox(
-                                                                      width:
-                                                                          6,
-                                                                    ),
-                                                                    scrollDirection:
-                                                                        Axis.horizontal,
-                                                                    shrinkWrap:
-                                                                        true,
-                                                                    itemCount:
-                                                                        images
-                                                                            .length,
-                                                                    itemBuilder:
-                                                                        (_, i) =>
-                                                                            SizedBox(
-                                                                      child: Stack(
-                                                                          children: [
-                                                                            ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(10),
-                                                                              child: Image.file(File(images[i].path)),
-                                                                            ),
-                                                                            Positioned.fill(
-                                                                              child: Align(
-                                                                                alignment: Alignment.topRight,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () {
-                                                                                    setModalState(() {
-                                                                                      _roomCubit.onDeleteImagePressed(images[i]);
-                                                                                    });
-                                                                                  },
-                                                                                  child: DecoratedBox(
-                                                                                      decoration: BoxDecoration(borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), topRight: Radius.circular(10)), color: Colors.white.withOpacity(0.5)),
-                                                                                      child: const Icon(
-                                                                                        Icons.close,
-                                                                                      )),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Text(
+                                                                          'Прикрепленные фото',
+                                                                          style: theme
+                                                                              .textTheme
+                                                                              .titleMedium,
+                                                                        ),
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              _roomCubit.onFlushPressed(i);
+                                                                            },
+                                                                            child:
+                                                                                const Text('Очистить'))
+                                                                      ],
                                                                     ),
                                                                   ),
+                                                                if (images
+                                                                    .isNotEmpty)
+                                                                  Expanded(
+                                                                    child: ListView
+                                                                        .separated(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              12,
+                                                                          right:
+                                                                              12),
+                                                                      separatorBuilder:
+                                                                          (_, i) =>
+                                                                              const SizedBox(
+                                                                        width:
+                                                                            6,
+                                                                      ),
+                                                                      scrollDirection:
+                                                                          Axis.horizontal,
+                                                                      shrinkWrap:
+                                                                          true,
+                                                                      itemCount:
+                                                                          images
+                                                                              .length,
+                                                                      itemBuilder:
+                                                                          (_, i) =>
+                                                                              SizedBox(
+                                                                        child: Stack(
+                                                                            children: [
+                                                                              ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(10),
+                                                                                child: Image.file(File(images[i].path)),
+                                                                              ),
+                                                                              Positioned.fill(
+                                                                                child: Align(
+                                                                                  alignment: Alignment.topRight,
+                                                                                  child: GestureDetector(
+                                                                                    onTap: () {
+                                                                                      setModalState(() {
+                                                                                        _roomCubit.onDeleteImagePressed(images[i]);
+                                                                                      });
+                                                                                    },
+                                                                                    child: DecoratedBox(
+                                                                                        decoration: BoxDecoration(borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), topRight: Radius.circular(10)), color: Colors.white.withOpacity(0.5)),
+                                                                                        child: const Icon(
+                                                                                          Icons.close,
+                                                                                        )),
+                                                                                  ),
+                                                                                ),
+                                                                              )
+                                                                            ]),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                const SizedBox(
+                                                                  height: 8,
                                                                 ),
-                                                              const SizedBox(
-                                                                height: 8,
-                                                              ),
-                                                              ListTile(
-                                                                leading:
-                                                                    const Icon(
-                                                                        Icons
-                                                                            .add_photo_alternate_outlined),
-                                                                onTap:
-                                                                    () async {
-                                                                  await _onSelectedFromGalleryPressed(
-                                                                      i);
-                                                                },
-                                                                title: const Text(
-                                                                    'Выбрать из галереи'),
-                                                              ),
-                                                              ListTile(
-                                                                leading:
-                                                                    const Icon(
-                                                                        Icons
-                                                                            .photo_camera_outlined),
-                                                                onTap:
-                                                                    () async {
-                                                                  await _onSelectedCameraPressed(
-                                                                      i);
-                            
-                                                                  setModalState(
-                                                                      () {});
-                                                                },
-                                                                title: const Text(
-                                                                    'Сделать фото'),
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8),
-                                                                child: SizedBox(
-                                                                    width: double
-                                                                        .infinity,
-                                                                    child: ElevatedButton(
-                                                                        onPressed:
-                                                                            () {},
-                                                                        child:
-                                                                            const Text('Отменить'))),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 8,
-                                                              )
-                                                            ],
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            icon: const Icon(
-                                                Icons.attach_file_rounded)),
-                                        const Flexible(
-                                            child: TextField(
-                                          decoration: InputDecoration(
-                                              hintText: 'Комментарий...'),
-                                          keyboardType:
-                                              TextInputType.multiline,
-                                          minLines: 1,
-                                          maxLines: 5,
-                                        )),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: const Icon(Icons.mic))
-                                      ],
-                                    ),
-                                  ],
+                                                                ListTile(
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .add_photo_alternate_outlined),
+                                                                  onTap:
+                                                                      () async {
+                                                                    await _onSelectedFromGalleryPressed(
+                                                                        i);
+                                                                  },
+                                                                  title: const Text(
+                                                                      'Выбрать из галереи'),
+                                                                ),
+                                                                ListTile(
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .photo_camera_outlined),
+                                                                  onTap:
+                                                                      () async {
+                                                                    await _onSelectedCameraPressed(
+                                                                        i);
+
+                                                                    setModalState(
+                                                                        () {});
+                                                                  },
+                                                                  title: const Text(
+                                                                      'Сделать фото'),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8),
+                                                                  child: SizedBox(
+                                                                      width: double
+                                                                          .infinity,
+                                                                      child: ElevatedButton(
+                                                                          onPressed:
+                                                                              () {},
+                                                                          child:
+                                                                              const Text('Отменить'))),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 8,
+                                                                )
+                                                              ],
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              icon: const Icon(
+                                                  Icons.attach_file_rounded)),
+                                          const Flexible(
+                                              child: TextField(
+                                            decoration: InputDecoration(
+                                                hintText: 'Комментарий...'),
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            minLines: 1,
+                                            maxLines: 5,
+                                          )),
+                                          IconButton(
+                                              onPressed: () {},
+                                              icon: const Icon(Icons.mic))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             })
