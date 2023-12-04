@@ -51,7 +51,9 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _roomCubit..fetchRoom(widget.room.id),
+      create: (_) => _roomCubit
+        ..fetchRoom(widget.room.id)
+        ..fetchDepartment(),
       child: RoomListener(
         listener: (context, state) {
           // TODO: implement listener
@@ -328,20 +330,63 @@ class _RoomPageState extends State<RoomPage> {
                                               },
                                               icon: const Icon(
                                                   Icons.attach_file_rounded)),
-                                          const Flexible(
-                                              child: TextField(
-                                            decoration: InputDecoration(
-                                                hintText: 'Комментарий...'),
-                                            keyboardType:
-                                                TextInputType.multiline,
-                                            minLines: 1,
-                                            maxLines: 5,
+                                          Flexible(child: RoomBuilder(
+                                            builder: (context, state) {
+                                              final text = state.issues[i].$3;
+
+                                              return TextField(
+                                                controller:
+                                                    TextEditingController(
+                                                        text: text)
+                                                      ..selection = TextSelection
+                                                          .fromPosition(
+                                                              TextPosition(
+                                                                  offset: text
+                                                                      .length)),
+                                                onChanged: (text) => _roomCubit
+                                                    .onCommentChanged(i, text),
+                                                decoration: InputDecoration(
+                                                    suffixIcon: GestureDetector(
+                                                        onTap: () => _roomCubit
+                                                            .onClearCommentPressed(
+                                                                i),
+                                                        child: const Icon(
+                                                            Icons.close)),
+                                                    hintText: 'Комментарий...'),
+                                                keyboardType:
+                                                    TextInputType.multiline,
+                                                minLines: 1,
+                                                maxLines: 5,
+                                              );
+                                            },
                                           )),
                                           IconButton(
                                               onPressed: () {},
                                               icon: const Icon(Icons.mic))
                                         ],
                                       ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      DropdownMenu<String>(
+                                          hintText: 'Выберите отдел',
+                                          inputDecorationTheme:
+                                              InputDecorationTheme(
+                                                  border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10))),
+                                          menuStyle: MenuStyle(
+                                            shape: MaterialStatePropertyAll(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10))),
+                                          ),
+                                          dropdownMenuEntries: state.departments
+                                              .map((e) => DropdownMenuEntry(
+                                                  value: e, label: e))
+                                              .toList())
                                     ],
                                   ),
                                 ),

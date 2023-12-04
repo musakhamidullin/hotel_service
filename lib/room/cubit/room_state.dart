@@ -6,7 +6,9 @@ enum FetchStatus { init, loading, success, failure }
 class RoomState with _$RoomState {
   const factory RoomState(
           {@Default(FetchStatus.init) FetchStatus fetchStatus,
-          @Default(<(int, List<XFile>, String)>[]) List<(int, List<XFile>, String)> issues}) =
+          @Default(<(int, List<XFile>, String)>[]) List<(int, List<XFile>, String)> issues,
+          @Default(<String>[]) List<String> departments
+          }) =
       _RoomState;
 
   const RoomState._();

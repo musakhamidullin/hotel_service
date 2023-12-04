@@ -19,6 +19,7 @@ mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   List<(int, List<XFile>, String)> get issues =>
       throw _privateConstructorUsedError;
+  List<String> get departments => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateCopyWith<RoomState> get copyWith =>
@@ -30,7 +31,10 @@ abstract class $RoomStateCopyWith<$Res> {
   factory $RoomStateCopyWith(RoomState value, $Res Function(RoomState) then) =
       _$RoomStateCopyWithImpl<$Res, RoomState>;
   @useResult
-  $Res call({FetchStatus fetchStatus, List<(int, List<XFile>, String)> issues});
+  $Res call(
+      {FetchStatus fetchStatus,
+      List<(int, List<XFile>, String)> issues,
+      List<String> departments});
 }
 
 /// @nodoc
@@ -48,6 +52,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
   $Res call({
     Object? fetchStatus = null,
     Object? issues = null,
+    Object? departments = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
@@ -58,6 +63,10 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.issues
           : issues // ignore: cast_nullable_to_non_nullable
               as List<(int, List<XFile>, String)>,
+      departments: null == departments
+          ? _value.departments
+          : departments // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -70,7 +79,10 @@ abstract class _$$RoomStateImplCopyWith<$Res>
       __$$RoomStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FetchStatus fetchStatus, List<(int, List<XFile>, String)> issues});
+  $Res call(
+      {FetchStatus fetchStatus,
+      List<(int, List<XFile>, String)> issues,
+      List<String> departments});
 }
 
 /// @nodoc
@@ -86,6 +98,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
   $Res call({
     Object? fetchStatus = null,
     Object? issues = null,
+    Object? departments = null,
   }) {
     return _then(_$RoomStateImpl(
       fetchStatus: null == fetchStatus
@@ -96,6 +109,10 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value._issues
           : issues // ignore: cast_nullable_to_non_nullable
               as List<(int, List<XFile>, String)>,
+      departments: null == departments
+          ? _value._departments
+          : departments // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -109,8 +126,10 @@ class _$RoomStateImpl extends _RoomState {
         int,
         List<XFile>,
         String
-      )>[]})
+      )>[],
+      final List<String> departments = const <String>[]})
       : _issues = issues,
+        _departments = departments,
         super._();
 
   @override
@@ -125,9 +144,18 @@ class _$RoomStateImpl extends _RoomState {
     return EqualUnmodifiableListView(_issues);
   }
 
+  final List<String> _departments;
+  @override
+  @JsonKey()
+  List<String> get departments {
+    if (_departments is EqualUnmodifiableListView) return _departments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_departments);
+  }
+
   @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus, issues: $issues)';
+    return 'RoomState(fetchStatus: $fetchStatus, issues: $issues, departments: $departments)';
   }
 
   @override
@@ -137,12 +165,17 @@ class _$RoomStateImpl extends _RoomState {
             other is _$RoomStateImpl &&
             (identical(other.fetchStatus, fetchStatus) ||
                 other.fetchStatus == fetchStatus) &&
-            const DeepCollectionEquality().equals(other._issues, _issues));
+            const DeepCollectionEquality().equals(other._issues, _issues) &&
+            const DeepCollectionEquality()
+                .equals(other._departments, _departments));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, fetchStatus, const DeepCollectionEquality().hash(_issues));
+      runtimeType,
+      fetchStatus,
+      const DeepCollectionEquality().hash(_issues),
+      const DeepCollectionEquality().hash(_departments));
 
   @JsonKey(ignore: true)
   @override
@@ -154,13 +187,16 @@ class _$RoomStateImpl extends _RoomState {
 abstract class _RoomState extends RoomState {
   const factory _RoomState(
       {final FetchStatus fetchStatus,
-      final List<(int, List<XFile>, String)> issues}) = _$RoomStateImpl;
+      final List<(int, List<XFile>, String)> issues,
+      final List<String> departments}) = _$RoomStateImpl;
   const _RoomState._() : super._();
 
   @override
   FetchStatus get fetchStatus;
   @override
   List<(int, List<XFile>, String)> get issues;
+  @override
+  List<String> get departments;
   @override
   @JsonKey(ignore: true)
   _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>
