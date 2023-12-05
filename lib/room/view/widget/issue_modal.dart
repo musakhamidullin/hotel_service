@@ -29,8 +29,8 @@ abstract class IssueModal {
       showModalBottomSheet(
           context: context,
           builder: (context) {
-            return BlocProvider(
-              create: (context) => roomCubit,
+            return BlocProvider.value(
+              value: roomCubit,
               child: StatefulBuilder(
                 builder: (_, setModalState) => RoomBuilder(
                   builder: (context, state) {
@@ -80,7 +80,7 @@ abstract class IssueModal {
                           child: SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () => Navigator.pop(context),
                                   child: const Text('Отменить'))),
                         ),
                         const SizedBox(
