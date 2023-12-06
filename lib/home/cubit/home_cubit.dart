@@ -51,6 +51,7 @@ class HomeCubit extends Cubit<HomeState> {
 
       await catalogRep.fetchCleanStatuses();
       await catalogRep.fetchCleanTypes(user.personInfo.ownerId);
+      await catalogRep.fetchRoomStatuses();
 
       _currPage = 1;
       final (List<Room> data, int pages) =

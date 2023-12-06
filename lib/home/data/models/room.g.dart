@@ -11,8 +11,10 @@ _$RoomImpl _$$RoomImplFromJson(Map<String, dynamic> json) => _$RoomImpl(
       floor: json['Floor'] as int,
       cleanStatusId: json['CleanStatusId'] as int,
       cleaningType: json['CleaningType'] as int,
+      roomStatusId: json['RoomStatusId'] as int,
       roomNumber: json['RoomNumber'] as String,
-      roomStatus: json['RoomStatus'] as bool,
+      roomStatus: json['RoomStatus'] as String,
+      roomType: json['RoomType'] as String,
     );
 
 Map<String, dynamic> _$$RoomImplToJson(_$RoomImpl instance) =>
@@ -21,6 +23,8 @@ Map<String, dynamic> _$$RoomImplToJson(_$RoomImpl instance) =>
       'Floor': instance.floor,
       'CleanStatusId': instance.cleanStatusId,
       'CleaningType': instance.cleaningType,
+      'RoomStatusId': instance.roomStatusId,
       'RoomNumber': instance.roomNumber,
       'RoomStatus': instance.roomStatus,
+      'RoomType': instance.roomType,
     };

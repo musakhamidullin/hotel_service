@@ -12,8 +12,10 @@ class Room with _$Room {
     required int floor,
     required int cleanStatusId,
     required int cleaningType,
+    required int roomStatusId,
     required String roomNumber,
-    required bool roomStatus,
+    required String roomStatus,
+    required String roomType,
 }) = _Room;
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);

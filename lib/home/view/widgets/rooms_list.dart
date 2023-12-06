@@ -27,7 +27,7 @@ class RoomsList extends StatelessWidget {
 
         if (state.failure()) {
           return FailureWidget(
-            onPressed: () {},
+            onPressed: context.read<HomeCubit>().fetchFirstHotelPage,
           );
         }
         return Stack(
@@ -73,6 +73,7 @@ class _FloorItemState extends State<_FloorItem> {
 
   @override
   Widget build(BuildContext context) {
+    const cardRadius = 12.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -97,24 +98,35 @@ class _FloorItemState extends State<_FloorItem> {
           Wrap(
             children: widget.rooms.map(
               (e) {
-                final Color? color;
+                final Color? cleanStatusColor;
                 switch (e.cleanStatusId) {
                   case 1:
-                    color = Colors.green[100];
+                    cleanStatusColor = Colors.green[100];
                   case 2:
-                    color = Colors.red[100];
+                    cleanStatusColor = Colors.red[100];
                   case 3:
-                    color = Colors.blue[100];
+                    cleanStatusColor = Colors.blue[100];
                   case 4:
-                    color = Colors.yellow[100];
+                    cleanStatusColor = Colors.yellow[100];
                   default:
-                    color = null;
+                    cleanStatusColor = null;
+                }
+                final Color? roomStatusColor;
+                switch (e.roomStatusId) {
+                  case 0:
+                    roomStatusColor = Colors.green;
+                  case 2 || 5:
+                    roomStatusColor = Colors.orange;
+                  case 4:
+                    roomStatusColor = Colors.red;
+                  default:
+                    roomStatusColor = Colors.transparent;
                 }
                 return Card(
-                  color: color,
+                  color: cleanStatusColor,
                   child: InkWell(
                     customBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(cardRadius),
                     ),
                     onTap: () {
                       context.router.push(RoomRoute(room: e));
@@ -123,7 +135,23 @@ class _FloorItemState extends State<_FloorItem> {
                       height: 60,
                       width: 100,
                       alignment: Alignment.center,
-                      child: Text(e.roomNumber),
+                      padding: const EdgeInsets.only(right: cardRadius),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            width: cardRadius,
+                            color: roomStatusColor,
+                          ),
+                        ),
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(cardRadius),
+                          bottomLeft: Radius.circular(cardRadius),
+                        ),
+                      ),
+                      child: Text(
+                        e.roomNumber,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
                   ),
                 );
