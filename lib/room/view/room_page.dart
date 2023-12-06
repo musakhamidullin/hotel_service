@@ -54,7 +54,7 @@ class _RoomPageState extends State<RoomPage> {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
           height: 70,
           width: double.infinity,
           child:

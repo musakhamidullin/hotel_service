@@ -55,18 +55,20 @@ class IssueCard extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          DropdownMenu<String>(
-              hintText: 'Выберите отдел',
-              inputDecorationTheme: InputDecorationTheme(
-                  border: OutlineInputBorder(
+          FittedBox(
+            child: DropdownMenu<String>(
+                hintText: 'Выберите отдел',
+                inputDecorationTheme: InputDecorationTheme(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                menuStyle: MenuStyle(
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-              menuStyle: MenuStyle(
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-              ),
-              dropdownMenuEntries: departments
-                  .map((e) => DropdownMenuEntry(value: e, label: e))
-                  .toList())
+                ),
+                dropdownMenuEntries: departments
+                    .map((e) => DropdownMenuEntry(value: e, label: e))
+                    .toList()),
+          )
         ],
       ),
     );
