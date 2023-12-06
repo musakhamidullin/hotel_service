@@ -140,8 +140,9 @@ class _AppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(left: 12, right: 8),
+      color: Colors.grey[100],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

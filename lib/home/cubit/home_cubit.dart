@@ -58,8 +58,12 @@ class HomeCubit extends Cubit<HomeState> {
       await catalogRep.fetchRoomStatuses();
 
       _currPage = 1;
-      final (List<Room> data, int pages) =
-          await hotelRep.fetchHotel(body: _toBody());
+      final (List<Room> data, int pages) = await hotelRep.fetchHotel(
+        body: _toBody(
+          roomNumber: state.query,
+          filterValue: state.filterValue,
+        ),
+      );
 
       _pages = pages;
       final rooms = _toMapRoom(data);
@@ -77,6 +81,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> fetchNewPage() async {
     try {
+      if (state.query.isNotEmpty || state.filterValue != null) return;
       if (_currPage >= _pages) return;
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
