@@ -19,6 +19,7 @@ mixin _$HomeState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Map<int, List<Room>> get rooms => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
+  FilterValue? get filterValue => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -31,7 +32,12 @@ abstract class $HomeStateCopyWith<$Res> {
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
   $Res call(
-      {FetchStatus fetchStatus, Map<int, List<Room>> rooms, String query});
+      {FetchStatus fetchStatus,
+      Map<int, List<Room>> rooms,
+      String query,
+      FilterValue? filterValue});
+
+  $FilterValueCopyWith<$Res>? get filterValue;
 }
 
 /// @nodoc
@@ -50,6 +56,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? fetchStatus = null,
     Object? rooms = null,
     Object? query = null,
+    Object? filterValue = freezed,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
@@ -64,7 +71,23 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
+      filterValue: freezed == filterValue
+          ? _value.filterValue
+          : filterValue // ignore: cast_nullable_to_non_nullable
+              as FilterValue?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FilterValueCopyWith<$Res>? get filterValue {
+    if (_value.filterValue == null) {
+      return null;
+    }
+
+    return $FilterValueCopyWith<$Res>(_value.filterValue!, (value) {
+      return _then(_value.copyWith(filterValue: value) as $Val);
+    });
   }
 }
 
@@ -77,7 +100,13 @@ abstract class _$$InitialImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {FetchStatus fetchStatus, Map<int, List<Room>> rooms, String query});
+      {FetchStatus fetchStatus,
+      Map<int, List<Room>> rooms,
+      String query,
+      FilterValue? filterValue});
+
+  @override
+  $FilterValueCopyWith<$Res>? get filterValue;
 }
 
 /// @nodoc
@@ -94,6 +123,7 @@ class __$$InitialImplCopyWithImpl<$Res>
     Object? fetchStatus = null,
     Object? rooms = null,
     Object? query = null,
+    Object? filterValue = freezed,
   }) {
     return _then(_$InitialImpl(
       fetchStatus: null == fetchStatus
@@ -108,6 +138,10 @@ class __$$InitialImplCopyWithImpl<$Res>
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
+      filterValue: freezed == filterValue
+          ? _value.filterValue
+          : filterValue // ignore: cast_nullable_to_non_nullable
+              as FilterValue?,
     ));
   }
 }
@@ -118,7 +152,8 @@ class _$InitialImpl extends _Initial {
   const _$InitialImpl(
       {this.fetchStatus = FetchStatus.init,
       final Map<int, List<Room>> rooms = const <int, List<Room>>{},
-      this.query = ''})
+      this.query = '',
+      this.filterValue})
       : _rooms = rooms,
         super._();
 
@@ -137,10 +172,12 @@ class _$InitialImpl extends _Initial {
   @override
   @JsonKey()
   final String query;
+  @override
+  final FilterValue? filterValue;
 
   @override
   String toString() {
-    return 'HomeState(fetchStatus: $fetchStatus, rooms: $rooms, query: $query)';
+    return 'HomeState(fetchStatus: $fetchStatus, rooms: $rooms, query: $query, filterValue: $filterValue)';
   }
 
   @override
@@ -151,12 +188,14 @@ class _$InitialImpl extends _Initial {
             (identical(other.fetchStatus, fetchStatus) ||
                 other.fetchStatus == fetchStatus) &&
             const DeepCollectionEquality().equals(other._rooms, _rooms) &&
-            (identical(other.query, query) || other.query == query));
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.filterValue, filterValue) ||
+                other.filterValue == filterValue));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, fetchStatus,
-      const DeepCollectionEquality().hash(_rooms), query);
+      const DeepCollectionEquality().hash(_rooms), query, filterValue);
 
   @JsonKey(ignore: true)
   @override
@@ -169,7 +208,8 @@ abstract class _Initial extends HomeState {
   const factory _Initial(
       {final FetchStatus fetchStatus,
       final Map<int, List<Room>> rooms,
-      final String query}) = _$InitialImpl;
+      final String query,
+      final FilterValue? filterValue}) = _$InitialImpl;
   const _Initial._() : super._();
 
   @override
@@ -178,6 +218,8 @@ abstract class _Initial extends HomeState {
   Map<int, List<Room>> get rooms;
   @override
   String get query;
+  @override
+  FilterValue? get filterValue;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>

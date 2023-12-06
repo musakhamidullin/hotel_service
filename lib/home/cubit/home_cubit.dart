@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../auth/data/model/user.dart';
+import '../data/models/filter_value.dart';
 import '../data/models/room.dart';
 import '../data/repositories/catalog_rep.dart';
 import '../data/repositories/hotel_rep.dart';
@@ -24,11 +25,14 @@ class HomeCubit extends Cubit<HomeState> {
   var _currPage = 1;
   var _pages = 0;
 
-  Map<String, dynamic> _toBody({String roomNumber = ''}) => {
+  Map<String, dynamic> _toBody(
+          {String roomNumber = '', FilterValue? filterValue}) =>
+      {
         "Page": _currPage,
         "PageSize": 20,
         "RoomNumber": roomNumber,
         "OwnerId": user.personInfo.ownerId,
+        if (filterValue != null) ...filterValue.toBody()
       };
 
   Map<int, List<Room>> _toMapRoom(List<Room> data) {
@@ -124,5 +128,38 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
+  }
+
+  Future<void> filtered(FilterValue value) async {
+    try {
+      emit(state.copyWith(
+        fetchStatus: FetchStatus.searching,
+        filterValue: value,
+      ));
+
+      _currPage = 1;
+
+      final (List<Room> data, _) =
+          await hotelRep.fetchHotel(body: _toBody(filterValue: value));
+
+      final rooms = _toMapRoom(data);
+
+      emit(
+        state.copyWith(
+          fetchStatus: FetchStatus.success,
+          rooms: rooms,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+    }
+  }
+
+  Future<void> resetFilter() async {
+    emit(state.copyWith(
+      filterValue: null,
+    ));
+
+    await fetchFirstHotelPage();
   }
 }

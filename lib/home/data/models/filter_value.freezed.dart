@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$FilterValue {
   CatalogInfo? get cleanStatus => throw _privateConstructorUsedError;
   CatalogInfo? get cleanType => throw _privateConstructorUsedError;
+  RoomStatusInfo? get roomStatusInfo => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FilterValueCopyWith<FilterValue> get copyWith =>
@@ -30,10 +31,14 @@ abstract class $FilterValueCopyWith<$Res> {
           FilterValue value, $Res Function(FilterValue) then) =
       _$FilterValueCopyWithImpl<$Res, FilterValue>;
   @useResult
-  $Res call({CatalogInfo? cleanStatus, CatalogInfo? cleanType});
+  $Res call(
+      {CatalogInfo? cleanStatus,
+      CatalogInfo? cleanType,
+      RoomStatusInfo? roomStatusInfo});
 
   $CatalogInfoCopyWith<$Res>? get cleanStatus;
   $CatalogInfoCopyWith<$Res>? get cleanType;
+  $RoomStatusInfoCopyWith<$Res>? get roomStatusInfo;
 }
 
 /// @nodoc
@@ -51,6 +56,7 @@ class _$FilterValueCopyWithImpl<$Res, $Val extends FilterValue>
   $Res call({
     Object? cleanStatus = freezed,
     Object? cleanType = freezed,
+    Object? roomStatusInfo = freezed,
   }) {
     return _then(_value.copyWith(
       cleanStatus: freezed == cleanStatus
@@ -61,6 +67,10 @@ class _$FilterValueCopyWithImpl<$Res, $Val extends FilterValue>
           ? _value.cleanType
           : cleanType // ignore: cast_nullable_to_non_nullable
               as CatalogInfo?,
+      roomStatusInfo: freezed == roomStatusInfo
+          ? _value.roomStatusInfo
+          : roomStatusInfo // ignore: cast_nullable_to_non_nullable
+              as RoomStatusInfo?,
     ) as $Val);
   }
 
@@ -87,6 +97,18 @@ class _$FilterValueCopyWithImpl<$Res, $Val extends FilterValue>
       return _then(_value.copyWith(cleanType: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RoomStatusInfoCopyWith<$Res>? get roomStatusInfo {
+    if (_value.roomStatusInfo == null) {
+      return null;
+    }
+
+    return $RoomStatusInfoCopyWith<$Res>(_value.roomStatusInfo!, (value) {
+      return _then(_value.copyWith(roomStatusInfo: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -97,12 +119,17 @@ abstract class _$$FilterValueImplCopyWith<$Res>
       __$$FilterValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({CatalogInfo? cleanStatus, CatalogInfo? cleanType});
+  $Res call(
+      {CatalogInfo? cleanStatus,
+      CatalogInfo? cleanType,
+      RoomStatusInfo? roomStatusInfo});
 
   @override
   $CatalogInfoCopyWith<$Res>? get cleanStatus;
   @override
   $CatalogInfoCopyWith<$Res>? get cleanType;
+  @override
+  $RoomStatusInfoCopyWith<$Res>? get roomStatusInfo;
 }
 
 /// @nodoc
@@ -118,6 +145,7 @@ class __$$FilterValueImplCopyWithImpl<$Res>
   $Res call({
     Object? cleanStatus = freezed,
     Object? cleanType = freezed,
+    Object? roomStatusInfo = freezed,
   }) {
     return _then(_$FilterValueImpl(
       cleanStatus: freezed == cleanStatus
@@ -128,23 +156,31 @@ class __$$FilterValueImplCopyWithImpl<$Res>
           ? _value.cleanType
           : cleanType // ignore: cast_nullable_to_non_nullable
               as CatalogInfo?,
+      roomStatusInfo: freezed == roomStatusInfo
+          ? _value.roomStatusInfo
+          : roomStatusInfo // ignore: cast_nullable_to_non_nullable
+              as RoomStatusInfo?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$FilterValueImpl implements _FilterValue {
-  const _$FilterValueImpl({this.cleanStatus, this.cleanType});
+class _$FilterValueImpl extends _FilterValue {
+  const _$FilterValueImpl(
+      {this.cleanStatus, this.cleanType, this.roomStatusInfo})
+      : super._();
 
   @override
   final CatalogInfo? cleanStatus;
   @override
   final CatalogInfo? cleanType;
+  @override
+  final RoomStatusInfo? roomStatusInfo;
 
   @override
   String toString() {
-    return 'FilterValue(cleanStatus: $cleanStatus, cleanType: $cleanType)';
+    return 'FilterValue(cleanStatus: $cleanStatus, cleanType: $cleanType, roomStatusInfo: $roomStatusInfo)';
   }
 
   @override
@@ -155,11 +191,14 @@ class _$FilterValueImpl implements _FilterValue {
             (identical(other.cleanStatus, cleanStatus) ||
                 other.cleanStatus == cleanStatus) &&
             (identical(other.cleanType, cleanType) ||
-                other.cleanType == cleanType));
+                other.cleanType == cleanType) &&
+            (identical(other.roomStatusInfo, roomStatusInfo) ||
+                other.roomStatusInfo == roomStatusInfo));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, cleanStatus, cleanType);
+  int get hashCode =>
+      Object.hash(runtimeType, cleanStatus, cleanType, roomStatusInfo);
 
   @JsonKey(ignore: true)
   @override
@@ -168,15 +207,19 @@ class _$FilterValueImpl implements _FilterValue {
       __$$FilterValueImplCopyWithImpl<_$FilterValueImpl>(this, _$identity);
 }
 
-abstract class _FilterValue implements FilterValue {
+abstract class _FilterValue extends FilterValue {
   const factory _FilterValue(
       {final CatalogInfo? cleanStatus,
-      final CatalogInfo? cleanType}) = _$FilterValueImpl;
+      final CatalogInfo? cleanType,
+      final RoomStatusInfo? roomStatusInfo}) = _$FilterValueImpl;
+  const _FilterValue._() : super._();
 
   @override
   CatalogInfo? get cleanStatus;
   @override
   CatalogInfo? get cleanType;
+  @override
+  RoomStatusInfo? get roomStatusInfo;
   @override
   @JsonKey(ignore: true)
   _$$FilterValueImplCopyWith<_$FilterValueImpl> get copyWith =>

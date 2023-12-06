@@ -68,15 +68,41 @@ class _MySearchBarState extends State<MySearchBar> {
         const SizedBox(
           width: 8,
         ),
-        IconButton(
-          onPressed: () {
-            Modals.showBottomSheet(
-              context,
-              const FilterSheet(),
-              showDragHandle: true,
+        BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final button = IconButton(
+              onPressed: () {
+                Modals.showBottomSheet(
+                  context,
+                  FilterSheet(
+                    homeCubit: context.read<HomeCubit>(),
+                  ),
+                  showDragHandle: true,
+                );
+              },
+              icon: const Icon(Icons.filter_alt_rounded),
+            );
+
+            if (state.filterValue == null) {
+              return button;
+            }
+
+            return Stack(
+              alignment: Alignment.topRight,
+              children: [
+                button,
+                Container(
+                  height: 10,
+                  width: 10,
+                  margin: const EdgeInsets.all(6),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.orange,
+                  ),
+                )
+              ],
             );
           },
-          icon: const Icon(Icons.filter_alt_rounded),
         )
       ],
     );

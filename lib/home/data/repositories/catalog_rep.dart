@@ -1,15 +1,15 @@
 import '../../../app/dio_client.dart';
 import '../models/catalog_info.dart';
-import '../models/status_info.dart';
+import '../models/room_status_info.dart';
 
 class CatalogRep {
   var _cleanStatuses = <CatalogInfo>[];
   var _cleanTypes = <CatalogInfo>[];
-  var _roomStatuses = <StatusInfo>[];
+  var _roomStatuses = <RoomStatusInfo>[];
 
   List<CatalogInfo> get cleanStatuses => _cleanStatuses;
   List<CatalogInfo> get cleanTypes => _cleanTypes;
-  List<StatusInfo> get roomStatuses => _roomStatuses;
+  List<RoomStatusInfo> get roomStatuses => _roomStatuses;
 
   Future<void> fetchCleanStatuses() async {
     final result = await DioClient()
@@ -32,6 +32,6 @@ class CatalogRep {
         .post<List<dynamic>>(path: 'HouseKeeping/RoomStatusesListGet');
     if (result.data.isEmpty) throw Exception();
 
-    _roomStatuses = result.data.map((e) => StatusInfo.fromJson(e)).toList();
+    _roomStatuses = result.data.map((e) => RoomStatusInfo.fromJson(e)).toList();
   }
 }

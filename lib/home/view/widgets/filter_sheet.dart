@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubit/home_cubit.dart';
 import '../../data/models/filter_value.dart';
 import '../../data/repositories/catalog_rep.dart';
 
 class FilterSheet extends StatefulWidget {
-  const FilterSheet({Key? key}) : super(key: key);
+  const FilterSheet({
+    Key? key,
+    required this.homeCubit,
+  }) : super(key: key);
+
+  final HomeCubit homeCubit;
 
   @override
   State<FilterSheet> createState() => _FilterSheetState();
@@ -17,7 +23,8 @@ class _FilterSheetState extends State<FilterSheet> {
 
   late final cleanStatuses = context.read<CatalogRep>().cleanStatuses;
   late final cleanTypes = context.read<CatalogRep>().cleanTypes;
-  var _filter = const FilterValue();
+  late final roomStatuses = context.read<CatalogRep>().roomStatuses;
+  late var _filter = widget.homeCubit.state.filterValue ?? const FilterValue();
 
   @override
   void initState() {
@@ -40,77 +47,85 @@ class _FilterSheetState extends State<FilterSheet> {
       minChildSize: .4,
       controller: _draggableScrollableController,
       builder: (_, controller) {
-        return Stack(
-          children: [
-            ListView(
-              controller: controller,
-              padding: const EdgeInsets.fromLTRB(8, 32, 8, 8),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    'Уборка номера',
-                    style: theme.textTheme.titleMedium,
+        return BlocProvider.value(
+          value: widget.homeCubit,
+          child: Stack(
+            children: [
+              ListView(
+                controller: controller,
+                padding: const EdgeInsets.fromLTRB(8, 50, 8, 8),
+                children: [
+                  const _Header(title: 'Статус номера'),
+                  ...roomStatuses.map(
+                    (e) => CheckboxListTile(
+                      title: Text(e.fullName),
+                      value: e == _filter.roomStatusInfo,
+                      onChanged: (_) {
+                        setState(() {
+                          if (_filter.roomStatusInfo == e) {
+                            _filter = _filter.copyWith(roomStatusInfo: null);
+                          } else {
+                            _filter = _filter.copyWith(roomStatusInfo: e);
+                          }
+                        });
+                      },
+                    ),
                   ),
-                ),
-                ...cleanStatuses.map(
-                  (e) => CheckboxListTile(
-                    title: Text(e.longDesc),
-                    value: e == _filter.cleanStatus,
-                    onChanged: (_) {
-                      setState(() {
-                        if (_filter.cleanStatus == e) {
-                          _filter = _filter.copyWith(cleanStatus: null);
-                        } else {
-                          _filter = _filter.copyWith(cleanStatus: e);
-                        }
-                      });
-                    },
+                  const _Header(title: 'Уборка номера'),
+                  ...cleanStatuses.map(
+                    (e) => CheckboxListTile(
+                      title: Text(e.longDesc),
+                      value: e == _filter.cleanStatus,
+                      onChanged: (_) {
+                        setState(() {
+                          if (_filter.cleanStatus == e) {
+                            _filter = _filter.copyWith(cleanStatus: null);
+                          } else {
+                            _filter = _filter.copyWith(cleanStatus: e);
+                          }
+                        });
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    'Тип уборки',
-                    style: theme.textTheme.titleMedium,
+                  const _Header(title: 'Тип уборки'),
+                  ...cleanTypes.map(
+                    (e) => CheckboxListTile(
+                      title: Text(e.longDesc),
+                      value: e == _filter.cleanType,
+                      onChanged: (_) {
+                        setState(() {
+                          if (_filter.cleanType == e) {
+                            _filter = _filter.copyWith(cleanType: null);
+                          } else {
+                            _filter = _filter.copyWith(cleanType: e);
+                          }
+                        });
+                      },
+                    ),
                   ),
-                ),
-                ...cleanTypes.map(
-                  (e) => CheckboxListTile(
-                    title: Text(e.longDesc),
-                    value: e == _filter.cleanType,
-                    onChanged: (_) {
-                      setState(() {
-                        if (_filter.cleanType == e) {
-                          _filter = _filter.copyWith(cleanType: null);
-                        } else {
-                          _filter = _filter.copyWith(cleanType: e);
-                        }
-                      });
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 100,
-                )
-              ],
-            ),
-            const _AppBar(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                color: theme.canvasColor,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Применить'),
-                ),
+                  const SizedBox(
+                    height: 100,
+                  )
+                ],
               ),
-            )
-          ],
+              const _AppBar(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  color: theme.canvasColor,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      widget.homeCubit.filtered(_filter);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Применить'),
+                  ),
+                ),
+              )
+            ],
+          ),
         );
       },
     );
@@ -125,11 +140,43 @@ class _AppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Фильтр',
+            style: theme.textTheme.titleLarge,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<HomeCubit>().resetFilter();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Сбросить'),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.title,
+  });
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.topCenter,
+      padding: const EdgeInsets.all(8),
+      color: Colors.grey[300],
       child: Text(
-        'Фильтр',
-        style: theme.textTheme.titleLarge,
+        title,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

@@ -8,6 +8,7 @@ class HomeState with _$HomeState {
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(<int, List<Room>>{}) Map<int, List<Room>> rooms,
     @Default('') String query,
+    FilterValue? filterValue,
   }) = _Initial;
 
   const HomeState._();
@@ -22,5 +23,6 @@ class HomeState with _$HomeState {
 
   bool paging() => fetchStatus == FetchStatus.paging;
 
-  bool nothingFound() => success() && rooms.isEmpty && query.isNotEmpty;
+  bool nothingFound() =>
+      success() && rooms.isEmpty && (query.isNotEmpty || filterValue != null);
 }
