@@ -39,7 +39,7 @@ class RoomsList extends StatelessWidget {
                 await context.read<HomeCubit>().fetchFirstHotelPage();
               },
               child: ListView.builder(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(_FloorItem.listPAdding),
                 itemCount: state.rooms.length,
                 itemBuilder: (context, index) {
                   final floor = state.rooms.keys.toList()[index];
@@ -64,12 +64,26 @@ class _FloorItem extends StatefulWidget {
   final String floor;
   final List<Room> rooms;
 
+  static const listPAdding = 12.0;
+
   @override
   State<_FloorItem> createState() => _FloorItemState();
 }
 
 class _FloorItemState extends State<_FloorItem> {
   var _expanded = true;
+  static const spacing = 8.0;
+  var _itemWidth = 0.0;
+
+  @override
+  void didChangeDependencies() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    const maxCrossCount = 3;
+    _itemWidth =
+        (screenWidth - _FloorItem.listPAdding * 2 - maxCrossCount * spacing) /
+            maxCrossCount;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +110,8 @@ class _FloorItemState extends State<_FloorItem> {
         ),
         if (_expanded)
           Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
             children: widget.rooms.map(
               (e) {
                 final Color? cleanStatusColor;
@@ -123,6 +139,7 @@ class _FloorItemState extends State<_FloorItem> {
                     roomStatusColor = Colors.transparent;
                 }
                 return Card(
+                  margin: EdgeInsets.zero,
                   color: cleanStatusColor,
                   child: InkWell(
                     customBorder: RoundedRectangleBorder(
@@ -133,7 +150,7 @@ class _FloorItemState extends State<_FloorItem> {
                     },
                     child: Container(
                       height: 60,
-                      width: 100,
+                      width: _itemWidth,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.only(right: cardRadius),
                       decoration: BoxDecoration(
