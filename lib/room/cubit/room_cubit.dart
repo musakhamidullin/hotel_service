@@ -13,15 +13,24 @@ extension AddImage on List<XFile> {
       images..add(image.$2 ?? XFile(''));
 }
 
-extension DeleteIssue on List<(int, List<XFile>, String)> {
-  List<(int, List<XFile>, String)> deleteIssue(
-      List<(int, List<XFile>, String)> issues, int i) {
+extension DeleteIssue
+    on List<(int, List<XFile>, String, DateTime, bool isMutable)> {
+  List<(int, List<XFile>, String, DateTime, bool isMutable)> deleteIssue(
+      List<(int, List<XFile>, String, DateTime, bool isMutable)> issues,
+      int i) {
     final mutabledIssues = [...issues]..removeWhere((e) => e.$1 == i);
 
-    final List<(int, List<XFile>, String)> updatedIssues = [];
+    final List<(int, List<XFile>, String, DateTime, bool isMutable)>
+        updatedIssues = [];
 
     for (var i = 0; i < mutabledIssues.length; i++) {
-      updatedIssues.add((i, mutabledIssues[i].$2, mutabledIssues[i].$3));
+      updatedIssues.add((
+        i,
+        mutabledIssues[i].$2,
+        mutabledIssues[i].$3,
+        mutabledIssues[i].$4,
+        mutabledIssues[i].$5,
+      ));
     }
 
     return updatedIssues;
@@ -43,8 +52,9 @@ class RoomCubit extends Cubit<RoomState> {
 
       int index = 0;
 
-      final defects =
-          room.defects.map((d) => (index++, <XFile>[], d.text)).toList();
+      final defects = room.defects
+          .map((d) => (index++, <XFile>[], d.text, d.createDate, false))
+          .toList();
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
@@ -74,12 +84,14 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
-        ...state.issues.map((e) => (e.$1, e.$2, e.$1 == i ? '' : e.$3)).toList()
+        ...state.issues
+            .map((e) => (e.$1, e.$2, e.$1 == i ? '' : e.$3, e.$4, e.$5))
+            .toList()
       ]));
 
   void onCommentChanged(int i, String text) => emit(state.copyWith(issues: [
         ...state.issues
-            .map((e) => (e.$1, e.$2, e.$1 == i ? text : e.$3))
+            .map((e) => (e.$1, e.$2, e.$1 == i ? text : e.$3, e.$4, e.$5))
             .toList()
       ]));
 
@@ -90,7 +102,9 @@ class RoomCubit extends Cubit<RoomState> {
               ? 0
               : state.issues.indexOf(state.issues.last) + 1,
           [],
-          ''
+          '',
+          DateTime.now(),
+          true
         ),
       ]));
 
@@ -99,7 +113,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   void onFlushPressed(int i) => emit(state.copyWith(
       issues: state.issues
-          .map((e) => (e.$1, e.$1 == i ? <XFile>[] : e.$2, e.$3))
+          .map((e) => (e.$1, e.$1 == i ? <XFile>[] : e.$2, e.$3, e.$4, e.$5))
           .toList()));
 
   void onAddImageFromCameraPressed((int, XFile?) image) {
@@ -110,7 +124,9 @@ class RoomCubit extends Cubit<RoomState> {
             .map((e) => (
                   e.$1,
                   e.$1 == image.$1 ? e.$2.addImage(image, e.$2) : e.$2,
-                  e.$3
+                  e.$3,
+                  e.$4,
+                  e.$5
                 ))
             .toList()));
   }
@@ -120,7 +136,9 @@ class RoomCubit extends Cubit<RoomState> {
           .map((e) => (
                 e.$1,
                 e.$1 == image.$1 ? <XFile>[...e.$2, ...image.$2] : e.$2,
-                e.$3
+                e.$3,
+                e.$4,
+                e.$5
               ))
           .toList()));
 
@@ -129,6 +147,12 @@ class RoomCubit extends Cubit<RoomState> {
   ) =>
       emit(state.copyWith(
           issues: state.issues
-              .map((e) => (e.$1, e.$2..removeWhere((i) => i == image), e.$3))
+              .map((e) => (
+                    e.$1,
+                    e.$2..removeWhere((i) => i == image),
+                    e.$3,
+                    e.$4,
+                    e.$5
+                  ))
               .toList()));
 }

@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Room get room => throw _privateConstructorUsedError;
-  List<(int, List<XFile>, String)> get issues =>
+  List<(int, List<XFile>, String, DateTime, bool)> get issues =>
       throw _privateConstructorUsedError;
   List<String> get departments => throw _privateConstructorUsedError;
 
@@ -35,7 +35,7 @@ abstract class $RoomStateCopyWith<$Res> {
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String)> issues,
+      List<(int, List<XFile>, String, DateTime, bool)> issues,
       List<String> departments});
 
   $RoomCopyWith<$Res> get room;
@@ -71,7 +71,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
       issues: null == issues
           ? _value.issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String)>,
+              as List<(int, List<XFile>, String, DateTime, bool)>,
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -99,7 +99,7 @@ abstract class _$$RoomStateImplCopyWith<$Res>
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String)> issues,
+      List<(int, List<XFile>, String, DateTime, bool)> issues,
       List<String> departments});
 
   @override
@@ -134,7 +134,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
       issues: null == issues
           ? _value._issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String)>,
+              as List<(int, List<XFile>, String, DateTime, bool)>,
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -149,10 +149,12 @@ class _$RoomStateImpl extends _RoomState {
   const _$RoomStateImpl(
       {this.fetchStatus = FetchStatus.init,
       this.room = const Room(),
-      final List<(int, List<XFile>, String)> issues = const <(
+      final List<(int, List<XFile>, String, DateTime, bool)> issues = const <(
         int,
         List<XFile>,
-        String
+        String,
+        DateTime,
+        bool isMutable
       )>[],
       final List<String> departments = const <String>[]})
       : _issues = issues,
@@ -165,10 +167,10 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final Room room;
-  final List<(int, List<XFile>, String)> _issues;
+  final List<(int, List<XFile>, String, DateTime, bool)> _issues;
   @override
   @JsonKey()
-  List<(int, List<XFile>, String)> get issues {
+  List<(int, List<XFile>, String, DateTime, bool)> get issues {
     if (_issues is EqualUnmodifiableListView) return _issues;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_issues);
@@ -220,7 +222,7 @@ abstract class _RoomState extends RoomState {
   const factory _RoomState(
       {final FetchStatus fetchStatus,
       final Room room,
-      final List<(int, List<XFile>, String)> issues,
+      final List<(int, List<XFile>, String, DateTime, bool)> issues,
       final List<String> departments}) = _$RoomStateImpl;
   const _RoomState._() : super._();
 
@@ -229,7 +231,7 @@ abstract class _RoomState extends RoomState {
   @override
   Room get room;
   @override
-  List<(int, List<XFile>, String)> get issues;
+  List<(int, List<XFile>, String, DateTime, bool)> get issues;
   @override
   List<String> get departments;
   @override

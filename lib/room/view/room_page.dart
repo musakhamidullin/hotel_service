@@ -50,8 +50,7 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _roomCubit
-        ..fetchRoom(widget.room.id),
+      create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
@@ -163,13 +162,13 @@ class _RoomPageState extends State<RoomPage> {
                                       startActionPane: actionPane(issueIndex),
                                       endActionPane: actionPane(issueIndex),
                                       child: IssueCard(
-                                          index: issueIndex,
-                                          departments: state.departments,
-                                          onAttachedFielPressed: () =>
-                                              IssueModal.showBottomSheet(
-                                                  context,
-                                                  _roomCubit,
-                                                  issueIndex)));
+                                        index: issueIndex,
+                                        departments: state.departments,
+                                        onAttachedFielPressed: () =>
+                                            IssueModal.showBottomSheet(context,
+                                                _roomCubit, issueIndex),
+                                        dateTime: state.issues[issueIndex].$4,
+                                      ));
                                 })
                             : const SizedBox.shrink();
                       },
