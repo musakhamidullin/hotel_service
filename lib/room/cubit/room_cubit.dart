@@ -13,7 +13,7 @@ extension AddImage on List<XFile> {
       images..add(image.$2 ?? XFile(''));
 }
 
-extension DeleteImage on List<(int, List<XFile>, String)> {
+extension DeleteIssue on List<(int, List<XFile>, String)> {
   List<(int, List<XFile>, String)> deleteIssue(
       List<(int, List<XFile>, String)> issues, int i) {
     final mutabledIssues = [...issues]..removeWhere((e) => e.$1 == i);
@@ -94,8 +94,8 @@ class RoomCubit extends Cubit<RoomState> {
         ),
       ]));
 
-  void onDeleteIssuePressed(int i) =>
-      emit(state.copyWith(issues: state.issues.deleteIssue(state.issues, i)));
+  void onDeleteIssuePressed(int i) => emit(
+      state.copyWith(issues: [...state.issues.deleteIssue(state.issues, i)]));
 
   void onFlushPressed(int i) => emit(state.copyWith(
       issues: state.issues

@@ -19,14 +19,7 @@ class IssueTextField extends StatefulWidget {
 
 class _IssueTextFieldState extends State<IssueTextField> {
   final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller.text = widget.text;
-  }
-
+  
   @override
   void dispose() {
     super.dispose();
@@ -39,7 +32,8 @@ class _IssueTextFieldState extends State<IssueTextField> {
     return TextField(
       controller: _controller
         ..selection = TextSelection.fromPosition(
-            TextPosition(offset: _controller.text.length)),
+            TextPosition(offset: _controller.text.length))
+        ..text = widget.text,
       onChanged: (text) => widget.onTextChanged,
       decoration: InputDecoration(
           suffixIcon: GestureDetector(
