@@ -159,8 +159,13 @@ class _RoomPageState extends State<RoomPage> {
                                 shrinkWrap: true,
                                 itemBuilder: (_, issueIndex) {
                                   return Slidable(
-                                      startActionPane: actionPane(issueIndex),
-                                      endActionPane: actionPane(issueIndex),
+                                      startActionPane:
+                                          state.issues[issueIndex].$5
+                                              ? actionPane(issueIndex)
+                                              : null,
+                                      endActionPane: state.issues[issueIndex].$5
+                                          ? actionPane(issueIndex)
+                                          : null,
                                       child: IssueCard(
                                         index: issueIndex,
                                         departments: state.departments,
