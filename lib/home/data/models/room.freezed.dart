@@ -28,6 +28,14 @@ mixin _$Room {
   String get roomNumber => throw _privateConstructorUsedError;
   String get roomStatus => throw _privateConstructorUsedError;
   String get roomType => throw _privateConstructorUsedError;
+  int get roomId => throw _privateConstructorUsedError;
+  String get cleanStatusName => throw _privateConstructorUsedError;
+  String get cleaningTypeName => throw _privateConstructorUsedError;
+  @DateSerializer()
+  String get arrdate => throw _privateConstructorUsedError;
+  @DateSerializer()
+  String get depdate => throw _privateConstructorUsedError;
+  List<Defect> get defects => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +55,13 @@ abstract class $RoomCopyWith<$Res> {
       int roomStatusId,
       String roomNumber,
       String roomStatus,
-      String roomType});
+      String roomType,
+      int roomId,
+      String cleanStatusName,
+      String cleaningTypeName,
+      @DateSerializer() String arrdate,
+      @DateSerializer() String depdate,
+      List<Defect> defects});
 }
 
 /// @nodoc
@@ -71,6 +85,12 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
     Object? roomNumber = null,
     Object? roomStatus = null,
     Object? roomType = null,
+    Object? roomId = null,
+    Object? cleanStatusName = null,
+    Object? cleaningTypeName = null,
+    Object? arrdate = null,
+    Object? depdate = null,
+    Object? defects = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -105,6 +125,30 @@ class _$RoomCopyWithImpl<$Res, $Val extends Room>
           ? _value.roomType
           : roomType // ignore: cast_nullable_to_non_nullable
               as String,
+      roomId: null == roomId
+          ? _value.roomId
+          : roomId // ignore: cast_nullable_to_non_nullable
+              as int,
+      cleanStatusName: null == cleanStatusName
+          ? _value.cleanStatusName
+          : cleanStatusName // ignore: cast_nullable_to_non_nullable
+              as String,
+      cleaningTypeName: null == cleaningTypeName
+          ? _value.cleaningTypeName
+          : cleaningTypeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      arrdate: null == arrdate
+          ? _value.arrdate
+          : arrdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      depdate: null == depdate
+          ? _value.depdate
+          : depdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      defects: null == defects
+          ? _value.defects
+          : defects // ignore: cast_nullable_to_non_nullable
+              as List<Defect>,
     ) as $Val);
   }
 }
@@ -124,7 +168,13 @@ abstract class _$$RoomImplCopyWith<$Res> implements $RoomCopyWith<$Res> {
       int roomStatusId,
       String roomNumber,
       String roomStatus,
-      String roomType});
+      String roomType,
+      int roomId,
+      String cleanStatusName,
+      String cleaningTypeName,
+      @DateSerializer() String arrdate,
+      @DateSerializer() String depdate,
+      List<Defect> defects});
 }
 
 /// @nodoc
@@ -145,6 +195,12 @@ class __$$RoomImplCopyWithImpl<$Res>
     Object? roomNumber = null,
     Object? roomStatus = null,
     Object? roomType = null,
+    Object? roomId = null,
+    Object? cleanStatusName = null,
+    Object? cleaningTypeName = null,
+    Object? arrdate = null,
+    Object? depdate = null,
+    Object? defects = null,
   }) {
     return _then(_$RoomImpl(
       id: null == id
@@ -179,6 +235,30 @@ class __$$RoomImplCopyWithImpl<$Res>
           ? _value.roomType
           : roomType // ignore: cast_nullable_to_non_nullable
               as String,
+      roomId: null == roomId
+          ? _value.roomId
+          : roomId // ignore: cast_nullable_to_non_nullable
+              as int,
+      cleanStatusName: null == cleanStatusName
+          ? _value.cleanStatusName
+          : cleanStatusName // ignore: cast_nullable_to_non_nullable
+              as String,
+      cleaningTypeName: null == cleaningTypeName
+          ? _value.cleaningTypeName
+          : cleaningTypeName // ignore: cast_nullable_to_non_nullable
+              as String,
+      arrdate: null == arrdate
+          ? _value.arrdate
+          : arrdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      depdate: null == depdate
+          ? _value.depdate
+          : depdate // ignore: cast_nullable_to_non_nullable
+              as String,
+      defects: null == defects
+          ? _value._defects
+          : defects // ignore: cast_nullable_to_non_nullable
+              as List<Defect>,
     ));
   }
 }
@@ -188,38 +268,78 @@ class __$$RoomImplCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.pascal)
 class _$RoomImpl implements _Room {
   const _$RoomImpl(
-      {required this.id,
-      required this.floor,
-      required this.cleanStatusId,
-      required this.cleaningType,
-      required this.roomStatusId,
-      required this.roomNumber,
-      required this.roomStatus,
-      required this.roomType});
+      {this.id = 0,
+      this.floor = 0,
+      this.cleanStatusId = 0,
+      this.cleaningType = 0,
+      this.roomStatusId = 0,
+      this.roomNumber = '',
+      this.roomStatus = '',
+      this.roomType = '',
+      this.roomId = 0,
+      this.cleanStatusName = '',
+      this.cleaningTypeName = '',
+      @DateSerializer() this.arrdate = '',
+      @DateSerializer() this.depdate = '',
+      final List<Defect> defects = const []})
+      : _defects = defects;
 
   factory _$RoomImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoomImplFromJson(json);
 
   @override
+  @JsonKey()
   final int id;
   @override
+  @JsonKey()
   final int floor;
   @override
+  @JsonKey()
   final int cleanStatusId;
   @override
+  @JsonKey()
   final int cleaningType;
   @override
+  @JsonKey()
   final int roomStatusId;
   @override
+  @JsonKey()
   final String roomNumber;
   @override
+  @JsonKey()
   final String roomStatus;
   @override
+  @JsonKey()
   final String roomType;
+  @override
+  @JsonKey()
+  final int roomId;
+  @override
+  @JsonKey()
+  final String cleanStatusName;
+  @override
+  @JsonKey()
+  final String cleaningTypeName;
+  @override
+  @JsonKey()
+  @DateSerializer()
+  final String arrdate;
+  @override
+  @JsonKey()
+  @DateSerializer()
+  final String depdate;
+  final List<Defect> _defects;
+  @override
+  @JsonKey()
+  List<Defect> get defects {
+    if (_defects is EqualUnmodifiableListView) return _defects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_defects);
+  }
 
   @override
   String toString() {
-    return 'Room(id: $id, floor: $floor, cleanStatusId: $cleanStatusId, cleaningType: $cleaningType, roomStatusId: $roomStatusId, roomNumber: $roomNumber, roomStatus: $roomStatus, roomType: $roomType)';
+    return 'Room(id: $id, floor: $floor, cleanStatusId: $cleanStatusId, cleaningType: $cleaningType, roomStatusId: $roomStatusId, roomNumber: $roomNumber, roomStatus: $roomStatus, roomType: $roomType, roomId: $roomId, cleanStatusName: $cleanStatusName, cleaningTypeName: $cleaningTypeName, arrdate: $arrdate, depdate: $depdate, defects: $defects)';
   }
 
   @override
@@ -240,13 +360,35 @@ class _$RoomImpl implements _Room {
             (identical(other.roomStatus, roomStatus) ||
                 other.roomStatus == roomStatus) &&
             (identical(other.roomType, roomType) ||
-                other.roomType == roomType));
+                other.roomType == roomType) &&
+            (identical(other.roomId, roomId) || other.roomId == roomId) &&
+            (identical(other.cleanStatusName, cleanStatusName) ||
+                other.cleanStatusName == cleanStatusName) &&
+            (identical(other.cleaningTypeName, cleaningTypeName) ||
+                other.cleaningTypeName == cleaningTypeName) &&
+            (identical(other.arrdate, arrdate) || other.arrdate == arrdate) &&
+            (identical(other.depdate, depdate) || other.depdate == depdate) &&
+            const DeepCollectionEquality().equals(other._defects, _defects));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, floor, cleanStatusId,
-      cleaningType, roomStatusId, roomNumber, roomStatus, roomType);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      floor,
+      cleanStatusId,
+      cleaningType,
+      roomStatusId,
+      roomNumber,
+      roomStatus,
+      roomType,
+      roomId,
+      cleanStatusName,
+      cleaningTypeName,
+      arrdate,
+      depdate,
+      const DeepCollectionEquality().hash(_defects));
 
   @JsonKey(ignore: true)
   @override
@@ -264,14 +406,20 @@ class _$RoomImpl implements _Room {
 
 abstract class _Room implements Room {
   const factory _Room(
-      {required final int id,
-      required final int floor,
-      required final int cleanStatusId,
-      required final int cleaningType,
-      required final int roomStatusId,
-      required final String roomNumber,
-      required final String roomStatus,
-      required final String roomType}) = _$RoomImpl;
+      {final int id,
+      final int floor,
+      final int cleanStatusId,
+      final int cleaningType,
+      final int roomStatusId,
+      final String roomNumber,
+      final String roomStatus,
+      final String roomType,
+      final int roomId,
+      final String cleanStatusName,
+      final String cleaningTypeName,
+      @DateSerializer() final String arrdate,
+      @DateSerializer() final String depdate,
+      final List<Defect> defects}) = _$RoomImpl;
 
   factory _Room.fromJson(Map<String, dynamic> json) = _$RoomImpl.fromJson;
 
@@ -291,6 +439,20 @@ abstract class _Room implements Room {
   String get roomStatus;
   @override
   String get roomType;
+  @override
+  int get roomId;
+  @override
+  String get cleanStatusName;
+  @override
+  String get cleaningTypeName;
+  @override
+  @DateSerializer()
+  String get arrdate;
+  @override
+  @DateSerializer()
+  String get depdate;
+  @override
+  List<Defect> get defects;
   @override
   @JsonKey(ignore: true)
   _$$RoomImplCopyWith<_$RoomImpl> get copyWith =>

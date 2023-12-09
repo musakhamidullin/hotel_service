@@ -2,9 +2,11 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 import '../../home/data/models/room.dart';
 import '../cubit/room_cubit.dart';
+import '../data/repositories/room_rep.dart';
 import 'widget/issue_card.dart';
 import 'widget/issue_modal.dart';
 
@@ -25,7 +27,7 @@ typedef RoomBuilder = BlocBuilder<RoomCubit, RoomState>;
 typedef RoomListener = BlocListener<RoomCubit, RoomState>;
 
 class _RoomPageState extends State<RoomPage> {
-  final _roomCubit = RoomCubit();
+  final _roomCubit = RoomCubit(roomRep: RoomRep());
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -64,76 +66,127 @@ class _RoomPageState extends State<RoomPage> {
         appBar: AppBar(
           title: Text('Номер ${widget.room.roomNumber}'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: ListView(
-            controller: _scrollController,
-            children: [
-              const SizedBox(
-                height: 16,
-              ),
-              const Text('Заезд:  10.11.2023 в 15:00'),
-              const SizedBox(
-                height: 8,
-              ),
-              const Text('Выезд:  20.11.2023 в 12:00'),
-              const SizedBox(
-                height: 8,
-              ),
-              const Divider(),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.star),
-                title: Text('VIP'),
-              ),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.warning_rounded),
-                title: Text('Статус - Грязная'),
-              ),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.cleaning_services_rounded),
-                title: Text('Влажная уборка'),
-              ),
-              const ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(Icons.message_rounded),
-                title: Text('Охладить комнату до +17 градусов'),
-              ),
-              const Divider(),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: IconButton(
-                    onPressed: () => _roomCubit.onAddIssuePressed(),
-                    icon: const Icon(Icons.add_circle_outline_rounded)),
-                title: const Text('Добавить проблему в номере'),
-              ),
-              RoomBuilder(
-                builder: (context, state) {
-                  return state.issues.isNotEmpty
-                      ? ListView.builder(
-                          physics: const ScrollPhysics(),
-                          controller: _scrollController,
-                          padding: const EdgeInsets.only(bottom: 100),
-                          itemCount: state.issues.length,
-                          shrinkWrap: true,
-                          itemBuilder: (_, issueIndex) {
-                            return Slidable(
-                                startActionPane: actionPane(issueIndex),
-                                endActionPane: actionPane(issueIndex),
-                                child: IssueCard(
-                                    index: issueIndex,
-                                    departments: state.departments,
-                                    onAttachedFielPressed: () =>
-                                        IssueModal.showBottomSheet(
-                                            context, _roomCubit, issueIndex)));
-                          })
-                      : const SizedBox.shrink();
-                },
-              ),
-            ],
-          ),
+        body: RoomBuilder(
+          buildWhen: (pState, cState) =>
+              pState.fetchStatus != cState.fetchStatus,
+          builder: (context, state) {
+            if (state.fetchStatus == FetchStatus.success) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListView(
+                  controller: _scrollController,
+                  children: [
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    RoomBuilder(
+                      buildWhen: (pState, cState) =>
+                          pState.room.arrdate != cState.room.arrdate,
+                      builder: (context, state) {
+                        return Text(
+                            'Заезд: ${DateFormat('dd.MM.yyyy - HH:mm').format(DateTime.parse(state.room.arrdate))}');
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    RoomBuilder(
+                      buildWhen: (pState, cState) =>
+                          pState.room.depdate != cState.room.depdate,
+                      builder: (context, state) {
+                        return Text(
+                            'Выезд: ${DateFormat('dd.MM.yyyy - HH:mm').format(DateTime.parse(state.room.depdate))}');
+                      },
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Divider(),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.star),
+                      title: RoomBuilder(
+                        buildWhen: (pState, cState) =>
+                            pState.room.roomType != cState.room.roomType,
+                        builder: (context, state) {
+                          return Text(state.room.roomType);
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.warning_rounded),
+                      title: RoomBuilder(
+                        buildWhen: (pState, cState) =>
+                            pState.room.cleanStatusName !=
+                            cState.room.cleanStatusName,
+                        builder: (context, state) {
+                          return Text(state.room.cleanStatusName);
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.cleaning_services_rounded),
+                      title: RoomBuilder(
+                        buildWhen: (pState, cState) =>
+                            pState.room.cleaningTypeName !=
+                            cState.room.cleaningTypeName,
+                        builder: (context, state) {
+                          return Text(state.room.cleaningTypeName);
+                        },
+                      ),
+                    ),
+                    // const ListTile(
+                    //   contentPadding: EdgeInsets.zero,
+                    //   leading: Icon(Icons.message_rounded),
+                    //   title: Text('Охладить комнату до +17 градусов'),
+                    // ),
+                    const Divider(),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: IconButton(
+                          onPressed: () => _roomCubit.onAddIssuePressed(),
+                          icon: const Icon(Icons.add_circle_outline_rounded)),
+                      title: const Text('Добавить проблему в номере'),
+                    ),
+                    RoomBuilder(
+                      builder: (context, state) {
+                        return state.issues.isNotEmpty
+                            ? ListView.builder(
+                                physics: const ScrollPhysics(),
+                                controller: _scrollController,
+                                padding: const EdgeInsets.only(bottom: 100),
+                                itemCount: state.issues.length,
+                                shrinkWrap: true,
+                                itemBuilder: (_, issueIndex) {
+                                  return Slidable(
+                                      startActionPane: actionPane(issueIndex),
+                                      endActionPane: actionPane(issueIndex),
+                                      child: IssueCard(
+                                          index: issueIndex,
+                                          departments: state.departments,
+                                          onAttachedFielPressed: () =>
+                                              IssueModal.showBottomSheet(
+                                                  context,
+                                                  _roomCubit,
+                                                  issueIndex)));
+                                })
+                            : const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+            if (state.fetchStatus == FetchStatus.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

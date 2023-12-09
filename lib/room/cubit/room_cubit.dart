@@ -2,6 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../home/data/models/room.dart';
+import '../data/repositories/room_rep.dart';
+
 part 'room_state.dart';
 part 'room_cubit.freezed.dart';
 
@@ -26,13 +29,28 @@ extension DeleteImage on List<(int, List<XFile>, String)> {
 }
 
 class RoomCubit extends Cubit<RoomState> {
-  RoomCubit() : super(const RoomState());
+  RoomCubit({required RoomRep roomRep})
+      : _roomRep = roomRep,
+        super(const RoomState());
+
+  final RoomRep _roomRep;
 
   Future<void> fetchRoom(int id) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(fetchStatus: FetchStatus.success));
+
+      final room = await _roomRep.fetchRoom(id);
+
+      int index = 0;
+
+      final defects =
+          room.defects.map((d) => (index++, <XFile>[], d.text)).toList();
+
+      emit(state.copyWith(
+        fetchStatus: FetchStatus.success,
+        issues: defects,
+        room: room,
+      ));
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
