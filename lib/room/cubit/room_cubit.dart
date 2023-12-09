@@ -51,6 +51,8 @@ class RoomCubit extends Cubit<RoomState> {
         issues: defects,
         room: room,
       ));
+
+      await fetchDepartment();
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
@@ -71,15 +73,15 @@ class RoomCubit extends Cubit<RoomState> {
     }
   }
 
-  void onClearCommentPressed(int i) => emit(state.copyWith(
-      issues: state.issues
-          .map((e) => (e.$1, e.$2, e.$1 == i ? '' : e.$3))
-          .toList()));
+  void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
+        ...state.issues.map((e) => (e.$1, e.$2, e.$1 == i ? '' : e.$3)).toList()
+      ]));
 
-  void onCommentChanged(int i, String text) => emit(state.copyWith(
-      issues: state.issues
-          .map((e) => (e.$1, e.$2, e.$1 == i ? text : e.$3))
-          .toList()));
+  void onCommentChanged(int i, String text) => emit(state.copyWith(issues: [
+        ...state.issues
+            .map((e) => (e.$1, e.$2, e.$1 == i ? text : e.$3))
+            .toList()
+      ]));
 
   void onAddIssuePressed() => emit(state.copyWith(issues: [
         ...state.issues,

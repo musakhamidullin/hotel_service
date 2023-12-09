@@ -20,7 +20,6 @@ class IssueCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
@@ -56,20 +55,18 @@ class IssueCard extends StatelessWidget {
             height: 16,
           ),
           FittedBox(
-            child: Flexible(
-              child: DropdownMenu<String>(
-                  hintText: 'Выберите отдел',
-                  inputDecorationTheme: InputDecorationTheme(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  menuStyle: MenuStyle(
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+            child: DropdownMenu<String>(
+                hintText: 'Выберите отдел',
+                inputDecorationTheme: InputDecorationTheme(
+                    border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10))),
-                  ),
-                  dropdownMenuEntries: departments
-                      .map((e) => DropdownMenuEntry(value: e, label: e))
-                      .toList()),
-            ),
+                menuStyle: MenuStyle(
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+                ),
+                dropdownMenuEntries: departments
+                    .map((e) => DropdownMenuEntry(value: e, label: e))
+                    .toList()),
           )
         ],
       ),

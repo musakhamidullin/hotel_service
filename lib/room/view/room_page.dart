@@ -51,8 +51,7 @@ class _RoomPageState extends State<RoomPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => _roomCubit
-        ..fetchRoom(widget.room.id)
-        ..fetchDepartment(),
+        ..fetchRoom(widget.room.id),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
