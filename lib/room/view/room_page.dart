@@ -172,13 +172,13 @@ class _RoomPageState extends State<RoomPage> {
                                       startActionPane: actionPane(issueIndex),
                                       endActionPane: actionPane(issueIndex),
                                       child: IssueCard(
-                                          index: issueIndex,
-                                          departments: state.departments,
-                                          onAttachedFielPressed: () =>
-                                              IssueModal.showBottomSheet(
-                                                  context,
-                                                  _roomCubit,
-                                                  issueIndex)));
+                                        index: issueIndex,
+                                        departments: state.departments,
+                                        onAttachedFielPressed: () =>
+                                            IssueModal.showBottomSheet(context,
+                                                _roomCubit, issueIndex),
+                                        dateTime: state.issues[issueIndex].$4,
+                                      ));
                                 })
                             : const SizedBox.shrink();
                       },
