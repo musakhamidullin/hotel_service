@@ -59,18 +59,12 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> fetchDepartment() async {
-    try {
-      emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(fetchStatus: FetchStatus.success, departments: [
-        'Не выбрано',
-        'Инженерно-техническая служба',
-        'Служба энергетиков',
-        'Вспомогательная хозяйственная служба'
-      ]));
-    } catch (_) {
-      emit(state.copyWith(fetchStatus: FetchStatus.failure));
-    }
+    emit(state.copyWith(fetchStatus: FetchStatus.success, departments: [
+      'Не выбрано',
+      'Инженерно-техническая служба',
+      'Служба энергетиков',
+      'Вспомогательная хозяйственная служба'
+    ]));
   }
 
   void onClearCommentPressed(int i) => emit(state.copyWith(issues: [

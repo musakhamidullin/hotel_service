@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
+import '../../common/widgets/failure_widget.dart';
 import '../../home/data/models/room.dart';
 import '../cubit/room_cubit.dart';
 import '../data/repositories/room_rep.dart';
@@ -50,16 +51,24 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _roomCubit
-        ..fetchRoom(widget.room.id),
+      create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Container(
-          padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
-          height: 70,
-          width: double.infinity,
-          child:
-              ElevatedButton(onPressed: () {}, child: const Text('Завершить')),
+        floatingActionButton: RoomBuilder(
+          builder: (context, state) {
+            if (state.fetchStatus == FetchStatus.failure ||
+                state.fetchStatus == FetchStatus.loading ||
+                state.fetchStatus == FetchStatus.init) {
+              return const SizedBox.shrink();
+            }
+            return Container(
+              padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
+              height: 70,
+              width: double.infinity,
+              child: ElevatedButton(
+                  onPressed: () {}, child: const Text('Завершить')),
+            );
+          },
         ),
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -181,6 +190,12 @@ class _RoomPageState extends State<RoomPage> {
             if (state.fetchStatus == FetchStatus.loading) {
               return const Center(
                 child: CircularProgressIndicator(),
+              );
+            }
+
+            if (state.fetchStatus == FetchStatus.failure) {
+              return FailureWidget(
+                onPressed: () => _roomCubit.fetchRoom(widget.room.id),
               );
             }
 
