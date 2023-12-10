@@ -57,10 +57,8 @@ class RoomCubit extends Cubit<RoomState> {
 
       final room = await _roomRep.fetchRoom(id);
 
-      int index = 0;
-
       final defects = room.defects
-          .map((d) => (index++, <XFile>[], d.text, d.createDate, false))
+          .mapIndexed((d, i) => (i++, <XFile>[], d.text, d.createDate, false))
           .toList();
 
       emit(state.copyWith(
