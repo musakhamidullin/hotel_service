@@ -37,6 +37,13 @@ extension DeleteIssue
   }
 }
 
+extension IndexedIterable<E> on Iterable<E> {
+  Iterable<T> mapIndexed<T>(T Function(E e, int i) f) {
+    var i = 0;
+    return map((e) => f(e, i++));
+  }
+}
+
 class RoomCubit extends Cubit<RoomState> {
   RoomCubit({required RoomRep roomRep})
       : _roomRep = roomRep,
@@ -69,18 +76,12 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> fetchDepartment() async {
-    try {
-      emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      await Future.delayed(const Duration(seconds: 1));
-      emit(state.copyWith(fetchStatus: FetchStatus.success, departments: [
-        'Не выбрано',
-        'Инженерно-техническая служба',
-        'Служба энергетиков',
-        'Вспомогательная хозяйственная служба'
-      ]));
-    } catch (_) {
-      emit(state.copyWith(fetchStatus: FetchStatus.failure));
-    }
+    emit(state.copyWith(fetchStatus: FetchStatus.success, departments: [
+      'Не выбрано',
+      'Инженерно-техническая служба',
+      'Служба энергетиков',
+      'Вспомогательная хозяйственная служба'
+    ]));
   }
 
   void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
