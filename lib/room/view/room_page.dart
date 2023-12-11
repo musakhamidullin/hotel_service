@@ -53,7 +53,9 @@ class _RoomPageState extends State<RoomPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _roomCubit..fetchRoom(widget.room.id, widget.ownerId),
+      create: (_) => _roomCubit
+        ..fetchRoom(widget.room.id)
+        ..onOwnerIdChanged(widget.ownerId),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: RoomBuilder(
@@ -202,8 +204,7 @@ class _RoomPageState extends State<RoomPage> {
 
             if (state.fetchStatus == FetchStatus.failure) {
               return FailureWidget(
-                onPressed: () =>
-                    _roomCubit.fetchRoom(widget.room.id, widget.ownerId),
+                onPressed: () => _roomCubit.fetchRoom(widget.room.id),
               );
             }
 

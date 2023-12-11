@@ -10,6 +10,7 @@ class RoomState with _$RoomState {
     @Default(<(int, List<XFile>, String, DateTime, bool isMutable)>[])
     List<(int, List<XFile>, String, DateTime, bool isMutable)> issues,
     @Default(<Department>[]) List<Department> departments,
+    @Default(0) int ownerId,
   }) = _RoomState;
 
   const RoomState._();

@@ -21,6 +21,7 @@ mixin _$RoomState {
   List<(int, List<XFile>, String, DateTime, bool)> get issues =>
       throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
+  int get ownerId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateCopyWith<RoomState> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $RoomStateCopyWith<$Res> {
       {FetchStatus fetchStatus,
       Room room,
       List<(int, List<XFile>, String, DateTime, bool)> issues,
-      List<Department> departments});
+      List<Department> departments,
+      int ownerId});
 
   $RoomCopyWith<$Res> get room;
 }
@@ -58,6 +60,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
     Object? room = null,
     Object? issues = null,
     Object? departments = null,
+    Object? ownerId = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
@@ -76,6 +79,10 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
               as List<Department>,
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -100,7 +107,8 @@ abstract class _$$RoomStateImplCopyWith<$Res>
       {FetchStatus fetchStatus,
       Room room,
       List<(int, List<XFile>, String, DateTime, bool)> issues,
-      List<Department> departments});
+      List<Department> departments,
+      int ownerId});
 
   @override
   $RoomCopyWith<$Res> get room;
@@ -121,6 +129,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
     Object? room = null,
     Object? issues = null,
     Object? departments = null,
+    Object? ownerId = null,
   }) {
     return _then(_$RoomStateImpl(
       fetchStatus: null == fetchStatus
@@ -139,6 +148,10 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
               as List<Department>,
+      ownerId: null == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -156,7 +169,8 @@ class _$RoomStateImpl extends _RoomState {
         DateTime,
         bool isMutable
       )>[],
-      final List<Department> departments = const <Department>[]})
+      final List<Department> departments = const <Department>[],
+      this.ownerId = 0})
       : _issues = issues,
         _departments = departments,
         super._();
@@ -186,8 +200,12 @@ class _$RoomStateImpl extends _RoomState {
   }
 
   @override
+  @JsonKey()
+  final int ownerId;
+
+  @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus, room: $room, issues: $issues, departments: $departments)';
+    return 'RoomState(fetchStatus: $fetchStatus, room: $room, issues: $issues, departments: $departments, ownerId: $ownerId)';
   }
 
   @override
@@ -200,7 +218,8 @@ class _$RoomStateImpl extends _RoomState {
             (identical(other.room, room) || other.room == room) &&
             const DeepCollectionEquality().equals(other._issues, _issues) &&
             const DeepCollectionEquality()
-                .equals(other._departments, _departments));
+                .equals(other._departments, _departments) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId));
   }
 
   @override
@@ -209,7 +228,8 @@ class _$RoomStateImpl extends _RoomState {
       fetchStatus,
       room,
       const DeepCollectionEquality().hash(_issues),
-      const DeepCollectionEquality().hash(_departments));
+      const DeepCollectionEquality().hash(_departments),
+      ownerId);
 
   @JsonKey(ignore: true)
   @override
@@ -223,7 +243,8 @@ abstract class _RoomState extends RoomState {
       {final FetchStatus fetchStatus,
       final Room room,
       final List<(int, List<XFile>, String, DateTime, bool)> issues,
-      final List<Department> departments}) = _$RoomStateImpl;
+      final List<Department> departments,
+      final int ownerId}) = _$RoomStateImpl;
   const _RoomState._() : super._();
 
   @override
@@ -234,6 +255,8 @@ abstract class _RoomState extends RoomState {
   List<(int, List<XFile>, String, DateTime, bool)> get issues;
   @override
   List<Department> get departments;
+  @override
+  int get ownerId;
   @override
   @JsonKey(ignore: true)
   _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>

@@ -52,7 +52,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   final RoomRep _roomRep;
 
-  Future<void> fetchRoom(int id, int ownerId) async {
+  Future<void> fetchRoom(int id) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
@@ -68,13 +68,15 @@ class RoomCubit extends Cubit<RoomState> {
         room: room,
       ));
 
-      await fetchDepartment(ownerId);
+      await fetchDepartment();
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
-  Future<void> fetchDepartment(int ownerId) async {
+  Future<void> fetchDepartment() async {
+    final ownerId = state.ownerId;
+
     final departments = await _roomRep.fetchDepartment(ownerId);
 
     emit(state.copyWith(departments: [
@@ -155,4 +157,8 @@ class RoomCubit extends Cubit<RoomState> {
                     e.$5
                   ))
               .toList()));
+
+  void onOwnerIdChanged(int ownerId) => emit(state.copyWith(ownerId: ownerId));
+
+  void onCompletePressed() {}
 }
