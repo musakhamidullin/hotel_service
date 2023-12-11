@@ -77,7 +77,10 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> fetchDepartment(int ownerId) async {
     final departments = await _roomRep.fetchDepartment(ownerId);
 
-    emit(state.copyWith(departments: departments));
+    emit(state.copyWith(departments: [
+      const Department(fullName: 'Не выбрано'),
+      ...departments
+    ]));
   }
 
   void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
