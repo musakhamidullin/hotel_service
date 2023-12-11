@@ -11,6 +11,7 @@
 import 'package:auto_route/auto_route.dart' as _i8;
 import 'package:flutter/material.dart' as _i9;
 import 'package:hotel_service/app/router/router.dart' as _i3;
+import 'package:hotel_service/auth/data/model/user.dart' as _i11;
 import 'package:hotel_service/auth/view/login_page.dart' as _i4;
 import 'package:hotel_service/auto_tabs/view/auto_tabs_page.dart' as _i1;
 import 'package:hotel_service/home/data/models/room.dart' as _i10;
@@ -67,7 +68,7 @@ abstract class $AppRouter extends _i8.RootStackRouter {
         child: _i6.RoomPage(
           key: args.key,
           room: args.room,
-          ownerId: args.ownerId,
+          user: args.user,
         ),
       );
     },
@@ -176,14 +177,14 @@ class RoomRoute extends _i8.PageRouteInfo<RoomRouteArgs> {
   RoomRoute({
     _i9.Key? key,
     required _i10.Room room,
-    required int ownerId,
+    required _i11.User user,
     List<_i8.PageRouteInfo>? children,
   }) : super(
           RoomRoute.name,
           args: RoomRouteArgs(
             key: key,
             room: room,
-            ownerId: ownerId,
+            user: user,
           ),
           initialChildren: children,
         );
@@ -198,18 +199,18 @@ class RoomRouteArgs {
   const RoomRouteArgs({
     this.key,
     required this.room,
-    required this.ownerId,
+    required this.user,
   });
 
   final _i9.Key? key;
 
   final _i10.Room room;
 
-  final int ownerId;
+  final _i11.User user;
 
   @override
   String toString() {
-    return 'RoomRouteArgs{key: $key, room: $room, ownerId: $ownerId}';
+    return 'RoomRouteArgs{key: $key, room: $room, user: $user}';
   }
 }
 

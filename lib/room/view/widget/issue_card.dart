@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../cubit/room_cubit.dart';
-import '../../data/models/department.dart';
+import '../../data/models/department_info.dart';
 import '../room_page.dart';
 import 'issue_field.dart';
 

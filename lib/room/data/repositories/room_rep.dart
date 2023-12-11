@@ -1,6 +1,6 @@
 import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
-import '../models/department.dart';
+import '../models/department_info.dart';
 
 final class RoomRep {
   Future<Room> fetchRoom(int roomId) async {
@@ -16,7 +16,9 @@ final class RoomRep {
         .post(path: 'HouseKeeping/DepartmentListGet?ownerid=$ownerId');
     if (result.data.isEmpty) throw Exception();
 
-    final deparments = (result.data as List<dynamic>).map((e) => Department.fromJson(e)).toList();
+    final deparments = (result.data as List<dynamic>)
+        .map((e) => Department.fromJson(e))
+        .toList();
 
     return deparments;
   }

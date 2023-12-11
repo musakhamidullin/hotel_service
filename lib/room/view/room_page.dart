@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
+import '../../auth/data/model/user.dart';
 import '../../common/widgets/failure_widget.dart';
 import '../../home/data/models/room.dart';
 import '../cubit/room_cubit.dart';
@@ -16,11 +17,11 @@ class RoomPage extends StatefulWidget {
   const RoomPage({
     super.key,
     required this.room,
-    required this.ownerId,
+    required this.user,
   });
 
   final Room room;
-  final int ownerId;
+  final User user;
 
   @override
   State<RoomPage> createState() => _RoomPageState();
@@ -55,7 +56,7 @@ class _RoomPageState extends State<RoomPage> {
     return BlocProvider(
       create: (_) => _roomCubit
         ..fetchRoom(widget.room.id)
-        ..onOwnerIdChanged(widget.ownerId),
+        ..onOwnerIdChanged(widget.user),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: RoomBuilder(

@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
-import '../data/models/department.dart';
+
+import '../data/models/department_info.dart';
 import '../data/repositories/room_rep.dart';
 
 part 'room_state.dart';
@@ -75,7 +77,7 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> fetchDepartment() async {
-    final ownerId = state.ownerId;
+    final ownerId = state.user.personInfo.ownerId;
 
     final departments = await _roomRep.fetchDepartment(ownerId);
 
@@ -158,7 +160,7 @@ class RoomCubit extends Cubit<RoomState> {
                   ))
               .toList()));
 
-  void onOwnerIdChanged(int ownerId) => emit(state.copyWith(ownerId: ownerId));
+  void onOwnerIdChanged(User user) => emit(state.copyWith(user: user));
 
   void onCompletePressed() {}
 }

@@ -147,12 +147,7 @@ class _FloorItemState extends State<_FloorItem> {
                     ),
                     onTap: () {
                       context.router.push(RoomRoute(
-                          room: e,
-                          ownerId: context
-                              .read<HomeCubit>()
-                              .user
-                              .personInfo
-                              .ownerId));
+                          room: e, user: context.read<HomeCubit>().user));
                     },
                     child: Container(
                       height: 60,
