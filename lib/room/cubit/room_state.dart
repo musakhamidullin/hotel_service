@@ -7,8 +7,10 @@ class RoomState with _$RoomState {
   const factory RoomState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(Room()) Room room,
-    @Default(<(int, List<XFile>, String, DateTime, bool isMutable)>[])
-    List<(int, List<XFile>, String, DateTime, bool isMutable)> issues,
+    @Default(
+        <(int, List<XFile>, String, DateTime, bool isMutable, Department)>[])
+    List<(int, List<XFile>, String, DateTime, bool isMutable, Department)>
+        issues,
     @Default(<Department>[]) List<Department> departments,
     @Default(User(userId: '', personInfo: Person(id: 0))) User user,
   }) = _RoomState;

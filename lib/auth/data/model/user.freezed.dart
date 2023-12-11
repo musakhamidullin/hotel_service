@@ -219,7 +219,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Person {
-  int get id => throw _privateConstructorUsedError; //todo should remove 1366
+  int get id => throw _privateConstructorUsedError; //TODO should remove 1366
   int get ownerId => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get patronymic => throw _privateConstructorUsedError;
@@ -417,7 +417,7 @@ class _$PersonImpl implements _Person {
 
   @override
   final int id;
-//todo should remove 1366
+//TODO should remove 1366
   @override
   @JsonKey()
   final int ownerId;
@@ -503,7 +503,7 @@ abstract class _Person implements Person {
 
   @override
   int get id;
-  @override //todo should remove 1366
+  @override //TODO should remove 1366
   int get ownerId;
   @override
   String get firstName;

@@ -23,7 +23,7 @@ class User with _$User {
 class Person with _$Person {
   const factory Person({
     required int id,
-    //todo should remove 1366
+    //TODO should remove 1366
     @Default(1366) int ownerId,
     @Default('') String firstName,
     @Default('') String patronymic,

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
 import '../models/department_info.dart';
+import '../models/issue_report.dart';
 
 final class RoomRep {
   Future<Room> fetchRoom(int roomId) async {
@@ -21,5 +24,16 @@ final class RoomRep {
         .toList();
 
     return deparments;
+  }
+
+  Future<void> sendReports(IssueReport report) async {
+
+    log(report.problemMedia.first.mediaBase64);
+
+    final reportToJson = report.toJson();
+
+    final result = await DioClient()
+        .post(path: 'HouseKeeping/ReportCleaningProblem', data: reportToJson);
+    // if (result =) throw Exception();
   }
 }

@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Room get room => throw _privateConstructorUsedError;
-  List<(int, List<XFile>, String, DateTime, bool)> get issues =>
+  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues =>
       throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ abstract class $RoomStateCopyWith<$Res> {
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String, DateTime, bool)> issues,
+      List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
       List<Department> departments,
       User user});
 
@@ -75,7 +75,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
       issues: null == issues
           ? _value.issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String, DateTime, bool)>,
+              as List<(int, List<XFile>, String, DateTime, bool, Department)>,
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -115,7 +115,7 @@ abstract class _$$RoomStateImplCopyWith<$Res>
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String, DateTime, bool)> issues,
+      List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
       List<Department> departments,
       User user});
 
@@ -154,7 +154,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
       issues: null == issues
           ? _value._issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String, DateTime, bool)>,
+              as List<(int, List<XFile>, String, DateTime, bool, Department)>,
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -173,12 +173,14 @@ class _$RoomStateImpl extends _RoomState {
   const _$RoomStateImpl(
       {this.fetchStatus = FetchStatus.init,
       this.room = const Room(),
-      final List<(int, List<XFile>, String, DateTime, bool)> issues = const <(
+      final List<(int, List<XFile>, String, DateTime, bool, Department)>
+          issues = const <(
         int,
         List<XFile>,
         String,
         DateTime,
-        bool isMutable
+        bool isMutable,
+        Department
       )>[],
       final List<Department> departments = const <Department>[],
       this.user = const User(userId: '', personInfo: Person(id: 0))})
@@ -192,10 +194,10 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final Room room;
-  final List<(int, List<XFile>, String, DateTime, bool)> _issues;
+  final List<(int, List<XFile>, String, DateTime, bool, Department)> _issues;
   @override
   @JsonKey()
-  List<(int, List<XFile>, String, DateTime, bool)> get issues {
+  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues {
     if (_issues is EqualUnmodifiableListView) return _issues;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_issues);
@@ -253,7 +255,7 @@ abstract class _RoomState extends RoomState {
   const factory _RoomState(
       {final FetchStatus fetchStatus,
       final Room room,
-      final List<(int, List<XFile>, String, DateTime, bool)> issues,
+      final List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
       final List<Department> departments,
       final User user}) = _$RoomStateImpl;
   const _RoomState._() : super._();
@@ -263,7 +265,7 @@ abstract class _RoomState extends RoomState {
   @override
   Room get room;
   @override
-  List<(int, List<XFile>, String, DateTime, bool)> get issues;
+  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues;
   @override
   List<Department> get departments;
   @override

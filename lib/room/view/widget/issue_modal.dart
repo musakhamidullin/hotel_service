@@ -77,11 +77,30 @@ abstract class IssueModal {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('Отменить'))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Отменить')),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Flexible(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Ок')),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 8,
