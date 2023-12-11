@@ -67,6 +67,7 @@ abstract class $AppRouter extends _i8.RootStackRouter {
         child: _i6.RoomPage(
           key: args.key,
           room: args.room,
+          ownerId: args.ownerId,
         ),
       );
     },
@@ -175,12 +176,14 @@ class RoomRoute extends _i8.PageRouteInfo<RoomRouteArgs> {
   RoomRoute({
     _i9.Key? key,
     required _i10.Room room,
+    required int ownerId,
     List<_i8.PageRouteInfo>? children,
   }) : super(
           RoomRoute.name,
           args: RoomRouteArgs(
             key: key,
             room: room,
+            ownerId: ownerId,
           ),
           initialChildren: children,
         );
@@ -195,15 +198,18 @@ class RoomRouteArgs {
   const RoomRouteArgs({
     this.key,
     required this.room,
+    required this.ownerId,
   });
 
   final _i9.Key? key;
 
   final _i10.Room room;
 
+  final int ownerId;
+
   @override
   String toString() {
-    return 'RoomRouteArgs{key: $key, room: $room}';
+    return 'RoomRouteArgs{key: $key, room: $room, ownerId: $ownerId}';
   }
 }
 

@@ -146,7 +146,13 @@ class _FloorItemState extends State<_FloorItem> {
                       borderRadius: BorderRadius.circular(cardRadius),
                     ),
                     onTap: () {
-                      context.router.push(RoomRoute(room: e));
+                      context.router.push(RoomRoute(
+                          room: e,
+                          ownerId: context
+                              .read<HomeCubit>()
+                              .user
+                              .personInfo
+                              .ownerId));
                     },
                     child: Container(
                       height: 60,

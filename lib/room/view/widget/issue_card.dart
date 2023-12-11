@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../cubit/room_cubit.dart';
+import '../../data/models/department.dart';
 import '../room_page.dart';
 import 'issue_field.dart';
 
@@ -15,7 +16,7 @@ class IssueCard extends StatelessWidget {
       required this.dateTime});
 
   final int index;
-  final List<String> departments;
+  final List<Department> departments;
   final VoidCallback onAttachedFielPressed;
   final DateTime dateTime;
 
@@ -33,22 +34,25 @@ class IssueCard extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10)
+                      color: Colors.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10)),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: Text(
+                    DateFormat('dd.MM.yyyy').format(dateTime),
+                    style: theme.textTheme.titleMedium,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  child: Text(DateFormat('dd.MM.yyyy').format(dateTime),
-                  style: theme.textTheme.titleMedium,),
                 ),
-
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10)
+                      color: Colors.white.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(10)),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: Text(
+                    DateFormat('HH:mm').format(dateTime),
+                    style: theme.textTheme.titleMedium,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  child: Text(DateFormat('HH:mm').format(dateTime),
-                  style: theme.textTheme.titleMedium,),
                 ),
               ],
             ),
@@ -97,7 +101,8 @@ class IssueCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10))),
                 ),
                 dropdownMenuEntries: departments
-                    .map((e) => DropdownMenuEntry(value: e, label: e))
+                    .map((e) =>
+                        DropdownMenuEntry(value: e.fullName, label: e.fullName))
                     .toList()),
           )
         ],

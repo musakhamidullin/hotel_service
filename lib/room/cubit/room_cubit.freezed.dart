@@ -20,7 +20,7 @@ mixin _$RoomState {
   Room get room => throw _privateConstructorUsedError;
   List<(int, List<XFile>, String, DateTime, bool)> get issues =>
       throw _privateConstructorUsedError;
-  List<String> get departments => throw _privateConstructorUsedError;
+  List<Department> get departments => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateCopyWith<RoomState> get copyWith =>
@@ -36,7 +36,7 @@ abstract class $RoomStateCopyWith<$Res> {
       {FetchStatus fetchStatus,
       Room room,
       List<(int, List<XFile>, String, DateTime, bool)> issues,
-      List<String> departments});
+      List<Department> departments});
 
   $RoomCopyWith<$Res> get room;
 }
@@ -75,7 +75,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Department>,
     ) as $Val);
   }
 
@@ -100,7 +100,7 @@ abstract class _$$RoomStateImplCopyWith<$Res>
       {FetchStatus fetchStatus,
       Room room,
       List<(int, List<XFile>, String, DateTime, bool)> issues,
-      List<String> departments});
+      List<Department> departments});
 
   @override
   $RoomCopyWith<$Res> get room;
@@ -138,7 +138,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Department>,
     ));
   }
 }
@@ -156,7 +156,7 @@ class _$RoomStateImpl extends _RoomState {
         DateTime,
         bool isMutable
       )>[],
-      final List<String> departments = const <String>[]})
+      final List<Department> departments = const <Department>[]})
       : _issues = issues,
         _departments = departments,
         super._();
@@ -176,10 +176,10 @@ class _$RoomStateImpl extends _RoomState {
     return EqualUnmodifiableListView(_issues);
   }
 
-  final List<String> _departments;
+  final List<Department> _departments;
   @override
   @JsonKey()
-  List<String> get departments {
+  List<Department> get departments {
     if (_departments is EqualUnmodifiableListView) return _departments;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_departments);
@@ -223,7 +223,7 @@ abstract class _RoomState extends RoomState {
       {final FetchStatus fetchStatus,
       final Room room,
       final List<(int, List<XFile>, String, DateTime, bool)> issues,
-      final List<String> departments}) = _$RoomStateImpl;
+      final List<Department> departments}) = _$RoomStateImpl;
   const _RoomState._() : super._();
 
   @override
@@ -233,7 +233,7 @@ abstract class _RoomState extends RoomState {
   @override
   List<(int, List<XFile>, String, DateTime, bool)> get issues;
   @override
-  List<String> get departments;
+  List<Department> get departments;
   @override
   @JsonKey(ignore: true)
   _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>

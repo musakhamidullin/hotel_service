@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../home/data/models/room.dart';
+import '../data/models/department.dart';
 import '../data/repositories/room_rep.dart';
 
 part 'room_state.dart';
@@ -51,7 +52,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   final RoomRep _roomRep;
 
-  Future<void> fetchRoom(int id) async {
+  Future<void> fetchRoom(int id, int ownerId) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
@@ -67,19 +68,16 @@ class RoomCubit extends Cubit<RoomState> {
         room: room,
       ));
 
-      await fetchDepartment();
+      await fetchDepartment(ownerId);
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
-  Future<void> fetchDepartment() async {
-    emit(state.copyWith(fetchStatus: FetchStatus.success, departments: [
-      'Не выбрано',
-      'Инженерно-техническая служба',
-      'Служба энергетиков',
-      'Вспомогательная хозяйственная служба'
-    ]));
+  Future<void> fetchDepartment(int ownerId) async {
+    final departments = await _roomRep.fetchDepartment(ownerId);
+
+    emit(state.copyWith(departments: departments));
   }
 
   void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
