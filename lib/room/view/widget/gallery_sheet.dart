@@ -6,17 +6,16 @@ import '../room_page.dart';
 import 'issue_images.dart';
 
 class GalleryBottomSheet extends StatefulWidget {
-  const GalleryBottomSheet(
-      {super.key,
-      required this.indexIssue,
-      this.isCreatedTab = false,
-      required this.roomCubit,
-      required this.stateSetter});
+  const GalleryBottomSheet({
+    super.key,
+    required this.indexIssue,
+    this.isCreatedTab = false,
+    required this.roomCubit,
+  });
 
   final int indexIssue;
   final bool isCreatedTab;
   final RoomCubit roomCubit;
-  final StateSetter stateSetter;
 
   @override
   State<GalleryBottomSheet> createState() => _GalleryBottomSheetState();
@@ -27,16 +26,12 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
     final images = await ImagePicker().pickMultiImage();
 
     roomCubit.onAddImagesPressed((i, images));
-
-    widget.stateSetter(() {});
   }
 
   Future<void> _onSelectedCameraPressed(int i, RoomCubit roomCubit) async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
     roomCubit.onAddImageFromCameraPressed((i, image));
-
-    widget.stateSetter(() {});
   }
 
   @override

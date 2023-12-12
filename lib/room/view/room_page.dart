@@ -71,8 +71,7 @@ class _RoomPageState extends State<RoomPage>
     return BlocProvider(
       create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: RoomBuilder(
           builder: (context, state) {
             if (state.fetchStatus != FetchStatus.success) {
@@ -108,8 +107,7 @@ class _RoomPageState extends State<RoomPage>
                         contentPadding: EdgeInsets.zero,
                         leading: IconButton(
                             onPressed: () => _roomCubit.onAddIssuePressed(),
-                            icon:
-                                const Icon(Icons.add_circle_outline_rounded)),
+                            icon: const Icon(Icons.add_circle_outline_rounded)),
                         title: const Text('Добавить проблему в номере'),
                       ),
                       SizedBox(
@@ -156,98 +154,100 @@ class _RoomPageState extends State<RoomPage>
                         builder: (context, state) {
                           return Flexible(
                             child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                              ListView.builder(
-                                  padding: const EdgeInsets.only(bottom: 100),
-                                  itemCount: state.createdIssues.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (_, issueIndex) {
-                                    return Slidable(
-                                        startActionPane:
-                                            actionPane(issueIndex),
-                                        endActionPane: actionPane(issueIndex),
-                                        child: IssueCard(
-                                          index: issueIndex,
-                                          departments: state.departments,
-                                          onAttachedFielPressed: () =>
-                                              Modals.showBottomSheet(
-                                                  context,
-                                                  StatefulBuilder(
-                                                    builder: (context,
-                                                            setModal) =>
-                                                        GalleryBottomSheet(
-                                                      stateSetter: setModal,
-                                                      isCreatedTab: true,
-                                                      indexIssue: issueIndex,
-                                                      roomCubit: _roomCubit,
-                                                    ),
-                                                  )),
-                                          dateTime: DateTime.parse(state
-                                              .createdIssues[issueIndex]
-                                              .date),
-                                          department: state
-                                              .createdIssues[issueIndex]
-                                              .department,
-                                          onChangedComment: (String text) =>
-                                              _roomCubit.onCommentChanged(
-                                                  issueIndex, text),
-                                          onClearComment: () => _roomCubit
-                                              .onClearCommentPressed(
-                                                  issueIndex),
-                                          onDepartmentChanged: (int i,
-                                                  Department department) =>
-                                              _roomCubit.onDepartmentChanged(
-                                                  (issueIndex, department)),
-                                          text: state
-                                              .createdIssues[issueIndex]
-                                              .comment,
-                                        ));
-                                  }),
-                              ListView.builder(
-                                  padding: const EdgeInsets.only(bottom: 100),
-                                  itemCount: state.addedIssues.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (_, issueIndex) {
-                                    return Slidable(
-                                        startActionPane:
-                                            actionPane(issueIndex),
-                                        endActionPane: actionPane(issueIndex),
-                                        child: IssueCard(
-                                          index: issueIndex,
-                                          departments: state.departments,
-                                          onAttachedFielPressed: () =>
-                                              Modals.showBottomSheet(
-                                                  context,
-                                                  StatefulBuilder(
-                                                    builder: (context,
-                                                            setModal) =>
-                                                        GalleryBottomSheet(
-                                                      stateSetter: setModal,
-                                                      indexIssue: issueIndex,
-                                                      roomCubit: _roomCubit,
-                                                    ),
-                                                  )),
-                                          dateTime: DateTime.parse(state
-                                              .addedIssues[issueIndex].date),
-                                          department: state
-                                              .addedIssues[issueIndex]
-                                              .department,
-                                          onChangedComment: (String text) =>
-                                              _roomCubit.onCommentChanged(
-                                                  issueIndex, text),
-                                          onClearComment: () => _roomCubit
-                                              .onClearCommentPressed(
-                                                  issueIndex),
-                                          onDepartmentChanged: (int i,
-                                                  Department department) =>
-                                              _roomCubit.onDepartmentChanged(
-                                                  (issueIndex, department)),
-                                          text: state.addedIssues[issueIndex]
-                                              .comment,
-                                        ));
-                                  }),
-                            ]),
+                                controller: _tabController,
+                                children: [
+                                  ListView.builder(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 100),
+                                      itemCount: state.createdIssues.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (_, issueIndex) {
+                                        return Slidable(
+                                            startActionPane:
+                                                actionPane(issueIndex),
+                                            endActionPane:
+                                                actionPane(issueIndex),
+                                            child: IssueCard(
+                                              index: issueIndex,
+                                              departments: state.departments,
+                                              onAttachedFielPressed: () => 
+                                                  Modals.showBottomSheet(
+                                                      context,
+                                                      GalleryBottomSheet(
+                                                        isCreatedTab: true,
+                                                        indexIssue: issueIndex,
+                                                        roomCubit: _roomCubit,
+                                                      )),
+                                              dateTime: DateTime.parse(state
+                                                  .createdIssues[issueIndex]
+                                                  .date),
+                                              department: state
+                                                  .createdIssues[issueIndex]
+                                                  .department,
+                                              onChangedComment: (String text) =>
+                                                  _roomCubit.onCommentChanged(
+                                                      issueIndex, text),
+                                              onClearComment: () => _roomCubit
+                                                  .onClearCommentPressed(
+                                                      issueIndex),
+                                              onDepartmentChanged: (int i,
+                                                      Department department) =>
+                                                  _roomCubit
+                                                      .onDepartmentChanged((
+                                                issueIndex,
+                                                department
+                                              )),
+                                              text: state
+                                                  .createdIssues[issueIndex]
+                                                  .comment,
+                                            ));
+                                      }),
+                                  ListView.builder(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 100),
+                                      itemCount: state.addedIssues.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (_, issueIndex) {
+                                        return Slidable(
+                                            startActionPane:
+                                                actionPane(issueIndex),
+                                            endActionPane:
+                                                actionPane(issueIndex),
+                                            child: IssueCard(
+                                              index: issueIndex,
+                                              departments: state.departments,
+                                              onAttachedFielPressed: () =>
+                                                  Modals.showBottomSheet(
+                                                      context,
+                                                      GalleryBottomSheet(
+                                                        indexIssue: issueIndex,
+                                                        roomCubit: _roomCubit,
+                                                      )),
+                                              dateTime: DateTime.parse(state
+                                                  .addedIssues[issueIndex]
+                                                  .date),
+                                              department: state
+                                                  .addedIssues[issueIndex]
+                                                  .department,
+                                              onChangedComment: (String text) =>
+                                                  _roomCubit.onCommentChanged(
+                                                      issueIndex, text),
+                                              onClearComment: () => _roomCubit
+                                                  .onClearCommentPressed(
+                                                      issueIndex),
+                                              onDepartmentChanged: (int i,
+                                                      Department department) =>
+                                                  _roomCubit
+                                                      .onDepartmentChanged((
+                                                issueIndex,
+                                                department
+                                              )),
+                                              text: state
+                                                  .addedIssues[issueIndex]
+                                                  .comment,
+                                            ));
+                                      }),
+                                ]),
                           );
                         },
                       )
@@ -336,13 +336,13 @@ class _RoomPageState extends State<RoomPage>
                 child: CircularProgressIndicator(),
               );
             }
-      
+
             if (state.fetchStatus == FetchStatus.failure) {
               return FailureWidget(
                 onPressed: () => _roomCubit.fetchRoom(widget.room.id),
               );
             }
-      
+
             return const SizedBox.shrink();
           },
         ),
