@@ -25,13 +25,13 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
   Future<void> _onSelectedFromGalleryPressed(int i, RoomCubit roomCubit) async {
     final images = await ImagePicker().pickMultiImage();
 
-    roomCubit.onAddImagesPressed((i, images));
+    roomCubit.onAddImagesPressed(i, images);
   }
 
   Future<void> _onSelectedCameraPressed(int i, RoomCubit roomCubit) async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
-    roomCubit.onAddImageFromCameraPressed((i, image));
+    roomCubit.onAddImageFromCameraPressed(i, image);
   }
 
   @override
@@ -56,7 +56,7 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
                     widget.roomCubit.onFlushPressed(widget.indexIssue),
                 onDeleteImagePressed: (photoIndex) {
                   widget.roomCubit.onDeleteImagePressed(
-                      (widget.indexIssue, images[photoIndex]));
+                      widget.indexIssue, images[photoIndex]);
                 },
               ),
             const SizedBox(

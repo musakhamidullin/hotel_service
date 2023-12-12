@@ -6,6 +6,7 @@ import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
 
 import '../data/models/department_info.dart';
+
 import '../data/models/issues.dart';
 import '../data/repositories/room_rep.dart';
 
@@ -139,84 +140,74 @@ class RoomCubit extends Cubit<RoomState> {
               .map((e) => e.index == i ? e.copyWith(images: []) : e)
               .toList()));
 
-  void onAddImageFromCameraPressed((int, XFile?) image) => state.tabIndex == 0
-      ? () {
-          if (image.$2 == null) return;
+  void onAddImageFromCameraPressed(int i, XFile? image) {
+    if (image == null) return;
 
-          emit(state.copyWith(
-              createdIssues: state.createdIssues
-                  .map((e) => e.index == image.$1
-                      ? e.copyWith(images: [
-                          ...state.createdIssues[image.$1].images,
-                          image.$2!.path,
-                        ])
-                      : e)
-                  .toList()));
-        }
-      : () {
-          if (image.$2 == null) return;
+    emit(state.tabIndex == 0
+        ? state.copyWith(
+            createdIssues: state.createdIssues
+                .map((e) => e.index == i
+                    ? e.copyWith(images: [
+                        ...state.createdIssues[i].images,
+                        image.path,
+                      ])
+                    : e)
+                .toList())
+        : state.copyWith(
+            addedIssues: state.addedIssues
+                .map((e) => e.index == i
+                    ? e.copyWith(images: [
+                        ...state.addedIssues[i].images,
+                        image.path,
+                      ])
+                    : e)
+                .toList()));
+  }
 
-          emit(state.copyWith(
-              addedIssues: state.addedIssues
-                  .map((e) => e.index == image.$1
-                      ? e.copyWith(images: [
-                          ...state.addedIssues[image.$1].images,
-                          image.$2!.path,
-                        ])
-                      : e)
-                  .toList()));
-        };
-
-  void onAddImagesPressed((int, List<XFile>) image) => state.tabIndex == 0
-      ? emit(state.copyWith(
+  void onAddImagesPressed(int i, List<XFile> images) => emit(state.tabIndex == 0
+      ? state.copyWith(
           createdIssues: state.createdIssues
-              .map((e) => e.index == image.$1
+              .map((e) => e.index == i
                   ? e.copyWith(images: [
-                      ...state.createdIssues[image.$1].images,
-                      ...image.$2.map((e) => e.path)
+                      ...state.createdIssues[i].images,
+                      ...images.map((e) => e.path)
                     ])
                   : e)
-              .toList()))
-      : emit(state.copyWith(
+              .toList())
+      : state.copyWith(
           addedIssues: state.addedIssues
-              .map((e) => e.index == image.$1
+              .map((e) => e.index == i
                   ? e.copyWith(images: [
-                      ...state.addedIssues[image.$1].images,
-                      ...image.$2.map((e) => e.path)
+                      ...state.addedIssues[i].images,
+                      ...images.map((e) => e.path)
                     ])
                   : e)
               .toList()));
 
-  void onDeleteImagePressed((int, String) image) => state.tabIndex == 0
+  void onDeleteImagePressed(int i, String image) => state.tabIndex == 0
       ? emit(state.copyWith(
           createdIssues: [...state.createdIssues]
-              .map((issue) => issue.index == image.$1
+              .map((issue) => issue.index == i
                   ? issue.copyWith(
-                      images: [...issue.images]
-                        ..removeWhere((e) => e == image.$2))
+                      images: [...issue.images]..removeWhere((e) => e == image))
                   : issue)
               .toList()))
       : emit(state.copyWith(
           addedIssues: [...state.addedIssues]
-              .map((issue) => issue.index == image.$1
+              .map((issue) => issue.index == i
                   ? issue.copyWith(
-                      images: [...issue.images]
-                        ..removeWhere((e) => e == image.$2))
+                      images: [...issue.images]..removeWhere((e) => e == image))
                   : issue)
               .toList()));
 
-  void onDepartmentChanged((int, Department) department) => state.tabIndex == 0
+  void onDepartmentChanged(int i, Department department) => state.tabIndex == 0
       ? emit(state.copyWith(
           createdIssues: state.createdIssues
-              .map((e) => e.index == department.$1
-                  ? e.copyWith(department: department.$2)
-                  : e)
+              .map((e) => e.index == i ? e.copyWith(department: department) : e)
               .toList()))
       : emit(state.copyWith(
           addedIssues: state.addedIssues
-              .map((e) => e.index == department.$1
-                  ? e.copyWith(department: department.$2)
-                  : e)
+              .map((e) => e.index == i ? e.copyWith(department: department) : e)
               .toList()));
 
   void onCompletePressed() async {

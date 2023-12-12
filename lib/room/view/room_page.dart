@@ -1,18 +1,17 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 import '../../auth/data/model/user.dart';
 import '../../common/widgets/failure_widget.dart';
-import '../../common/widgets/modals.dart';
+
 import '../../home/data/models/room.dart';
 import '../cubit/room_cubit.dart';
-import '../data/models/department_info.dart';
+
 import '../data/repositories/room_rep.dart';
-import 'widget/issue_card.dart';
-import 'widget/gallery_sheet.dart';
+import 'widget/added_issues_list.dart';
+import 'widget/created_issues_list.dart';
 
 @RoutePage()
 class RoomPage extends StatefulWidget {
@@ -53,18 +52,9 @@ class _RoomPageState extends State<RoomPage>
   @override
   void dispose() {
     _roomCubit.close();
+    _tabController.dispose();
     super.dispose();
   }
-
-  ActionPane actionPane(int indexIssue) =>
-      ActionPane(motion: const ScrollMotion(), children: [
-        SlidableAction(
-          icon: Icons.delete,
-          onPressed: (_) => _roomCubit.onDeleteIssuePressed(indexIssue),
-          borderRadius: BorderRadius.circular(10),
-          backgroundColor: Colors.red,
-        )
-      ]);
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +68,30 @@ class _RoomPageState extends State<RoomPage>
               return const SizedBox.shrink();
             }
             return Container(
-              padding: const EdgeInsets.only(bottom: 16, left: 8, right: 8),
               height: 70,
-              width: double.infinity,
-              child: ElevatedButton(
-                  onPressed: () {
-                    _roomCubit.onCompletePressed();
-                  },
-                  child: const Text('Завершить')),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          onPressed: () => _roomCubit.onCompletePressed(),
+                          child: const Text('Завершить')),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Flexible(
+                    child: ElevatedButton.icon(
+                        onPressed: () => _roomCubit.onAddIssuePressed(),
+                        icon: const Icon(Icons.add),
+                        label: const Text('Проблема')),
+                  )
+                ],
+              ),
             );
           },
         ),
@@ -94,8 +100,6 @@ class _RoomPageState extends State<RoomPage>
           title: Text('Номер ${widget.room.roomNumber}'),
         ),
         body: RoomBuilder(
-          buildWhen: (pState, cState) =>
-              pState.fetchStatus != cState.fetchStatus,
           builder: (context, state) {
             if (state.fetchStatus == FetchStatus.success) {
               return Padding(
@@ -103,50 +107,6 @@ class _RoomPageState extends State<RoomPage>
                 child: NestedScrollView(
                   body: Column(
                     children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: IconButton(
-                            onPressed: () => _roomCubit.onAddIssuePressed(),
-                            icon: const Icon(Icons.add_circle_outline_rounded)),
-                        title: const Text('Добавить проблему в номере'),
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: double.infinity,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              color: Colors.grey.withOpacity(0.2)),
-                          child: TabBar(
-                            controller: _tabController,
-                            dividerHeight: 0,
-                            splashBorderRadius: BorderRadius.circular(24),
-                            indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.5)),
-                            indicatorColor: Colors.transparent,
-                            indicatorPadding: EdgeInsets.zero,
-                            indicatorWeight: 0,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelPadding: EdgeInsets.zero,
-                            tabs: const [
-                              Tab(
-                                child: Text(
-                                  'Cозданные',
-                                ),
-                              ),
-                              Tab(
-                                child: Text(
-                                  'Новые',
-                                ),
-                              ),
-                            ],
-                            labelColor: Colors.black,
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 16,
                       ),
@@ -156,97 +116,12 @@ class _RoomPageState extends State<RoomPage>
                             child: TabBarView(
                                 controller: _tabController,
                                 children: [
-                                  ListView.builder(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 100),
-                                      itemCount: state.createdIssues.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (_, issueIndex) {
-                                        return Slidable(
-                                            startActionPane:
-                                                actionPane(issueIndex),
-                                            endActionPane:
-                                                actionPane(issueIndex),
-                                            child: IssueCard(
-                                              index: issueIndex,
-                                              departments: state.departments,
-                                              onAttachedFielPressed: () => 
-                                                  Modals.showBottomSheet(
-                                                      context,
-                                                      GalleryBottomSheet(
-                                                        isCreatedTab: true,
-                                                        indexIssue: issueIndex,
-                                                        roomCubit: _roomCubit,
-                                                      )),
-                                              dateTime: DateTime.parse(state
-                                                  .createdIssues[issueIndex]
-                                                  .date),
-                                              department: state
-                                                  .createdIssues[issueIndex]
-                                                  .department,
-                                              onChangedComment: (String text) =>
-                                                  _roomCubit.onCommentChanged(
-                                                      issueIndex, text),
-                                              onClearComment: () => _roomCubit
-                                                  .onClearCommentPressed(
-                                                      issueIndex),
-                                              onDepartmentChanged: (int i,
-                                                      Department department) =>
-                                                  _roomCubit
-                                                      .onDepartmentChanged((
-                                                issueIndex,
-                                                department
-                                              )),
-                                              text: state
-                                                  .createdIssues[issueIndex]
-                                                  .comment,
-                                            ));
-                                      }),
-                                  ListView.builder(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 100),
-                                      itemCount: state.addedIssues.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (_, issueIndex) {
-                                        return Slidable(
-                                            startActionPane:
-                                                actionPane(issueIndex),
-                                            endActionPane:
-                                                actionPane(issueIndex),
-                                            child: IssueCard(
-                                              index: issueIndex,
-                                              departments: state.departments,
-                                              onAttachedFielPressed: () =>
-                                                  Modals.showBottomSheet(
-                                                      context,
-                                                      GalleryBottomSheet(
-                                                        indexIssue: issueIndex,
-                                                        roomCubit: _roomCubit,
-                                                      )),
-                                              dateTime: DateTime.parse(state
-                                                  .addedIssues[issueIndex]
-                                                  .date),
-                                              department: state
-                                                  .addedIssues[issueIndex]
-                                                  .department,
-                                              onChangedComment: (String text) =>
-                                                  _roomCubit.onCommentChanged(
-                                                      issueIndex, text),
-                                              onClearComment: () => _roomCubit
-                                                  .onClearCommentPressed(
-                                                      issueIndex),
-                                              onDepartmentChanged: (int i,
-                                                      Department department) =>
-                                                  _roomCubit
-                                                      .onDepartmentChanged((
-                                                issueIndex,
-                                                department
-                                              )),
-                                              text: state
-                                                  .addedIssues[issueIndex]
-                                                  .comment,
-                                            ));
-                                      }),
+                                  CreatedIssuesList(
+                                    createdIssues: state.createdIssues,
+                                  ),
+                                  AddedIssuesList(
+                                    addedIssues: state.addedIssues,
+                                  )
                                 ]),
                           );
                         },
@@ -323,6 +198,46 @@ class _RoomPageState extends State<RoomPage>
                               ),
                             ),
                             const Divider(),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: double.infinity,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24),
+                                    color: Colors.grey.withOpacity(0.2)),
+                                child: TabBar(
+                                  controller: _tabController,
+                                  dividerHeight: 0,
+                                  splashBorderRadius: BorderRadius.circular(24),
+                                  indicator: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(24),
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.5)),
+                                  indicatorColor: Colors.transparent,
+                                  indicatorPadding: EdgeInsets.zero,
+                                  indicatorWeight: 0,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  labelPadding: EdgeInsets.zero,
+                                  tabs: const [
+                                    Tab(
+                                      child: Text(
+                                        'Cозданные',
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                        'Новые',
+                                      ),
+                                    ),
+                                  ],
+                                  labelColor: Colors.black,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       )
