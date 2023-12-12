@@ -6,7 +6,6 @@ import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
 
 import '../data/models/department_info.dart';
-import '../data/models/issue_report.dart';
 import '../data/models/issues.dart';
 import '../data/repositories/room_rep.dart';
 
