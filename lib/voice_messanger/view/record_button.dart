@@ -28,35 +28,33 @@ class _RecordButtonState extends State<RecordButton> {
         return Stack(
           alignment: Alignment.centerRight,
           children: [
-            Card(
-              child: SizedBox(
-                height: 70,
-                width: 70,
-                child: InkWell(
-                  customBorder: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  onTapDown: (_) async {
-                    context.read<VoiceManagerCubit>().record();
-                    setState(() => _recording = true);
-                  },
-                  onTapUp: (_) async {
-                    context.read<VoiceManagerCubit>().stopRecord(
-                          buttonId: widget.id,
-                          duration: _duration,
-                        );
-                    setState(() => _recording = false);
-                  },
-                  child: Icon(
-                    _recording ? Icons.mic_off_rounded : Icons.mic,
-                    size: 34,
-                  ),
+            SizedBox(
+              height: 50,
+              width: 50,
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                onTapDown: (_) async {
+                  context.read<VoiceManagerCubit>().record();
+                  setState(() => _recording = true);
+                },
+                onTapUp: (_) async {
+                  context.read<VoiceManagerCubit>().stopRecord(
+                        buttonId: widget.id,
+                        duration: _duration,
+                      );
+                  setState(() => _recording = false);
+                },
+                child: Icon(
+                  _recording ? Icons.mic_off_rounded : Icons.mic,
+                  size: 34,
                 ),
               ),
             ),
             if (_recording)
               Transform.translate(
-                offset: const Offset(-100, 0),
+                offset: const Offset(-70, 0),
                 child: RecordTimer(
                   onDurationChanged: (value) {
                     _duration = value;

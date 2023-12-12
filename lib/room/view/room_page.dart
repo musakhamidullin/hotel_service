@@ -7,11 +7,13 @@ import '../../auth/data/model/user.dart';
 import '../../common/widgets/failure_widget.dart';
 
 import '../../home/data/models/room.dart';
+import '../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
 
 import '../data/repositories/room_rep.dart';
 import 'widget/added_issues_list.dart';
 import 'widget/created_issues_list.dart';
+import 'widget/fabs.dart';
 
 @RoutePage()
 class RoomPage extends StatefulWidget {
@@ -61,72 +63,39 @@ class _RoomPageState extends State<RoomPage>
     return BlocProvider(
       create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: RoomBuilder(
           builder: (context, state) {
             if (state.fetchStatus != FetchStatus.success) {
               return const SizedBox.shrink();
             }
-            return Container(
-              height: 70,
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () => _roomCubit.onCompletePressed(),
-                          child: const Text('Завершить')),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    child: ElevatedButton.icon(
-                        onPressed: () => _roomCubit.onAddIssuePressed(),
-                        icon: const Icon(Icons.add),
-                        label: const Text('Проблема')),
-                  )
-                ],
-              ),
-            );
+            return Fabs(tabController: _tabController);
           },
         ),
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Номер ${widget.room.roomNumber}'),
+          centerTitle: true,
         ),
         body: RoomBuilder(
           builder: (context, state) {
-            if (state.fetchStatus == FetchStatus.success) {
+            if (state.success()) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: NestedScrollView(
-                  body: Column(
-                    children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      RoomBuilder(
-                        builder: (context, state) {
-                          return Flexible(
-                            child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  CreatedIssuesList(
-                                    createdIssues: state.createdIssues,
-                                  ),
-                                  AddedIssuesList(
-                                    addedIssues: state.addedIssues,
-                                  )
-                                ]),
-                          );
-                        },
-                      )
-                    ],
+                  body: BlocProvider(
+                    create: (context) => VoiceManagerCubit(),
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        CreatedIssuesList(
+                          createdIssues: state.createdIssues,
+                        ),
+                        AddedIssuesList(
+                          addedIssues: state.addedIssues,
+                        )
+                      ],
+                    ),
                   ),
                   headerSliverBuilder: (_, isElevated) {
                     return [
@@ -137,24 +106,43 @@ class _RoomPageState extends State<RoomPage>
                             const SizedBox(
                               height: 16,
                             ),
-                            RoomBuilder(
-                              buildWhen: (pState, cState) =>
-                                  pState.room.arrdate != cState.room.arrdate,
-                              builder: (context, state) {
-                                return Text(
-                                    'Заезд: ${DateFormat('dd.MM.yyyy - HH:mm').format(DateTime.parse(state.room.arrdate))}');
-                              },
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            RoomBuilder(
-                              buildWhen: (pState, cState) =>
-                                  pState.room.depdate != cState.room.depdate,
-                              builder: (context, state) {
-                                return Text(
-                                    'Выезд: ${DateFormat('dd.MM.yyyy - HH:mm').format(DateTime.parse(state.room.depdate))}');
-                              },
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      const Text('Заезд'),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        DateFormat()
+                                            .add_Hm()
+                                            .add_yMMMd()
+                                            .format(DateTime.parse(
+                                                state.room.arrdate)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      const Text('Выезд'),
+                                      const SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        DateFormat()
+                                            .add_Hm()
+                                            .add_yMMMd()
+                                            .format(DateTime.parse(
+                                                state.room.depdate)),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                             const SizedBox(
                               height: 8,
@@ -201,58 +189,59 @@ class _RoomPageState extends State<RoomPage>
                             const SizedBox(
                               height: 16,
                             ),
-                            SizedBox(
-                              height: 40,
-                              width: double.infinity,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    color: Colors.grey.withOpacity(0.2)),
-                                child: TabBar(
-                                  controller: _tabController,
-                                  dividerHeight: 0,
-                                  splashBorderRadius: BorderRadius.circular(24),
-                                  indicator: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(24),
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.5)),
-                                  indicatorColor: Colors.transparent,
-                                  indicatorPadding: EdgeInsets.zero,
-                                  indicatorWeight: 0,
-                                  indicatorSize: TabBarIndicatorSize.tab,
-                                  labelPadding: EdgeInsets.zero,
-                                  tabs: const [
-                                    Tab(
-                                      child: Text(
-                                        'Cозданные',
-                                      ),
-                                    ),
-                                    Tab(
-                                      child: Text(
-                                        'Новые',
-                                      ),
-                                    ),
-                                  ],
-                                  labelColor: Colors.black,
-                                ),
-                              ),
-                            ),
                           ],
                         ),
-                      )
+                      ),
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: Colors.grey.withOpacity(0.2)),
+                          child: TabBar(
+                            controller: _tabController,
+                            dividerHeight: 0,
+                            splashBorderRadius: BorderRadius.circular(24),
+                            indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5)),
+                            indicatorColor: Colors.transparent,
+                            indicatorPadding: EdgeInsets.zero,
+                            indicatorWeight: 0,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            labelPadding: EdgeInsets.zero,
+                            tabs: const [
+                              Tab(
+                                child: Text(
+                                  'Cозданные',
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Новые',
+                                ),
+                              ),
+                            ],
+                            labelColor: Colors.black,
+                          ),
+                        ),
+                      ),
                     ];
                   },
                 ),
               );
             }
-            if (state.fetchStatus == FetchStatus.loading) {
+            if (state.loading()) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            if (state.fetchStatus == FetchStatus.failure) {
+            if (state.failure()) {
               return FailureWidget(
                 onPressed: () => _roomCubit.fetchRoom(widget.room.id),
               );

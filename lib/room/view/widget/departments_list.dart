@@ -22,14 +22,20 @@ class DepartmentsList extends StatelessWidget {
               shrinkWrap: true,
               itemCount: departments.length,
               itemBuilder: (context, i) => ListTile(
-                    onTap: () => onDepartmentChanged(departments[i]),
+                    onTap: () {
+                      onDepartmentChanged(departments[i]);
+                      Navigator.of(context).pop();
+                    },
                     title: Text(departments[i].fullName),
                   )),
           const Spacer(),
           SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                  onPressed: () {}, child: const Text('Отмена'))),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Отмена'))),
           const SizedBox(
             height: 16,
           )

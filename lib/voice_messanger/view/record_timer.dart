@@ -48,20 +48,28 @@ class _RecordTimerState extends State<RecordTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(
-          Icons.mic,
-          color: Colors.red,
-          size: 34,
-        ),
-        const SizedBox(width: 8),
-        Text(
-          _duration,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ],
+    return Container(
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          )),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.mic,
+            color: Colors.red,
+            size: 34,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            _duration,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      ),
     );
   }
 }

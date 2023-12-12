@@ -32,13 +32,11 @@ class _IssueTextFieldState extends State<IssueTextField> {
     return TextField(
       controller: _controller
         ..selection = TextSelection.fromPosition(
-            TextPosition(offset: _controller.text.length))
+          TextPosition(offset: _controller.text.length),
+        )
         ..text = widget.text,
       onChanged: (text) => widget.onTextChanged(text),
-      decoration: InputDecoration(
-          suffixIcon: GestureDetector(
-              onTap: widget.onClearPressed, child: const Icon(Icons.close)),
-          hintText: 'Комментарий...'),
+      decoration: const InputDecoration(hintText: 'Комментарий...'),
       keyboardType: TextInputType.multiline,
       minLines: 1,
       maxLines: 5,
