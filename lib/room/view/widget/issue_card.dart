@@ -163,13 +163,6 @@ class _IssueCardState extends State<IssueCard> {
                       width: 12,
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.send),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    IconButton(
                       onPressed: () {
                         _controller.clear();
                       },
