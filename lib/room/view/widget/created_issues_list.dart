@@ -18,6 +18,7 @@ class CreatedIssuesList extends StatelessWidget {
         text: createdIssues[i].comment,
         department: createdIssues[i].department,
         isCreatedTab: true,
+        tabName: 'Созданные',
       ),
       items: createdIssues,
     );

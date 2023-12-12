@@ -74,11 +74,12 @@ abstract class Modals {
       context: context,
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.4,
-            minChildSize: 0.1,
-            maxChildSize: 1,
-            builder: (context, __) => child);
+          expand: false,
+          initialChildSize: 0.5,
+          minChildSize: 0.1,
+          maxChildSize: 1,
+          builder: (context, __) => child,
+        );
       },
     );
   }

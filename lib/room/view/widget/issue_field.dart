@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
 
-class IssueTextField extends StatefulWidget {
-  const IssueTextField(
-      {super.key,
-      required this.text,
-      required this.index,
-      required this.onTextChanged,
-      required this.onClearPressed});
+class IssueTextField extends StatelessWidget {
+  const IssueTextField({
+    super.key,
+    required this.index,
+    required this.onTextChanged,
+    required this.onClearPressed,
+    required this.textEditingController,
+  });
 
-  final String text;
   final int index;
   final void Function(String text) onTextChanged;
   final VoidCallback onClearPressed;
-
-  @override
-  State<IssueTextField> createState() => _IssueTextFieldState();
-}
-
-class _IssueTextFieldState extends State<IssueTextField> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    _controller.dispose();
-  }
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: _controller
-        ..selection = TextSelection.fromPosition(
-          TextPosition(offset: _controller.text.length),
-        )
-        ..text = widget.text,
-      onChanged: (text) => widget.onTextChanged(text),
+      controller: textEditingController,
+      onChanged: onTextChanged,
       decoration: const InputDecoration(hintText: 'Комментарий...'),
       keyboardType: TextInputType.multiline,
       minLines: 1,

@@ -28,6 +28,9 @@ class _MySearchBarState extends State<MySearchBar> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        const SizedBox(
+          width: 8,
+        ),
         Expanded(
           child: SizedBox(
             height: 50,

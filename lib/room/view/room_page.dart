@@ -88,12 +88,8 @@ class _RoomPageState extends State<RoomPage>
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        CreatedIssuesList(
-                          createdIssues: state.createdIssues,
-                        ),
-                        AddedIssuesList(
-                          addedIssues: state.addedIssues,
-                        )
+                        CreatedIssuesList(createdIssues: state.createdIssues),
+                        AddedIssuesList(addedIssues: state.addedIssues)
                       ],
                     ),
                   ),
@@ -215,16 +211,8 @@ class _RoomPageState extends State<RoomPage>
                             indicatorSize: TabBarIndicatorSize.tab,
                             labelPadding: EdgeInsets.zero,
                             tabs: const [
-                              Tab(
-                                child: Text(
-                                  'Cозданные',
-                                ),
-                              ),
-                              Tab(
-                                child: Text(
-                                  'Новые',
-                                ),
-                              ),
+                              Tab(child: Text('Cозданные')),
+                              Tab(child: Text('Новые')),
                             ],
                             labelColor: Colors.black,
                           ),

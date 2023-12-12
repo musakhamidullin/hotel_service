@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 
 import '../../../common/widgets/modals.dart';
 
+import '../../../voice_messanger/cubit/voice_manager_cubit.dart';
+import '../../../voice_messanger/view/message_audio_player.dart';
 import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
@@ -14,7 +16,7 @@ import 'departments_list.dart';
 import 'gallery_sheet.dart';
 import 'issue_field.dart';
 
-class IssueCard extends StatelessWidget {
+class IssueCard extends StatefulWidget {
   const IssueCard({
     super.key,
     required this.index,
@@ -22,32 +24,55 @@ class IssueCard extends StatelessWidget {
     required this.text,
     required this.department,
     required this.isCreatedTab,
+    required this.tabName,
   });
 
   final int index;
   final DateTime dateTime;
   final String text;
   final bool isCreatedTab;
-
   final Department department;
+  final String tabName;
 
-  ActionPane actionPane(int indexIssue, RoomCubit roomCubit) =>
-      ActionPane(motion: const ScrollMotion(), children: [
-        SlidableAction(
-          icon: Icons.delete,
-          onPressed: (_) => roomCubit.onDeleteIssuePressed(indexIssue),
-          borderRadius: BorderRadius.circular(10),
-          backgroundColor: Colors.red,
-        )
-      ]);
+  @override
+  State<IssueCard> createState() => _IssueCardState();
+}
+
+class _IssueCardState extends State<IssueCard> {
+  final TextEditingController _controller = TextEditingController();
+  late final _recordButtonId = '${widget.tabName}-${widget.index}';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = widget.text;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  ActionPane actionPane(int indexIssue, RoomCubit roomCubit) => ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            icon: Icons.delete,
+            onPressed: (_) => roomCubit.onDeleteIssuePressed(indexIssue),
+            borderRadius: BorderRadius.circular(10),
+            backgroundColor: Colors.red,
+          )
+        ],
+      );
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: BlocProvider.of<RoomCubit>(context),
       child: Slidable(
-        endActionPane: actionPane(index, context.read<RoomCubit>()),
-        startActionPane: actionPane(index, context.read<RoomCubit>()),
+        endActionPane: actionPane(widget.index, context.read<RoomCubit>()),
+        startActionPane: actionPane(widget.index, context.read<RoomCubit>()),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -59,7 +84,10 @@ class IssueCard extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        DateFormat().add_Hm().add_yMMMd().format(dateTime),
+                        DateFormat()
+                            .add_Hm()
+                            .add_yMMMd()
+                            .format(widget.dateTime),
                       ),
                     ),
                     IconButton(
@@ -78,69 +106,77 @@ class IssueCard extends StatelessWidget {
                             context.read<RoomCubit>().state.departments,
                         onDepartmentChanged: (department) => context
                             .read<RoomCubit>()
-                            .onDepartmentChanged(index, department),
+                            .onDepartmentChanged(widget.index, department),
                       ),
                     );
                   },
                   icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                  label: Text(department.fullName.isEmpty
+                  label: Text(widget.department.fullName.isEmpty
                       ? 'Выбрать службу'
-                      : department.fullName),
+                      : widget.department.fullName),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
+                BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: state
+                          .getRecordsByButtonId(_recordButtonId)
+                          .map(
+                            (e) => MessageAudioPlayer(
+                                key: ObjectKey(e), voiceValue: e),
+                          )
+                          .toList(),
+                    );
+                  },
+                ),
+                IssueTextField(
+                  textEditingController: _controller,
+                  index: widget.index,
+                  onTextChanged: (String text) => context
+                      .read<RoomCubit>()
+                      .onCommentChanged(widget.index, text),
+                  onClearPressed: () => context
+                      .read<RoomCubit>()
+                      .onClearCommentPressed(widget.index),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Flexible(
-                      child: IssueTextField(
-                        text: text,
-                        index: index,
-                        onTextChanged: (String text) => context
-                            .read<RoomCubit>()
-                            .onCommentChanged(index, text),
-                        onClearPressed: () => context
-                            .read<RoomCubit>()
-                            .onClearCommentPressed(index),
+                    IconButton(
+                      onPressed: () => Modals.showBottomSheet(
+                        context,
+                        GalleryBottomSheet(
+                          isCreatedTab: widget.isCreatedTab,
+                          indexIssue: widget.index,
+                          roomCubit: context.read<RoomCubit>(),
+                        ),
                       ),
+                      icon: const Icon(Icons.attach_file_rounded),
                     ),
                     const SizedBox(
-                      height: 12,
+                      width: 12,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () => Modals.showBottomSheet(
-                              context,
-                              GalleryBottomSheet(
-                                isCreatedTab: isCreatedTab,
-                                indexIssue: index,
-                                roomCubit: context.read<RoomCubit>(),
-                              )),
-                          icon: const Icon(Icons.attach_file_rounded),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        const RecordButton(id: '1'),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.send),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.close),
-                        ),
-                      ],
-                    )
+                    RecordButton(id: _recordButtonId),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.send),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _controller.clear();
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
                   ],
-                ),
+                )
               ],
             ),
           ),

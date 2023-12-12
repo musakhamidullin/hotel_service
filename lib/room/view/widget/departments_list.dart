@@ -4,10 +4,11 @@ import '../../data/models/department_info.dart';
 import 'listview_builder.dart';
 
 class DepartmentsList extends StatelessWidget {
-  const DepartmentsList(
-      {super.key,
-      required this.departments,
-      required this.onDepartmentChanged});
+  const DepartmentsList({
+    super.key,
+    required this.departments,
+    required this.onDepartmentChanged,
+  });
 
   final List<Department> departments;
   final void Function(Department department) onDepartmentChanged;
@@ -20,22 +21,23 @@ class DepartmentsList extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListViewBuilder(
-              items: departments,
-              itemBuilder: (context, i) => ListTile(
-                    onTap: () {
-                      onDepartmentChanged(departments[i]);
-                      Navigator.of(context).pop();
-                    },
-                    title: Text(departments[i].fullName),
-                  )),
-          const Spacer(),
+            items: departments,
+            itemBuilder: (context, i) => ListTile(
+              onTap: () {
+                onDepartmentChanged(departments[i]);
+                Navigator.of(context).pop();
+              },
+              title: Text(departments[i].fullName),
+            ),
+          ),
+          // const Spacer(),
           SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Отмена'))),
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('Отмена'),
+            ),
+          ),
           const SizedBox(
             height: 16,
           )
