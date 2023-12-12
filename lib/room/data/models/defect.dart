@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'issues.dart';
+import 'issue_report.dart';
 
 part 'defect.freezed.dart';
 part 'defect.g.dart';
@@ -12,7 +12,7 @@ class Defect with _$Defect {
     required int id,
     required String text,
     required DateTime createDate,
-    // required List<dynamic> hotelDefectMedias,
+    required List<ProblemMedia> hotelDefectMedias,
   }) = _Defect;
 
   factory Defect.fromJson(Map<String, dynamic> json) => _$DefectFromJson(json);

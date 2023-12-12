@@ -23,6 +23,8 @@ mixin _$Defect {
   int get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   DateTime get createDate => throw _privateConstructorUsedError;
+  List<ProblemMedia> get hotelDefectMedias =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,11 @@ abstract class $DefectCopyWith<$Res> {
   factory $DefectCopyWith(Defect value, $Res Function(Defect) then) =
       _$DefectCopyWithImpl<$Res, Defect>;
   @useResult
-  $Res call({int id, String text, DateTime createDate});
+  $Res call(
+      {int id,
+      String text,
+      DateTime createDate,
+      List<ProblemMedia> hotelDefectMedias});
 }
 
 /// @nodoc
@@ -53,6 +59,7 @@ class _$DefectCopyWithImpl<$Res, $Val extends Defect>
     Object? id = null,
     Object? text = null,
     Object? createDate = null,
+    Object? hotelDefectMedias = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -67,6 +74,10 @@ class _$DefectCopyWithImpl<$Res, $Val extends Defect>
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      hotelDefectMedias: null == hotelDefectMedias
+          ? _value.hotelDefectMedias
+          : hotelDefectMedias // ignore: cast_nullable_to_non_nullable
+              as List<ProblemMedia>,
     ) as $Val);
   }
 }
@@ -78,7 +89,11 @@ abstract class _$$DefectImplCopyWith<$Res> implements $DefectCopyWith<$Res> {
       __$$DefectImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String text, DateTime createDate});
+  $Res call(
+      {int id,
+      String text,
+      DateTime createDate,
+      List<ProblemMedia> hotelDefectMedias});
 }
 
 /// @nodoc
@@ -95,6 +110,7 @@ class __$$DefectImplCopyWithImpl<$Res>
     Object? id = null,
     Object? text = null,
     Object? createDate = null,
+    Object? hotelDefectMedias = null,
   }) {
     return _then(_$DefectImpl(
       id: null == id
@@ -109,6 +125,10 @@ class __$$DefectImplCopyWithImpl<$Res>
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      hotelDefectMedias: null == hotelDefectMedias
+          ? _value._hotelDefectMedias
+          : hotelDefectMedias // ignore: cast_nullable_to_non_nullable
+              as List<ProblemMedia>,
     ));
   }
 }
@@ -118,7 +138,11 @@ class __$$DefectImplCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.pascal)
 class _$DefectImpl implements _Defect {
   const _$DefectImpl(
-      {required this.id, required this.text, required this.createDate});
+      {required this.id,
+      required this.text,
+      required this.createDate,
+      required final List<ProblemMedia> hotelDefectMedias})
+      : _hotelDefectMedias = hotelDefectMedias;
 
   factory _$DefectImpl.fromJson(Map<String, dynamic> json) =>
       _$$DefectImplFromJson(json);
@@ -129,10 +153,18 @@ class _$DefectImpl implements _Defect {
   final String text;
   @override
   final DateTime createDate;
+  final List<ProblemMedia> _hotelDefectMedias;
+  @override
+  List<ProblemMedia> get hotelDefectMedias {
+    if (_hotelDefectMedias is EqualUnmodifiableListView)
+      return _hotelDefectMedias;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_hotelDefectMedias);
+  }
 
   @override
   String toString() {
-    return 'Defect(id: $id, text: $text, createDate: $createDate)';
+    return 'Defect(id: $id, text: $text, createDate: $createDate, hotelDefectMedias: $hotelDefectMedias)';
   }
 
   @override
@@ -143,12 +175,15 @@ class _$DefectImpl implements _Defect {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.createDate, createDate) ||
-                other.createDate == createDate));
+                other.createDate == createDate) &&
+            const DeepCollectionEquality()
+                .equals(other._hotelDefectMedias, _hotelDefectMedias));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, text, createDate);
+  int get hashCode => Object.hash(runtimeType, id, text, createDate,
+      const DeepCollectionEquality().hash(_hotelDefectMedias));
 
   @JsonKey(ignore: true)
   @override
@@ -168,7 +203,8 @@ abstract class _Defect implements Defect {
   const factory _Defect(
       {required final int id,
       required final String text,
-      required final DateTime createDate}) = _$DefectImpl;
+      required final DateTime createDate,
+      required final List<ProblemMedia> hotelDefectMedias}) = _$DefectImpl;
 
   factory _Defect.fromJson(Map<String, dynamic> json) = _$DefectImpl.fromJson;
 
@@ -178,6 +214,8 @@ abstract class _Defect implements Defect {
   String get text;
   @override
   DateTime get createDate;
+  @override
+  List<ProblemMedia> get hotelDefectMedias;
   @override
   @JsonKey(ignore: true)
   _$$DefectImplCopyWith<_$DefectImpl> get copyWith =>

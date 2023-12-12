@@ -29,10 +29,12 @@ _$ProblemMediaImpl _$$ProblemMediaImplFromJson(Map<String, dynamic> json) =>
     _$ProblemMediaImpl(
       mediaBase64: json['MediaBase64'] as String? ?? '',
       mediaType: json['MediaType'] as String? ?? '',
+      mediaInBase64: json['MediaInBase64'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$ProblemMediaImplToJson(_$ProblemMediaImpl instance) =>
     <String, dynamic>{
       'MediaBase64': instance.mediaBase64,
       'MediaType': instance.mediaType,
+      'MediaInBase64': instance.mediaInBase64,
     };

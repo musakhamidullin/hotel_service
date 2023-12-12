@@ -28,7 +28,8 @@ class IssuesState with _$IssuesState {
       index: i,
       comment: defect.text,
       date: defect.createDate.toString(),
-      isMutable: false);
+      isMutable: false,
+      images: defect.hotelDefectMedias.map((e) => e.mediaInBase64).toList());
 }
 
 class DateSerializer implements JsonConverter<String, dynamic> {
