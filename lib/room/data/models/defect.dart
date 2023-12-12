@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'issues.dart';
 
 part 'defect.freezed.dart';
 part 'defect.g.dart';

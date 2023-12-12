@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
+
+import 'package:path/path.dart';
+
+import '../../cubit/room_cubit.dart';
+import 'issues.dart';
 
 part 'issue_report.freezed.dart';
 part 'issue_report.g.dart';
@@ -21,6 +28,16 @@ class IssueReport with _$IssueReport {
 
   factory IssueReport.fromJson(Map<String, dynamic> json) =>
       _$IssueReportFromJson(json);
+
+  factory IssueReport.filledByIssueState(
+          RoomState roomState, IssuesState issue) =>
+      IssueReport(
+          personId: roomState.user.personInfo.id,
+          problemMedia: issue.images.map((e) {
+            return ProblemMedia.fromFile(e);
+          }).toList(),
+          problemText: issue.comment,
+          roomId: roomState.room.roomId);
 }
 
 @freezed
@@ -30,6 +47,10 @@ class ProblemMedia with _$ProblemMedia {
     @Default('') String mediaBase64,
     @Default('') String mediaType,
   }) = _ProblemMedia;
+
+  factory ProblemMedia.fromFile(String path) => ProblemMedia(
+      mediaType: extension(path),
+      mediaBase64: base64Encode(File(path).readAsBytesSync()));
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
       _$ProblemMediaFromJson(json);

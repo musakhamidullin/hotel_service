@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../common/widgets/modals.dart';
-import '../../cubit/room_cubit.dart';
 
 import '../../data/models/department_info.dart';
 import '../room_page.dart';
@@ -17,14 +16,20 @@ class IssueCard extends StatelessWidget {
       required this.onAttachedFielPressed,
       required this.dateTime,
       required this.department,
-      required this.roomCubit});
+      required this.onChangedComment,
+      required this.onClearComment,
+      required this.onDepartmentChanged,
+      required this.text});
 
   final int index;
   final List<Department> departments;
   final VoidCallback onAttachedFielPressed;
   final DateTime dateTime;
   final Department department;
-  final RoomCubit roomCubit;
+  final void Function(String text) onChangedComment;
+  final VoidCallback onClearComment;
+  final void Function(int i, Department department) onDepartmentChanged;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -71,25 +76,12 @@ class IssueCard extends StatelessWidget {
                 IconButton(
                     onPressed: onAttachedFielPressed,
                     icon: const Icon(Icons.attach_file_rounded)),
-                Flexible(child: RoomBuilder(
-                  builder: (context, state) {
-                    final text = state.issues[index].$3;
-                    return IssueTextField(
-                      text: text,
-                      index: index,
-                      onTextChanged: (String text) => context
-                          .read<RoomCubit>()
-                          .onCommentChanged(index, text),
-                      onClearPressed: () => context
-                          .read<RoomCubit>()
-                          .onClearCommentPressed(index),
-                    );
-                  },
-                )),
-                // TODO если захотят добавить голосовой ввод
-                // IconButton(
-                //     onPressed: () {},
-                //     icon: const Icon(Icons.mic))
+                Flexible(
+                    child: IssueTextField(
+                        text: text,
+                        index: index,
+                        onTextChanged: (String text) => onChangedComment(text),
+                        onClearPressed: onClearComment)),
               ],
             ),
           ),
@@ -110,13 +102,8 @@ class IssueCard extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemCount: departments.length,
                                   itemBuilder: (context, i) => ListTile(
-                                        onTap: () {
-                                          roomCubit.onDepartmentChanged(
-                                              (index, departments[i]));
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop();
-                                        },
+                                        onTap: () => onDepartmentChanged(
+                                            i, departments[i]),
                                         title: Text(departments[i].fullName),
                                       )),
                               const Spacer(),

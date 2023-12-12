@@ -18,10 +18,11 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Room get room => throw _privateConstructorUsedError;
-  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues =>
-      throw _privateConstructorUsedError;
+  List<IssuesState> get addedIssues => throw _privateConstructorUsedError;
+  List<IssuesState> get createdIssues => throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
+  int get tabIndex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RoomStateCopyWith<RoomState> get copyWith =>
@@ -36,9 +37,11 @@ abstract class $RoomStateCopyWith<$Res> {
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
+      List<IssuesState> addedIssues,
+      List<IssuesState> createdIssues,
       List<Department> departments,
-      User user});
+      User user,
+      int tabIndex});
 
   $RoomCopyWith<$Res> get room;
   $UserCopyWith<$Res> get user;
@@ -59,9 +62,11 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
   $Res call({
     Object? fetchStatus = null,
     Object? room = null,
-    Object? issues = null,
+    Object? addedIssues = null,
+    Object? createdIssues = null,
     Object? departments = null,
     Object? user = null,
+    Object? tabIndex = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
@@ -72,10 +77,14 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as Room,
-      issues: null == issues
-          ? _value.issues
-          : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String, DateTime, bool, Department)>,
+      addedIssues: null == addedIssues
+          ? _value.addedIssues
+          : addedIssues // ignore: cast_nullable_to_non_nullable
+              as List<IssuesState>,
+      createdIssues: null == createdIssues
+          ? _value.createdIssues
+          : createdIssues // ignore: cast_nullable_to_non_nullable
+              as List<IssuesState>,
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -84,6 +93,10 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      tabIndex: null == tabIndex
+          ? _value.tabIndex
+          : tabIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -115,9 +128,11 @@ abstract class _$$RoomStateImplCopyWith<$Res>
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
+      List<IssuesState> addedIssues,
+      List<IssuesState> createdIssues,
       List<Department> departments,
-      User user});
+      User user,
+      int tabIndex});
 
   @override
   $RoomCopyWith<$Res> get room;
@@ -138,9 +153,11 @@ class __$$RoomStateImplCopyWithImpl<$Res>
   $Res call({
     Object? fetchStatus = null,
     Object? room = null,
-    Object? issues = null,
+    Object? addedIssues = null,
+    Object? createdIssues = null,
     Object? departments = null,
     Object? user = null,
+    Object? tabIndex = null,
   }) {
     return _then(_$RoomStateImpl(
       fetchStatus: null == fetchStatus
@@ -151,10 +168,14 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as Room,
-      issues: null == issues
-          ? _value._issues
-          : issues // ignore: cast_nullable_to_non_nullable
-              as List<(int, List<XFile>, String, DateTime, bool, Department)>,
+      addedIssues: null == addedIssues
+          ? _value._addedIssues
+          : addedIssues // ignore: cast_nullable_to_non_nullable
+              as List<IssuesState>,
+      createdIssues: null == createdIssues
+          ? _value._createdIssues
+          : createdIssues // ignore: cast_nullable_to_non_nullable
+              as List<IssuesState>,
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -163,6 +184,10 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User,
+      tabIndex: null == tabIndex
+          ? _value.tabIndex
+          : tabIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -173,18 +198,13 @@ class _$RoomStateImpl extends _RoomState {
   const _$RoomStateImpl(
       {this.fetchStatus = FetchStatus.init,
       this.room = const Room(),
-      final List<(int, List<XFile>, String, DateTime, bool, Department)>
-          issues = const <(
-        int,
-        List<XFile>,
-        String,
-        DateTime,
-        bool isMutable,
-        Department
-      )>[],
+      final List<IssuesState> addedIssues = const <IssuesState>[],
+      final List<IssuesState> createdIssues = const <IssuesState>[],
       final List<Department> departments = const <Department>[],
-      this.user = const User(userId: '', personInfo: Person(id: 0))})
-      : _issues = issues,
+      this.user = const User(userId: '', personInfo: Person(id: 0)),
+      this.tabIndex = 0})
+      : _addedIssues = addedIssues,
+        _createdIssues = createdIssues,
         _departments = departments,
         super._();
 
@@ -194,13 +214,22 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final Room room;
-  final List<(int, List<XFile>, String, DateTime, bool, Department)> _issues;
+  final List<IssuesState> _addedIssues;
   @override
   @JsonKey()
-  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues {
-    if (_issues is EqualUnmodifiableListView) return _issues;
+  List<IssuesState> get addedIssues {
+    if (_addedIssues is EqualUnmodifiableListView) return _addedIssues;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_issues);
+    return EqualUnmodifiableListView(_addedIssues);
+  }
+
+  final List<IssuesState> _createdIssues;
+  @override
+  @JsonKey()
+  List<IssuesState> get createdIssues {
+    if (_createdIssues is EqualUnmodifiableListView) return _createdIssues;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_createdIssues);
   }
 
   final List<Department> _departments;
@@ -215,10 +244,13 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final User user;
+  @override
+  @JsonKey()
+  final int tabIndex;
 
   @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus, room: $room, issues: $issues, departments: $departments, user: $user)';
+    return 'RoomState(fetchStatus: $fetchStatus, room: $room, addedIssues: $addedIssues, createdIssues: $createdIssues, departments: $departments, user: $user, tabIndex: $tabIndex)';
   }
 
   @override
@@ -229,10 +261,15 @@ class _$RoomStateImpl extends _RoomState {
             (identical(other.fetchStatus, fetchStatus) ||
                 other.fetchStatus == fetchStatus) &&
             (identical(other.room, room) || other.room == room) &&
-            const DeepCollectionEquality().equals(other._issues, _issues) &&
+            const DeepCollectionEquality()
+                .equals(other._addedIssues, _addedIssues) &&
+            const DeepCollectionEquality()
+                .equals(other._createdIssues, _createdIssues) &&
             const DeepCollectionEquality()
                 .equals(other._departments, _departments) &&
-            (identical(other.user, user) || other.user == user));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.tabIndex, tabIndex) ||
+                other.tabIndex == tabIndex));
   }
 
   @override
@@ -240,9 +277,11 @@ class _$RoomStateImpl extends _RoomState {
       runtimeType,
       fetchStatus,
       room,
-      const DeepCollectionEquality().hash(_issues),
+      const DeepCollectionEquality().hash(_addedIssues),
+      const DeepCollectionEquality().hash(_createdIssues),
       const DeepCollectionEquality().hash(_departments),
-      user);
+      user,
+      tabIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -255,9 +294,11 @@ abstract class _RoomState extends RoomState {
   const factory _RoomState(
       {final FetchStatus fetchStatus,
       final Room room,
-      final List<(int, List<XFile>, String, DateTime, bool, Department)> issues,
+      final List<IssuesState> addedIssues,
+      final List<IssuesState> createdIssues,
       final List<Department> departments,
-      final User user}) = _$RoomStateImpl;
+      final User user,
+      final int tabIndex}) = _$RoomStateImpl;
   const _RoomState._() : super._();
 
   @override
@@ -265,11 +306,15 @@ abstract class _RoomState extends RoomState {
   @override
   Room get room;
   @override
-  List<(int, List<XFile>, String, DateTime, bool, Department)> get issues;
+  List<IssuesState> get addedIssues;
+  @override
+  List<IssuesState> get createdIssues;
   @override
   List<Department> get departments;
   @override
   User get user;
+  @override
+  int get tabIndex;
   @override
   @JsonKey(ignore: true)
   _$$RoomStateImplCopyWith<_$RoomStateImpl> get copyWith =>

@@ -1,16 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
 
 import '../data/models/department_info.dart';
 import '../data/models/issue_report.dart';
+import '../data/models/issues.dart';
 import '../data/repositories/room_rep.dart';
 
 part 'room_state.dart';
@@ -24,27 +21,14 @@ extension AddImage on List<XFile> {
       images..add(image.$2 ?? XFile(''));
 }
 
-extension DeleteIssue
-    on List<(int, List<XFile>, String, DateTime, bool isMutable, Department)> {
-  List<(int, List<XFile>, String, DateTime, bool isMutable, Department)>
-      deleteIssue(
-          List<(int, List<XFile>, String, DateTime, bool isMutable, Department)>
-              issues,
-          int i) {
-    final mutabledIssues = [...issues]..removeWhere((e) => e.$1 == i);
+extension DeleteIssue on List<IssuesState> {
+  List<IssuesState> deleteIssue(List<IssuesState> issues, int i) {
+    final mutabledIssues = [...issues]..removeWhere((e) => e.index == i);
 
-    final List<(int, List<XFile>, String, DateTime, bool isMutable, Department)>
-        updatedIssues = [];
+    final List<IssuesState> updatedIssues = [];
 
     for (var i = 0; i < mutabledIssues.length; i++) {
-      updatedIssues.add((
-        i,
-        mutabledIssues[i].$2,
-        mutabledIssues[i].$3,
-        mutabledIssues[i].$4,
-        mutabledIssues[i].$5,
-        mutabledIssues[i].$6,
-      ));
+      updatedIssues.add(mutabledIssues[i].copyWith(index: i));
     }
 
     return updatedIssues;
@@ -59,9 +43,9 @@ extension IndexedIterable<E> on Iterable<E> {
 }
 
 class RoomCubit extends Cubit<RoomState> {
-  RoomCubit({required RoomRep roomRep})
+  RoomCubit({required RoomRep roomRep, required User user})
       : _roomRep = roomRep,
-        super(const RoomState());
+        super(RoomState(user: user));
 
   final RoomRep _roomRep;
 
@@ -73,13 +57,12 @@ class RoomCubit extends Cubit<RoomState> {
       final room = await _roomRep.fetchRoom(id);
 
       final defects = room.defects
-          .mapIndexed((d, i) =>
-              (i++, <XFile>[], d.text, d.createDate, false, const Department()))
+          .mapIndexed((d, i) => IssuesState.filledByDefect(d, i))
           .toList();
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
-        issues: defects,
+        createdIssues: defects,
         room: room,
       ));
 
@@ -100,118 +83,155 @@ class RoomCubit extends Cubit<RoomState> {
     ]));
   }
 
-  void onClearCommentPressed(int i) => emit(state.copyWith(issues: [
-        ...state.issues
-            .map((e) => (e.$1, e.$2, e.$1 == i ? '' : e.$3, e.$4, e.$5, e.$6))
-            .toList()
-      ]));
+  void onClearCommentPressed(int i) => state.tabIndex == 0
+      ? emit(state.copyWith(createdIssues: [
+          ...state.createdIssues
+              .map((e) => e.index == i ? e.copyWith(comment: '') : e)
+              .toList()
+        ]))
+      : emit(state.copyWith(addedIssues: [
+          ...state.addedIssues
+              .map((e) => e.index == i ? e.copyWith(comment: '') : e)
+              .toList()
+        ]));
 
-  void onCommentChanged(int i, String text) => emit(state.copyWith(issues: [
-        ...state.issues
-            .map((e) => (e.$1, e.$2, e.$1 == i ? text : e.$3, e.$4, e.$5, e.$6))
-            .toList()
-      ]));
+  void onCommentChanged(int i, String text) => state.tabIndex == 0
+      ? emit(state.copyWith(createdIssues: [
+          ...state.createdIssues
+              .map((e) => e.index == i ? e.copyWith(comment: text) : e)
+              .toList()
+        ]))
+      : emit(state.copyWith(addedIssues: [
+          ...state.addedIssues
+              .map((e) => e.index == i ? e.copyWith(comment: text) : e)
+              .toList()
+        ]));
 
-  void onAddIssuePressed() => emit(state.copyWith(issues: [
-        ...state.issues,
-        (
-          state.issues.isEmpty ? 0 : state.issues.length - 1,
-          [],
-          '',
-          DateTime.now(),
-          true,
-          const Department()
-        ),
-      ]));
+  void onAddIssuePressed() {
+    int index = 0;
 
-  void onDeleteIssuePressed(int i) => emit(
-      state.copyWith(issues: [...state.issues.deleteIssue(state.issues, i)]));
+    index = state.addedIssues.isEmpty
+        ? 0
+        : index = state.addedIssues.lastIndexOf(state.addedIssues.last) + 1;
 
-  void onFlushPressed(int i) => emit(state.copyWith(
-      issues: state.issues
-          .map((e) =>
-              (e.$1, e.$1 == i ? <XFile>[] : e.$2, e.$3, e.$4, e.$5, e.$6))
-          .toList()));
-
-  void onAddImageFromCameraPressed((int, XFile?) image) {
-    if (image.$2 == null) return;
-
-    emit(state.copyWith(
-        issues: state.issues
-            .map((e) => (
-                  e.$1,
-                  e.$1 == image.$1 ? e.$2.addImage(image, e.$2) : e.$2,
-                  e.$3,
-                  e.$4,
-                  e.$5,
-                  e.$6
-                ))
-            .toList()));
+    emit(state.copyWith(addedIssues: [
+      ...state.addedIssues,
+      IssuesState.newIssue(
+        state.addedIssues.isEmpty ? 0 : index,
+      )
+    ]));
   }
 
-  void onAddImagesPressed((int, List<XFile>) image) => emit(state.copyWith(
-      issues: state.issues
-          .map((e) => (
-                e.$1,
-                e.$1 == image.$1 ? <XFile>[...e.$2, ...image.$2] : e.$2,
-                e.$3,
-                e.$4,
-                e.$5,
-                e.$6
-              ))
-          .toList()));
+  void onDeleteIssuePressed(int i) => state.tabIndex == 0
+      ? emit(state.copyWith(createdIssues: [
+          ...state.createdIssues.deleteIssue(state.createdIssues, i)
+        ]))
+      : emit(state.copyWith(addedIssues: [
+          ...state.addedIssues.deleteIssue(state.addedIssues, i)
+        ]));
 
-  void onDeleteImagePressed(
-    XFile image,
-  ) =>
-      emit(state.copyWith(
-          issues: state.issues
-              .map((e) => (
-                    e.$1,
-                    e.$2..removeWhere((i) => i == image),
-                    e.$3,
-                    e.$4,
-                    e.$5,
-                    e.$6
-                  ))
+  void onFlushPressed(int i) => state.tabIndex == 0
+      ? emit(state.copyWith(
+          createdIssues: state.createdIssues
+              .map((e) => e.index == i ? e.copyWith(images: []) : e)
+              .toList()))
+      : emit(state.copyWith(
+          addedIssues: state.addedIssues
+              .map((e) => e.index == i ? e.copyWith(images: []) : e)
               .toList()));
 
-  void onOwnerIdChanged(User user) => emit(state.copyWith(user: user));
+  void onAddImageFromCameraPressed((int, XFile?) image) => state.tabIndex == 0
+      ? () {
+          if (image.$2 == null) return;
 
-  void onDepartmentChanged((int, Department) department) => emit(state.copyWith(
-      issues: state.issues
-          .map((e) => (
-                e.$1,
-                e.$2,
-                e.$3,
-                e.$4,
-                e.$5,
-                e.$1 == department.$1 ? department.$2 : e.$6
-              ))
-          .toList()));
+          emit(state.copyWith(
+              createdIssues: state.createdIssues
+                  .map((e) => e.index == image.$1
+                      ? e.copyWith(images: [
+                          ...state.createdIssues[image.$1].images,
+                          image.$2!.path,
+                        ])
+                      : e)
+                  .toList()));
+        }
+      : () {
+          if (image.$2 == null) return;
+
+          emit(state.copyWith(
+              addedIssues: state.addedIssues
+                  .map((e) => e.index == image.$1
+                      ? e.copyWith(images: [
+                          ...state.addedIssues[image.$1].images,
+                          image.$2!.path,
+                        ])
+                      : e)
+                  .toList()));
+        };
+
+  void onAddImagesPressed((int, List<XFile>) image) => state.tabIndex == 0
+      ? emit(state.copyWith(
+          createdIssues: state.createdIssues
+              .map((e) => e.index == image.$1
+                  ? e.copyWith(images: [
+                      ...state.createdIssues[image.$1].images,
+                      ...image.$2.map((e) => e.path)
+                    ])
+                  : e)
+              .toList()))
+      : emit(state.copyWith(
+          addedIssues: state.addedIssues
+              .map((e) => e.index == image.$1
+                  ? e.copyWith(images: [
+                      ...state.addedIssues[image.$1].images,
+                      ...image.$2.map((e) => e.path)
+                    ])
+                  : e)
+              .toList()));
+
+  void onDeleteImagePressed((int, String) image) => state.tabIndex == 0
+      ? emit(state.copyWith(
+          createdIssues: [...state.createdIssues]
+              .map((issue) => issue.index == image.$1
+                  ? issue.copyWith(
+                      images: [...issue.images]
+                        ..removeWhere((e) => e == image.$2))
+                  : issue)
+              .toList()))
+      : emit(state.copyWith(
+          addedIssues: [...state.addedIssues]
+              .map((issue) => issue.index == image.$1
+                  ? issue.copyWith(
+                      images: [...issue.images]
+                        ..removeWhere((e) => e == image.$2))
+                  : issue)
+              .toList()));
+
+  void onDepartmentChanged((int, Department) department) => state.tabIndex == 0
+      ? emit(state.copyWith(
+          createdIssues: state.createdIssues
+              .map((e) => e.index == department.$1
+                  ? e.copyWith(department: department.$2)
+                  : e)
+              .toList()))
+      : emit(state.copyWith(
+          addedIssues: state.addedIssues
+              .map((e) => e.index == department.$1
+                  ? e.copyWith(department: department.$2)
+                  : e)
+              .toList()));
 
   void onCompletePressed() async {
     emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
-    final report = state.issues
-        .map((e) => IssueReport(
-            personId: state.user.personInfo.id,
-            problemMedia: e.$2.map((e) {
-              final file = File(e.path);
+    // final report = state.addedIssues
+    //     .map((issueState) => IssueReport.filledByIssueState(state, issueState))
+    //     .toList()
+    //     .last;
 
-              final bytes = file.readAsBytesSync();
-
-              final media64Base = base64UrlEncode(bytes);
-
-              return ProblemMedia(
-                  mediaBase64: media64Base, mediaType: extension(e.path));
-            }).toList(),
-            problemText: e.$3,
-            roomId: state.room.roomId))
-        .last;
-
-    await _roomRep.sendReports(report);
+    // await _roomRep.sendReports(report);
 
     emit(state.copyWith(fetchStatus: FetchStatus.success));
   }
+
+  void onTabChanged(int i) => emit(state.copyWith(tabIndex: i));
 }

@@ -1,20 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class IssueImages extends StatelessWidget {
   const IssueImages(
       {super.key,
       required this.index,
       required this.images,
-      required this.setModalState,
       required this.onFlushPressed,
       required this.onDeleteImagePressed});
 
   final int index;
-  final List<XFile> images;
-  final StateSetter setModalState;
+  final List<String> images;
   final VoidCallback onFlushPressed;
   final void Function(int photoIndex) onDeleteImagePressed;
 
@@ -51,7 +48,7 @@ class IssueImages extends StatelessWidget {
                 child: Stack(children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.file(File(images[i].path)),
+                    child: Image.file(File(images[i])),
                   ),
                   Positioned.fill(
                     child: Align(
