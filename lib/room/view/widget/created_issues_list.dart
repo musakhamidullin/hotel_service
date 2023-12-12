@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/issues.dart';
 import 'issue_card.dart';
+import 'listview_builder.dart';
 
 class CreatedIssuesList extends StatelessWidget {
   const CreatedIssuesList({super.key, required this.createdIssues});
@@ -10,18 +11,15 @@ class CreatedIssuesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: const EdgeInsets.only(bottom: 100),
-        itemCount: createdIssues.length,
-        shrinkWrap: true,
-        itemBuilder: (_, issueIndex) {
-          return IssueCard(
-            index: issueIndex,
-            dateTime: DateTime.parse(createdIssues[issueIndex].date),
-            text: createdIssues[issueIndex].comment,
-            department: createdIssues[issueIndex].department,
-            isCreatedTab: true,
-          );
-        });
+    return ListViewBuilder<IssuesState>(
+      itemBuilder: (context, i) => IssueCard(
+        index: i,
+        dateTime: DateTime.parse(createdIssues[i].date),
+        text: createdIssues[i].comment,
+        department: createdIssues[i].department,
+        isCreatedTab: true,
+      ),
+      items: createdIssues,
+    );
   }
 }

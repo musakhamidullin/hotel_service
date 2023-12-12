@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/department_info.dart';
+import 'listview_builder.dart';
 
 class DepartmentsList extends StatelessWidget {
   const DepartmentsList(
@@ -18,9 +19,8 @@ class DepartmentsList extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListView.builder(
-              shrinkWrap: true,
-              itemCount: departments.length,
+          ListViewBuilder(
+              items: departments,
               itemBuilder: (context, i) => ListTile(
                     onTap: () {
                       onDepartmentChanged(departments[i]);
