@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -57,7 +61,7 @@ class RoomCubit extends Cubit<RoomState> {
       final room = await _roomRep.fetchRoom(id);
 
       final defects = room.defects
-          .mapIndexed((d, i) => IssuesState.filledByDefect(d, i))
+          .mapIndexed((d, i) => IssuesState.filledByDefect(d, i,))
           .toList();
 
       emit(state.copyWith(
@@ -149,7 +153,7 @@ class RoomCubit extends Cubit<RoomState> {
                 .map((e) => e.index == i
                     ? e.copyWith(images: [
                         ...state.createdIssues[i].images,
-                        image.path,
+                        base64UrlEncode(File(image.path).readAsBytesSync()),
                       ])
                     : e)
                 .toList())
@@ -158,31 +162,34 @@ class RoomCubit extends Cubit<RoomState> {
                 .map((e) => e.index == i
                     ? e.copyWith(images: [
                         ...state.addedIssues[i].images,
-                        image.path,
+                        base64UrlEncode(File(image.path).readAsBytesSync()),
                       ])
                     : e)
                 .toList()));
   }
 
-  void onAddImagesPressed(int i, List<XFile> images) => emit(state.tabIndex == 0
-      ? state.copyWith(
-          createdIssues: state.createdIssues
-              .map((e) => e.index == i
-                  ? e.copyWith(images: [
-                      ...state.createdIssues[i].images,
-                      ...images.map((e) => e.path)
-                    ])
-                  : e)
-              .toList())
-      : state.copyWith(
-          addedIssues: state.addedIssues
-              .map((e) => e.index == i
-                  ? e.copyWith(images: [
-                      ...state.addedIssues[i].images,
-                      ...images.map((e) => e.path)
-                    ])
-                  : e)
-              .toList()));
+  void onAddImagesFromGalleryPressed(int i, List<XFile> images) =>
+      emit(state.tabIndex == 0
+          ? state.copyWith(
+              createdIssues: state.createdIssues
+                  .map((e) => e.index == i
+                      ? e.copyWith(images: [
+                          ...state.createdIssues[i].images,
+                          ...images.map((e) =>
+                              base64UrlEncode(File(e.path).readAsBytesSync()))
+                        ])
+                      : e)
+                  .toList())
+          : state.copyWith(
+              addedIssues: state.addedIssues
+                  .map((e) => e.index == i
+                      ? e.copyWith(images: [
+                          ...state.addedIssues[i].images,
+                          ...images.map((e) =>
+                              base64UrlEncode(File(e.path).readAsBytesSync()))
+                        ])
+                      : e)
+                  .toList()));
 
   void onDeleteImagePressed(int i, String image) => state.tabIndex == 0
       ? emit(state.copyWith(

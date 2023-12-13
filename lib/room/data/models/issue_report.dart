@@ -46,10 +46,12 @@ class ProblemMedia with _$ProblemMedia {
   const factory ProblemMedia({
     @Default('') String mediaBase64,
     @Default('') String mediaType,
+    @Default('') String mediaInBase64,
   }) = _ProblemMedia;
 
   factory ProblemMedia.fromFile(String path) => ProblemMedia(
       mediaType: extension(path),
+      mediaInBase64: base64Encode(File(path).readAsBytesSync()),
       mediaBase64: base64Encode(File(path).readAsBytesSync()));
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>

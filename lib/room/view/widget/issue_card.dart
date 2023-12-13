@@ -12,6 +12,8 @@ import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
 
+import '../room_page.dart';
+import 'mini_images.dart';
 import 'departments_list.dart';
 import 'gallery_sheet.dart';
 import 'issue_field.dart';
@@ -95,6 +97,19 @@ class _IssueCardState extends State<IssueCard> {
                       icon: const Icon(Icons.delete),
                     )
                   ],
+                ),
+                RoomBuilder(
+                  builder: (context, state) {
+                    final images = widget.isCreatedTab
+                        ? state.createdIssues[widget.index].images
+                        : state.addedIssues[widget.index].images;
+                    return images.isNotEmpty
+                        ? MiniImagesIssueCard(
+                            index: widget.index,
+                            images: images,
+                          )
+                        : const SizedBox.shrink();
+                  },
                 ),
                 TextButton.icon(
                   onPressed: () {

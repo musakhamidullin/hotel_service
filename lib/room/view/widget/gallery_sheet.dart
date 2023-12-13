@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../cubit/room_cubit.dart';
 import '../room_page.dart';
-import 'issue_images.dart';
+import 'gridview_images.dart';
 
 class GalleryBottomSheet extends StatefulWidget {
   const GalleryBottomSheet({
@@ -25,7 +25,7 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
   Future<void> _onSelectedFromGalleryPressed(int i, RoomCubit roomCubit) async {
     final images = await ImagePicker().pickMultiImage();
 
-    roomCubit.onAddImagesPressed(i, images);
+    roomCubit.onAddImagesFromGalleryPressed(i, images);
   }
 
   Future<void> _onSelectedCameraPressed(int i, RoomCubit roomCubit) async {
@@ -49,7 +49,7 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (images.isNotEmpty)
-              IssueImages(
+              GridViewIssueImages(
                 index: widget.indexIssue,
                 images: images,
                 onFlushPressed: () =>
@@ -58,6 +58,7 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
                   widget.roomCubit.onDeleteImagePressed(
                       widget.indexIssue, images[photoIndex]);
                 },
+                roomCubit: widget.roomCubit,
               ),
             const SizedBox(
               height: 8,

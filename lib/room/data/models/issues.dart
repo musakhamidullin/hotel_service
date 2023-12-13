@@ -27,6 +27,7 @@ class IssuesState with _$IssuesState {
   factory IssuesState.filledByDefect(Defect defect, int i) => IssuesState(
       index: i,
       comment: defect.text,
+      images: defect.hotelDefectMedias.map((e) => e.mediaInBase64).toList(),
       date: defect.createDate.toString(),
       isMutable: false);
 }
