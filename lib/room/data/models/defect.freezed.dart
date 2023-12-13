@@ -22,7 +22,8 @@ Defect _$DefectFromJson(Map<String, dynamic> json) {
 mixin _$Defect {
   int get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  DateTime get createDate => throw _privateConstructorUsedError;
+  String get createDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'hotelDefectMedias')
   List<ProblemMedia> get hotelDefectMedias =>
       throw _privateConstructorUsedError;
 
@@ -39,7 +40,8 @@ abstract class $DefectCopyWith<$Res> {
   $Res call(
       {int id,
       String text,
-      DateTime createDate,
+      String createDate,
+      @JsonKey(name: 'hotelDefectMedias')
       List<ProblemMedia> hotelDefectMedias});
 }
 
@@ -73,7 +75,7 @@ class _$DefectCopyWithImpl<$Res, $Val extends Defect>
       createDate: null == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       hotelDefectMedias: null == hotelDefectMedias
           ? _value.hotelDefectMedias
           : hotelDefectMedias // ignore: cast_nullable_to_non_nullable
@@ -92,7 +94,8 @@ abstract class _$$DefectImplCopyWith<$Res> implements $DefectCopyWith<$Res> {
   $Res call(
       {int id,
       String text,
-      DateTime createDate,
+      String createDate,
+      @JsonKey(name: 'hotelDefectMedias')
       List<ProblemMedia> hotelDefectMedias});
 }
 
@@ -124,7 +127,7 @@ class __$$DefectImplCopyWithImpl<$Res>
       createDate: null == createDate
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       hotelDefectMedias: null == hotelDefectMedias
           ? _value._hotelDefectMedias
           : hotelDefectMedias // ignore: cast_nullable_to_non_nullable
@@ -138,23 +141,28 @@ class __$$DefectImplCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.pascal)
 class _$DefectImpl implements _Defect {
   const _$DefectImpl(
-      {required this.id,
-      required this.text,
-      required this.createDate,
-      required final List<ProblemMedia> hotelDefectMedias})
+      {this.id = 0,
+      this.text = '',
+      this.createDate = '',
+      @JsonKey(name: 'hotelDefectMedias')
+      final List<ProblemMedia> hotelDefectMedias = const []})
       : _hotelDefectMedias = hotelDefectMedias;
 
   factory _$DefectImpl.fromJson(Map<String, dynamic> json) =>
       _$$DefectImplFromJson(json);
 
   @override
+  @JsonKey()
   final int id;
   @override
+  @JsonKey()
   final String text;
   @override
-  final DateTime createDate;
+  @JsonKey()
+  final String createDate;
   final List<ProblemMedia> _hotelDefectMedias;
   @override
+  @JsonKey(name: 'hotelDefectMedias')
   List<ProblemMedia> get hotelDefectMedias {
     if (_hotelDefectMedias is EqualUnmodifiableListView)
       return _hotelDefectMedias;
@@ -201,10 +209,11 @@ class _$DefectImpl implements _Defect {
 
 abstract class _Defect implements Defect {
   const factory _Defect(
-      {required final int id,
-      required final String text,
-      required final DateTime createDate,
-      required final List<ProblemMedia> hotelDefectMedias}) = _$DefectImpl;
+      {final int id,
+      final String text,
+      final String createDate,
+      @JsonKey(name: 'hotelDefectMedias')
+      final List<ProblemMedia> hotelDefectMedias}) = _$DefectImpl;
 
   factory _Defect.fromJson(Map<String, dynamic> json) = _$DefectImpl.fromJson;
 
@@ -213,8 +222,9 @@ abstract class _Defect implements Defect {
   @override
   String get text;
   @override
-  DateTime get createDate;
+  String get createDate;
   @override
+  @JsonKey(name: 'hotelDefectMedias')
   List<ProblemMedia> get hotelDefectMedias;
   @override
   @JsonKey(ignore: true)

@@ -51,6 +51,7 @@ class ProblemMedia with _$ProblemMedia {
 
   factory ProblemMedia.fromFile(String path) => ProblemMedia(
       mediaType: extension(path),
+      mediaInBase64: base64Encode(File(path).readAsBytesSync()),
       mediaBase64: base64Encode(File(path).readAsBytesSync()));
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
