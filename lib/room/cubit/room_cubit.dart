@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -11,6 +10,7 @@ import '../../home/data/models/room.dart';
 
 import '../data/models/department_info.dart';
 
+import '../data/models/issue_report.dart';
 import '../data/models/issues.dart';
 import '../data/repositories/room_rep.dart';
 
@@ -61,7 +61,10 @@ class RoomCubit extends Cubit<RoomState> {
       final room = await _roomRep.fetchRoom(id);
 
       final defects = room.defects
-          .mapIndexed((d, i) => IssuesState.filledByDefect(d, i,))
+          .mapIndexed((d, i) => IssuesState.filledByDefect(
+                d,
+                i,
+              ))
           .toList();
 
       emit(state.copyWith(
@@ -218,16 +221,21 @@ class RoomCubit extends Cubit<RoomState> {
               .toList()));
 
   void onCompletePressed() async {
-    emit(state.copyWith(fetchStatus: FetchStatus.loading));
+    try {
+      emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
-    // final report = state.addedIssues
-    //     .map((issueState) => IssueReport.filledByIssueState(state, issueState))
-    //     .toList()
-    //     .last;
+      final report = state.createdIssues
+          .map(
+              (issueState) => IssueReport.filledByIssueState(state, issueState))
+          .toList()
+          .last;
 
-    // await _roomRep.sendReports(report);
+      // await _roomRep.sendReports(report);
 
-    emit(state.copyWith(fetchStatus: FetchStatus.success));
+      emit(state.copyWith(fetchStatus: FetchStatus.success));
+    } catch (e) {
+      print(e);
+    }
   }
 
   void onTabChanged(int i) => emit(state.copyWith(tabIndex: i));
