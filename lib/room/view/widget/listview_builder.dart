@@ -23,7 +23,7 @@ final class ListViewBuilder<T> extends StatelessWidget {
     return isSeparated
         ? ListView.separated(
             scrollDirection: isHorizontal ? Axis.horizontal : Axis.vertical,
-            separatorBuilder: separatorBuilder != null
+            separatorBuilder: separatorBuilder == null
                 ? (_, __) => const SizedBox.shrink()
                 : separatorBuilder!,
             padding: padding,

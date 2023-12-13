@@ -24,12 +24,12 @@ class MiniImagesIssueCard extends StatelessWidget {
           SizedBox(
             height: 100,
             width: double.infinity,
-            child: ListViewBuilder(
+            child: ListViewBuilder<String>(
                 padding: EdgeInsets.zero,
                 isHorizontal: true,
                 isSeparated: true,
                 separatorBuilder: (_, i) => const SizedBox(
-                      width: 6,
+                      width: 2,
                     ),
                 items: images,
                 itemBuilder: (_, i) {
