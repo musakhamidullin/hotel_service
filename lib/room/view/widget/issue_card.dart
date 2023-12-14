@@ -79,7 +79,7 @@ class _IssueCardState extends State<IssueCard> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -98,24 +98,29 @@ class _IssueCardState extends State<IssueCard> {
                     )
                   ],
                 ),
-                TextButton.icon(
-                  onPressed: () {
-                    Modals.showDraggableBottomSheet(
-                      showDragHandle: true,
-                      context,
-                      DepartmentsList(
-                        departments:
-                            context.read<RoomCubit>().state.departments,
-                        onDepartmentChanged: (department) => context
-                            .read<RoomCubit>()
-                            .onDepartmentChanged(widget.index, department),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                  label: Text(widget.department.fullName.isEmpty
-                      ? 'Выбрать службу'
-                      : widget.department.fullName),
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () {
+                      Modals.showDraggableBottomSheet(
+                        showDragHandle: true,
+                        context,
+                        DepartmentsList(
+                          departments:
+                              context.read<RoomCubit>().state.departments,
+                          onDepartmentChanged: (department) => context
+                              .read<RoomCubit>()
+                              .onDepartmentChanged(widget.index, department),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    label: Text(widget.department.fullName.isEmpty
+                        ? 'Выбрать службу'
+                        : widget.department.fullName),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 RoomBuilder(
                   builder: (context, state) {
@@ -124,11 +129,14 @@ class _IssueCardState extends State<IssueCard> {
                         : state.addedIssues[widget.index].images;
                     return images.isNotEmpty
                         ? MiniImagesIssueCard(
-                      index: widget.index,
-                      images: images,
-                    )
+                            index: widget.index,
+                            images: images,
+                          )
                         : const SizedBox.shrink();
                   },
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
                   builder: (context, state) {

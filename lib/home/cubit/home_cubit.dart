@@ -29,7 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
           {String roomNumber = '', FilterValue? filterValue}) =>
       {
         "Page": _currPage,
-        "PageSize": 20,
+        "PageSize": 40,
         "RoomNumber": roomNumber,
         "OwnerId": user.personInfo.ownerId,
         if (filterValue != null) ...filterValue.toBody()
