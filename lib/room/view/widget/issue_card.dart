@@ -98,19 +98,6 @@ class _IssueCardState extends State<IssueCard> {
                     )
                   ],
                 ),
-                RoomBuilder(
-                  builder: (context, state) {
-                    final images = widget.isCreatedTab
-                        ? state.createdIssues[widget.index].images
-                        : state.addedIssues[widget.index].images;
-                    return images.isNotEmpty
-                        ? MiniImagesIssueCard(
-                            index: widget.index,
-                            images: images,
-                          )
-                        : const SizedBox.shrink();
-                  },
-                ),
                 TextButton.icon(
                   onPressed: () {
                     Modals.showDraggableBottomSheet(
@@ -129,6 +116,19 @@ class _IssueCardState extends State<IssueCard> {
                   label: Text(widget.department.fullName.isEmpty
                       ? 'Выбрать службу'
                       : widget.department.fullName),
+                ),
+                RoomBuilder(
+                  builder: (context, state) {
+                    final images = widget.isCreatedTab
+                        ? state.createdIssues[widget.index].images
+                        : state.addedIssues[widget.index].images;
+                    return images.isNotEmpty
+                        ? MiniImagesIssueCard(
+                      index: widget.index,
+                      images: images,
+                    )
+                        : const SizedBox.shrink();
+                  },
                 ),
                 BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
                   builder: (context, state) {
