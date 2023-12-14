@@ -24,13 +24,11 @@ class GalleryBottomSheet extends StatefulWidget {
 class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
   Future<void> _onSelectedFromGalleryPressed(int i, RoomCubit roomCubit) async {
     final images = await ImagePicker().pickMultiImage();
-
     roomCubit.onAddImagesFromGalleryPressed(i, images);
   }
 
   Future<void> _onSelectedCameraPressed(int i, RoomCubit roomCubit) async {
     final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
     roomCubit.onAddImageFromCameraPressed(i, image);
   }
 
@@ -96,9 +94,10 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
                   Flexible(
                     child: SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Ок')),
+                      child: FilledButton.tonal(
+                        onPressed: Navigator.of(context).pop,
+                        child: const Text('Сохранить'),
+                      ),
                     ),
                   ),
                 ],
