@@ -192,6 +192,7 @@ class _IssueCardState extends State<IssueCard> {
                     IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
+
                         Modals.showBottomSheet(
                             context,
                             DraggableScrollableSheet(

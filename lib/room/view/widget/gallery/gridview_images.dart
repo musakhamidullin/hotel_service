@@ -74,8 +74,7 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
                     child: Align(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        onTap: () => widget.roomCubit.onDeleteImagePressed(
-                            widget.index, widget.images[i]),
+                        onTap: () => widget.onDeleteImagePressed(i),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,

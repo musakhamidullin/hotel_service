@@ -9,6 +9,7 @@ class RoomState with _$RoomState {
     @Default(Room()) Room room,
     @Default(<IssuesState>[]) List<IssuesState> addedIssues,
     @Default(<IssuesState>[]) List<IssuesState> createdIssues,
+    @Default(<String>[]) List<String> tempImages,
     @Default(<Department>[]) List<Department> departments,
     @Default(User(userId: '', personInfo: Person(id: 0))) User user,
     @Default(0) int tabIndex,
