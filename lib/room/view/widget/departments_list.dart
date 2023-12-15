@@ -8,40 +8,25 @@ class DepartmentsList extends StatelessWidget {
     super.key,
     required this.departments,
     required this.onDepartmentChanged,
+    required this.scrollController,
   });
 
   final List<Department> departments;
   final void Function(Department department) onDepartmentChanged;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListViewBuilder(
-            items: departments,
-            itemBuilder: (context, i) => ListTile(
-              onTap: () {
-                onDepartmentChanged(departments[i]);
-                Navigator.of(context).pop();
-              },
-              title: Text(departments[i].fullName),
-            ),
-          ),
-          // const Spacer(),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('Отмена'),
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          )
-        ],
+    return ListViewBuilder(
+      padding: EdgeInsets.zero,
+      scrollController: scrollController,
+      items: departments,
+      itemBuilder: (context, i) => ListTile(
+        onTap: () {
+          onDepartmentChanged(departments[i]);
+          Navigator.of(context).pop();
+        },
+        title: Text(departments[i].fullName),
       ),
     );
   }

@@ -5,23 +5,20 @@ import '../../cubit/room_cubit.dart';
 import '../room_page.dart';
 import 'gridview_images.dart';
 
-class GalleryBottomSheet extends StatefulWidget {
+class GalleryBottomSheet extends StatelessWidget {
   const GalleryBottomSheet({
     super.key,
     required this.indexIssue,
     this.isCreatedTab = false,
     required this.roomCubit,
+    required this.scrollController,
   });
 
   final int indexIssue;
   final bool isCreatedTab;
   final RoomCubit roomCubit;
+  final ScrollController scrollController;
 
-  @override
-  State<GalleryBottomSheet> createState() => _GalleryBottomSheetState();
-}
-
-class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
   Future<void> _onSelectedFromGalleryPressed(int i, RoomCubit roomCubit) async {
     final images = await ImagePicker().pickMultiImage();
     roomCubit.onAddImagesFromGalleryPressed(i, images);
@@ -35,11 +32,11 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return RoomBuilder(
-      bloc: widget.roomCubit,
+      bloc: roomCubit,
       builder: (context, state) {
-        final images = widget.isCreatedTab
-            ? state.createdIssues[widget.indexIssue].images
-            : state.addedIssues[widget.indexIssue].images;
+        final images = isCreatedTab
+            ? state.createdIssues[indexIssue].images
+            : state.addedIssues[indexIssue].images;
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -48,30 +45,29 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
           children: [
             if (images.isNotEmpty)
               GridViewIssueImages(
-                index: widget.indexIssue,
+                index: indexIssue,
                 images: images,
-                onFlushPressed: () =>
-                    widget.roomCubit.onFlushPressed(widget.indexIssue),
+                onFlushPressed: () => roomCubit.onFlushPressed(indexIssue),
                 onDeleteImagePressed: (photoIndex) {
-                  widget.roomCubit.onDeleteImagePressed(
-                      widget.indexIssue, images[photoIndex]);
+                  roomCubit.onDeleteImagePressed(
+                      indexIssue, images[photoIndex]);
                 },
-                roomCubit: widget.roomCubit,
+                roomCubit: roomCubit,
+                scrollController: scrollController,
               ),
             const SizedBox(
               height: 8,
             ),
             ListTile(
               leading: const Icon(Icons.add_photo_alternate_outlined),
-              onTap: () async => await _onSelectedFromGalleryPressed(
-                  widget.indexIssue, widget.roomCubit),
+              onTap: () async =>
+                  await _onSelectedFromGalleryPressed(indexIssue, roomCubit),
               title: const Text('Выбрать из галереи'),
             ),
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
               onTap: () async {
-                await _onSelectedCameraPressed(
-                    widget.indexIssue, widget.roomCubit);
+                await _onSelectedCameraPressed(indexIssue, roomCubit);
               },
               title: const Text('Сделать фото'),
             ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../cubit/room_cubit.dart';
 
-class GridViewIssueImages extends StatelessWidget {
+class GridViewIssueImages extends StatefulWidget {
   const GridViewIssueImages({
     super.key,
     required this.index,
@@ -12,6 +12,7 @@ class GridViewIssueImages extends StatelessWidget {
     required this.onFlushPressed,
     required this.onDeleteImagePressed,
     required this.roomCubit,
+    required this.scrollController,
   });
 
   final int index;
@@ -19,7 +20,13 @@ class GridViewIssueImages extends StatelessWidget {
   final VoidCallback onFlushPressed;
   final void Function(int photoIndex) onDeleteImagePressed;
   final RoomCubit roomCubit;
+  final ScrollController scrollController;
 
+  @override
+  State<GridViewIssueImages> createState() => _GridViewIssueImagesState();
+}
+
+class _GridViewIssueImagesState extends State<GridViewIssueImages> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -36,7 +43,7 @@ class GridViewIssueImages extends StatelessWidget {
                   style: theme.textTheme.titleMedium,
                 ),
                 TextButton(
-                  onPressed: onFlushPressed,
+                  onPressed: widget.onFlushPressed,
                   child: const Text('Очистить'),
                 )
               ],
@@ -44,7 +51,8 @@ class GridViewIssueImages extends StatelessWidget {
           ),
           Flexible(
             child: GridView.builder(
-              itemCount: images.length,
+              controller: widget.scrollController,
+              itemCount: widget.images.length,
               shrinkWrap: true,
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -56,7 +64,7 @@ class GridViewIssueImages extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: Image.memory(
-                      const Base64Decoder().convert(images[i]),
+                      const Base64Decoder().convert(widget.images[i]),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -66,8 +74,8 @@ class GridViewIssueImages extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        onTap: () =>
-                            roomCubit.onDeleteImagePressed(index, images[i]),
+                        onTap: () => widget.roomCubit.onDeleteImagePressed(
+                            widget.index, widget.images[i]),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,

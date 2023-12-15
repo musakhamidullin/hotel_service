@@ -101,17 +101,39 @@ class _IssueCardState extends State<IssueCard> {
                 Center(
                   child: TextButton.icon(
                     onPressed: () {
-                      Modals.showDraggableBottomSheet(
-                        showDragHandle: true,
-                        context,
-                        DepartmentsList(
-                          departments:
-                              context.read<RoomCubit>().state.departments,
-                          onDepartmentChanged: (department) => context
-                              .read<RoomCubit>()
-                              .onDepartmentChanged(widget.index, department),
-                        ),
-                      );
+                      final cubit = context.read<RoomCubit>();
+                      Modals.showBottomSheet(
+                          showDragHandle: true,
+                          context,
+                          DraggableScrollableSheet(
+                            expand: false,
+                            initialChildSize: 0.4,
+                            minChildSize: 0.2,
+                            maxChildSize: 0.4,
+                            builder: (context, scrollControl) => Column(
+                              children: [
+                                Expanded(
+                                  child: DepartmentsList(
+                                    scrollController: scrollControl,
+                                    departments: cubit.state.departments,
+                                    onDepartmentChanged: (department) =>
+                                        cubit.onDepartmentChanged(
+                                            widget.index, department),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: Navigator.of(context).pop,
+                                    child: const Text('Отмена'),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                )
+                              ],
+                            ),
+                          ));
                     },
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
                     label: Text(widget.department.fullName.isEmpty
@@ -168,14 +190,23 @@ class _IssueCardState extends State<IssueCard> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
-                      onPressed: () => Modals.showBottomSheet(
-                        context,
-                        GalleryBottomSheet(
-                          isCreatedTab: widget.isCreatedTab,
-                          indexIssue: widget.index,
-                          roomCubit: context.read<RoomCubit>(),
-                        ),
-                      ),
+                      onPressed: () {
+                        final cubit = context.read<RoomCubit>();
+                        Modals.showBottomSheet(
+                            context,
+                            DraggableScrollableSheet(
+                                expand: false,
+                                maxChildSize: 1,
+                                minChildSize: 0.4,
+                                initialChildSize: 1,
+                                builder: (context, scrollController) =>
+                                    GalleryBottomSheet(
+                                      isCreatedTab: widget.isCreatedTab,
+                                      indexIssue: widget.index,
+                                      roomCubit: cubit,
+                                      scrollController: scrollController,
+                                    )));
+                      },
                       icon: const Icon(Icons.attach_file_rounded),
                     ),
                     const SizedBox(

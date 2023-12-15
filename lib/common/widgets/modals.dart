@@ -55,35 +55,6 @@ abstract class Modals {
     );
   }
 
-  static void showDraggableBottomSheet(BuildContext context, Widget child,
-      {bool useRootNavigator = true,
-      bool showDragHandle = false,
-      Color? barrierColor}) {
-    showModalBottomSheet<void>(
-      useRootNavigator: useRootNavigator,
-      isScrollControlled: true,
-      useSafeArea: true,
-      barrierColor: barrierColor,
-      showDragHandle: showDragHandle,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(10),
-        ),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      context: context,
-      builder: (BuildContext context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.5,
-          minChildSize: 0.1,
-          maxChildSize: 1,
-          builder: (context, __) => child,
-        );
-      },
-    );
-  }
-
   static Future<void> showCupertinoModal(
     BuildContext context,
     Widget widget,
