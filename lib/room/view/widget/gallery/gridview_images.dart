@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../cubit/room_cubit.dart';
+import '../../../cubit/room_cubit.dart';
 
 class GridViewIssueImages extends StatefulWidget {
   const GridViewIssueImages({

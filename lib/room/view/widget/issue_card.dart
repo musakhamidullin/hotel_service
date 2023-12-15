@@ -13,9 +13,9 @@ import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
 
 import '../room_page.dart';
+import 'gallery/gallery_sheet.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
-import 'gallery_sheet.dart';
 import 'issue_field.dart';
 
 class IssueCard extends StatefulWidget {

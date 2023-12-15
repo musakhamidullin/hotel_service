@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../cubit/room_cubit.dart';
-import '../room_page.dart';
+import '../../../cubit/room_cubit.dart';
+import '../../room_page.dart';
 import 'gridview_images.dart';
 
 class GalleryBottomSheet extends StatelessWidget {
