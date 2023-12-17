@@ -27,7 +27,10 @@ class MenuActions extends StatelessWidget {
                   color: Colors.red,
                 ),
                 title: const Text('Удалить фотографию'),
-                onTap: onRemoved,
+                onTap: () {
+                  onRemoved();
+                  Navigator.of(context).pop();
+                },
               ),
               const Spacer(),
               SizedBox(

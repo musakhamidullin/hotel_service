@@ -12,12 +12,12 @@ class ImagesViewer extends StatefulWidget {
     super.key,
     required this.images,
     required this.initImageIndex,
-    required this.onRemoved,
+    required this.onChanged,
   });
 
   final List<String> images;
   final int initImageIndex;
-  final Function() onRemoved;
+  final Function(List<String>) onChanged;
 
   @override
   State<ImagesViewer> createState() => _ImagesViewerState();
@@ -26,6 +26,7 @@ class ImagesViewer extends StatefulWidget {
 class _ImagesViewerState extends State<ImagesViewer> {
   final _controller = CarouselController();
   late int _currImage = widget.initImageIndex;
+  late final _images = [...widget.images];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,13 @@ class _ImagesViewerState extends State<ImagesViewer> {
               Modals.showBottomSheet(
                 context,
                 MenuActions(
-                  onRemoved: widget.onRemoved,
+                  onRemoved: () {
+                    setState(() {
+                      _images.removeAt(_currImage);
+                    });
+                    if (_images.length > 1) _controller.nextPage();
+                    widget.onChanged(_images);
+                  },
                 ),
                 showDragHandle: true,
               );
@@ -53,15 +60,14 @@ class _ImagesViewerState extends State<ImagesViewer> {
         children: [
           CarouselSlider.builder(
             carouselController: _controller,
-            itemCount: widget.images.length,
+            itemCount: _images.length,
             itemBuilder:
                 (BuildContext context, int itemIndex, int pageViewIndex) {
               return InteractiveViewer(
                 child: Image(
                   image: CacheMemoryImageProvider(
-                    tag: widget.images[itemIndex],
-                    img:
-                        const Base64Decoder().convert(widget.images[itemIndex]),
+                    tag: _images[itemIndex],
+                    img: const Base64Decoder().convert(_images[itemIndex]),
                   ),
                 ),
               );
@@ -83,9 +89,9 @@ class _ImagesViewerState extends State<ImagesViewer> {
             height: sliderIndicatorHeight + 4,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: widget.images.map(
+              children: _images.map(
                 (e) {
-                  final imageIndex = widget.images.indexOf(e);
+                  final imageIndex = _images.indexOf(e);
                   return GestureDetector(
                     onTap: () {
                       _controller.jumpToPage(imageIndex);
