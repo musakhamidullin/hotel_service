@@ -191,22 +191,14 @@ class _IssueCardState extends State<IssueCard> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        final cubit = context.read<RoomCubit>();
-
                         Modals.showBottomSheet(
-                            context,
-                            DraggableScrollableSheet(
-                                expand: false,
-                                maxChildSize: 1,
-                                minChildSize: 0.4,
-                                initialChildSize: 1,
-                                builder: (context, scrollController) =>
-                                    GalleryBottomSheet(
-                                      isCreatedTab: widget.isCreatedTab,
-                                      indexIssue: widget.index,
-                                      roomCubit: cubit,
-                                      scrollController: scrollController,
-                                    )));
+                          context,
+                          GalleryBottomSheet(
+                            isCreatedTab: widget.isCreatedTab,
+                            indexIssue: widget.index,
+                            roomCubit: context.read<RoomCubit>(),
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.attach_file_rounded),
                     ),
