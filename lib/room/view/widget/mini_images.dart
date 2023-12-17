@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../common/widgets/cash_memory_image_provider.dart';
 import 'carousel_images.dart';
 
 class MiniImagesIssueCard extends StatelessWidget {
@@ -109,8 +110,11 @@ class _ImageItem extends StatelessWidget {
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Image.memory(
-          const Base64Decoder().convert(image),
+        child: Image(
+          image: CacheMemoryImageProvider(
+            tag: image,
+            img: const Base64Decoder().convert(image),
+          ),
           fit: BoxFit.cover,
           height: 150,
           width: width,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../../cubit/room_cubit.dart';
 
 class GridViewIssueImages extends StatefulWidget {
@@ -63,8 +64,11 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
               itemBuilder: (_, i) => Stack(
                 children: [
                   Positioned.fill(
-                    child: Image.memory(
-                      const Base64Decoder().convert(widget.images[i]),
+                    child: Image(
+                      image: CacheMemoryImageProvider(
+                        tag: widget.images[i],
+                        img: const Base64Decoder().convert(widget.images[i]),
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),
