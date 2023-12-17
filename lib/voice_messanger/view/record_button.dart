@@ -8,9 +8,11 @@ class RecordButton extends StatefulWidget {
   const RecordButton({
     super.key,
     required this.id,
+    required this.onRecord,
   });
 
   final String id;
+  final Function(bool) onRecord;
 
   @override
   State<RecordButton> createState() => _RecordButtonState();
@@ -35,16 +37,20 @@ class _RecordButtonState extends State<RecordButton> {
                 customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                onTapDown: (_) async {
-                  context.read<VoiceManagerCubit>().record();
-                  setState(() => _recording = true);
-                },
-                onTapUp: (_) async {
-                  context.read<VoiceManagerCubit>().stopRecord(
-                        buttonId: widget.id,
-                        duration: _duration,
-                      );
-                  setState(() => _recording = false);
+                onTap: () async {
+                  setState(() {
+                    _recording = !_recording;
+                  });
+
+                  if (_recording) {
+                    context.read<VoiceManagerCubit>().record();
+                  } else {
+                    context.read<VoiceManagerCubit>().stopRecord(
+                          buttonId: widget.id,
+                          duration: _duration,
+                        );
+                  }
+                  widget.onRecord(_recording);
                 },
                 child: Icon(
                   _recording ? Icons.mic_off_rounded : Icons.mic,

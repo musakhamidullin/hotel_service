@@ -43,6 +43,7 @@ class IssueCard extends StatefulWidget {
 class _IssueCardState extends State<IssueCard> {
   final TextEditingController _controller = TextEditingController();
   late final _recordButtonId = '${widget.tabName}-${widget.index}';
+  var _readOnlyInput = false;
 
   @override
   void initState() {
@@ -174,6 +175,7 @@ class _IssueCardState extends State<IssueCard> {
                   },
                 ),
                 IssueTextField(
+                  readOnly: _readOnlyInput,
                   textEditingController: _controller,
                   index: widget.index,
                   onTextChanged: (String text) => context
@@ -205,7 +207,14 @@ class _IssueCardState extends State<IssueCard> {
                     const SizedBox(
                       width: 12,
                     ),
-                    RecordButton(id: _recordButtonId),
+                    RecordButton(
+                      id: _recordButtonId,
+                      onRecord: (value) {
+                        setState(() {
+                          _readOnlyInput = value;
+                        });
+                      },
+                    ),
                     const SizedBox(
                       width: 12,
                     ),
