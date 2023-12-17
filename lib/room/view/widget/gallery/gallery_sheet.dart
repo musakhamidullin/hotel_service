@@ -38,9 +38,8 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
 
   @override
   void dispose() {
-    super.dispose();
-
     widget.roomCubit.onClearTempImagesPressed();
+    super.dispose();
   }
 
   @override
@@ -58,27 +57,28 @@ class _GalleryBottomSheetState extends State<GalleryBottomSheet> {
           children: [
             if (images.isEmpty)
               Flexible(
-                  child: Center(
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.photo_library_outlined,
-                        size: 128,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Text(
-                        'Добавьте фотографии',
-                        style: theme.textTheme.titleLarge,
-                      )
-                    ],
+                child: Center(
+                  child: Opacity(
+                    opacity: 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.photo_library_outlined,
+                          size: 128,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          'Добавьте фотографии',
+                          style: theme.textTheme.titleLarge,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
             if (images.isNotEmpty)
               GridViewIssueImages(
                 index: widget.indexIssue,
