@@ -3,31 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../../common/widgets/cash_memory_image_provider.dart';
-import '../../../cubit/room_cubit.dart';
 
-class GridViewIssueImages extends StatefulWidget {
-  const GridViewIssueImages({
+class ImagesWidget extends StatelessWidget {
+  const ImagesWidget({
     super.key,
-    required this.index,
     required this.images,
-    required this.onFlushPressed,
-    required this.onDeleteImagePressed,
-    required this.roomCubit,
+    required this.onClearPressed,
+    required this.onDeleteItemPressed,
     required this.scrollController,
   });
 
-  final int index;
   final List<String> images;
-  final VoidCallback onFlushPressed;
-  final void Function(int photoIndex) onDeleteImagePressed;
-  final RoomCubit roomCubit;
+  final VoidCallback onClearPressed;
+  final void Function(int i) onDeleteItemPressed;
   final ScrollController scrollController;
 
-  @override
-  State<GridViewIssueImages> createState() => _GridViewIssueImagesState();
-}
-
-class _GridViewIssueImagesState extends State<GridViewIssueImages> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -44,7 +34,7 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
                   style: theme.textTheme.titleMedium,
                 ),
                 TextButton(
-                  onPressed: widget.onFlushPressed,
+                  onPressed: onClearPressed,
                   child: const Text('Очистить'),
                 )
               ],
@@ -52,8 +42,8 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
           ),
           Flexible(
             child: GridView.builder(
-              controller: widget.scrollController,
-              itemCount: widget.images.length,
+              controller: scrollController,
+              itemCount: images.length,
               shrinkWrap: true,
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,8 +56,8 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
                   Positioned.fill(
                     child: Image(
                       image: CacheMemoryImageProvider(
-                        tag: widget.images[i],
-                        img: const Base64Decoder().convert(widget.images[i]),
+                        tag: images[i],
+                        img: const Base64Decoder().convert(images[i]),
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -78,7 +68,7 @@ class _GridViewIssueImagesState extends State<GridViewIssueImages> {
                     child: Align(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        onTap: () => widget.onDeleteImagePressed(i),
+                        onTap: () => onDeleteItemPressed(i),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,

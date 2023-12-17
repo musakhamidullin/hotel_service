@@ -13,7 +13,7 @@ import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
 
 import '../room_page.dart';
-import 'gallery/gallery_sheet.dart';
+import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
 import 'issue_field.dart';
@@ -193,12 +193,12 @@ class _IssueCardState extends State<IssueCard> {
                   children: [
                     IconButton(
                       onPressed: () {
+                        final cubit = context.read<RoomCubit>();
                         Modals.showBottomSheet(
                           context,
-                          GalleryBottomSheet(
-                            isCreatedTab: widget.isCreatedTab,
-                            indexIssue: widget.index,
-                            roomCubit: context.read<RoomCubit>(),
+                          GallaryWidget(
+                            onSavePressed: (List<String> items) =>
+                                cubit.onAddImagesPressed(widget.index, items),
                           ),
                         );
                       },
