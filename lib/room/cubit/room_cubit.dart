@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
@@ -13,14 +12,6 @@ import '../data/repositories/room_rep.dart';
 
 part 'room_state.dart';
 part 'room_cubit.freezed.dart';
-
-extension AddImage on List<XFile> {
-  List<XFile> addImage(
-    (int, XFile?) image,
-    List<XFile> images,
-  ) =>
-      images..add(image.$2 ?? XFile(''));
-}
 
 extension DeleteIssue on List<IssuesState> {
   List<IssuesState> deleteIssue(List<IssuesState> issues, int i) {
