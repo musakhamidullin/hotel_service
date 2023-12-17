@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/cash_memory_image_provider.dart';
-import 'carousel_images.dart';
+import 'images_viewer/images_viewer.dart';
+
 
 class MiniImagesIssueCard extends StatelessWidget {
   const MiniImagesIssueCard({
@@ -25,10 +26,23 @@ class MiniImagesIssueCard extends StatelessWidget {
             (constrains.maxWidth - padding * maxCrossCount * 2) / maxCrossCount;
         final imagesWidget = images
             .map(
-              (e) => _ImageItem(
-                image: e,
-                index: index,
-                width: imageWidth,
+              (e) => GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImagesViewer(
+                        images: images,
+                        initImageIndex: images.indexOf(e),
+                      ),
+                    ),
+                  );
+                },
+                child: _ImageItem(
+                  image: e,
+                  index: index,
+                  width: imageWidth,
+                ),
               ),
             )
             .toList();
@@ -99,26 +113,16 @@ class _ImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const CarouselImagesIssue(),
-          ),
-        );
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image(
-          image: CacheMemoryImageProvider(
-            tag: image,
-            img: const Base64Decoder().convert(image),
-          ),
-          fit: BoxFit.cover,
-          height: 150,
-          width: width,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image(
+        image: CacheMemoryImageProvider(
+          tag: image,
+          img: const Base64Decoder().convert(image),
         ),
+        fit: BoxFit.cover,
+        height: 150,
+        width: width,
       ),
     );
   }
