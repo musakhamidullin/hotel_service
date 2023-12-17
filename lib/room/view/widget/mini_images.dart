@@ -34,6 +34,9 @@ class MiniImagesIssueCard extends StatelessWidget {
                       builder: (context) => ImagesViewer(
                         images: images,
                         initImageIndex: images.indexOf(e),
+                        onRemoved: () {
+
+                        },
                       ),
                     ),
                   );
