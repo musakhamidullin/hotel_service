@@ -12,7 +12,6 @@ import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
 
-import '../room_page.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -27,6 +26,7 @@ class IssueCard extends StatefulWidget {
     required this.department,
     required this.isCreatedTab,
     required this.tabName,
+    required this.images,
   });
 
   final int index;
@@ -35,6 +35,7 @@ class IssueCard extends StatefulWidget {
   final bool isCreatedTab;
   final Department department;
   final String tabName;
+  final List<String> images;
 
   @override
   State<IssueCard> createState() => _IssueCardState();
@@ -142,25 +143,26 @@ class _IssueCardState extends State<IssueCard> {
                         : widget.department.fullName),
                   ),
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-                RoomBuilder(
-                  builder: (context, state) {
-                    final images = widget.isCreatedTab
-                        ? state.createdIssues[widget.index].images
-                        : state.addedIssues[widget.index].images;
-                    return images.isNotEmpty
-                        ? MiniImagesIssueCard(
-                            index: widget.index,
-                            images: images,
-                          )
-                        : const SizedBox.shrink();
-                  },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
+                if (widget.images.isNotEmpty)
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      MiniImagesIssueCard(
+                        index: widget.index,
+                        images: widget.images,
+                        onChanged: (List<String> items) {
+                          context
+                              .read<RoomCubit>()
+                              .onChangedImagesPressed(widget.index, items);
+                        },
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                    ],
+                  ),
                 BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
                   builder: (context, state) {
                     return Column(
@@ -194,11 +196,19 @@ class _IssueCardState extends State<IssueCard> {
                     IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
+                        final images = widget.isCreatedTab
+                            ? cubit.state.createdIssues[widget.index].images
+                            : cubit.state.addedIssues[widget.index].images;
                         Modals.showBottomSheet(
                           context,
                           GalleryWidget(
                             onSavePressed: (List<String> items) =>
                                 cubit.onAddImagesPressed(widget.index, items),
+                            images: images,
+                            onDeletePressed: (String item) =>
+                                cubit.onDeleteImagePressed(widget.index, item),
+                            onClearPressed: () =>
+                                cubit.onClearImagesPressed(widget.index),
                           ),
                         );
                       },

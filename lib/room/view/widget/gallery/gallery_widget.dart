@@ -10,9 +10,16 @@ class GalleryWidget extends StatefulWidget {
   const GalleryWidget({
     super.key,
     required this.onSavePressed,
+    required this.images,
+    required this.onDeletePressed,
+    required this.onClearPressed,
   });
 
+  final List<String> images;
+
   final void Function(List<String> items) onSavePressed;
+  final void Function(String item) onDeletePressed;
+  final VoidCallback onClearPressed;
 
   @override
   State<GalleryWidget> createState() => _GalleryWidgetState();
@@ -39,6 +46,13 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         _images.add(base64UrlEncode(File(pickedImage.path).readAsBytesSync()));
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _images.addAll(widget.images);
   }
 
   final List<String> _images = [];
@@ -85,6 +99,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               ImagesWidget(
                 images: _images,
                 onClearPressed: () => setState(() {
+                  widget.onClearPressed();
                   _images.clear();
                 }),
                 onDeleteItemPressed: (i) => setState(() {

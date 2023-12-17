@@ -20,6 +20,7 @@ class AddedIssuesList extends StatelessWidget {
         department: addedIssues[i].department,
         isCreatedTab: false,
         tabName: 'Новые',
+        images: addedIssues[i].images,
       ),
     );
   }

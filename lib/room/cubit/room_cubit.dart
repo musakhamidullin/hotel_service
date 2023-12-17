@@ -125,7 +125,7 @@ class RoomCubit extends Cubit<RoomState> {
           ...state.addedIssues.deleteIssue(state.addedIssues, i)
         ]));
 
-  void onFlushPressed(int i) => state.tabIndex == 0
+  void onClearImagesPressed(int i) => state.tabIndex == 0
       ? emit(state.copyWith(
           createdIssues: state.createdIssues
               .map((e) => e.index == i ? e.copyWith(images: []) : e)
@@ -135,22 +135,25 @@ class RoomCubit extends Cubit<RoomState> {
               .map((e) => e.index == i ? e.copyWith(images: []) : e)
               .toList()));
 
-  void onAddImagesPressed(int i, List<String> images) =>
-      emit(state.tabIndex == 0
-          ? state.copyWith(
-              createdIssues: state.createdIssues
-                  .map((e) => e.index == i
-                      ? e.copyWith(
-                          images: [...state.createdIssues[i].images, ...images])
-                      : e)
-                  .toList())
-          : state.copyWith(
-              addedIssues: state.addedIssues
-                  .map((e) => e.index == i
-                      ? e.copyWith(
-                          images: [...state.addedIssues[i].images, ...images])
-                      : e)
-                  .toList()));
+  void onAddImagesPressed(int i, List<String> images) => emit(state.tabIndex ==
+          0
+      ? state.copyWith(
+          createdIssues: state.createdIssues
+              .map((e) => e.index == i
+                  ? e.copyWith(
+                      images: <String>{
+                      ...state.createdIssues[i].images,
+                      ...images
+                    }.toList())
+                  : e)
+              .toList())
+      : state.copyWith(
+          addedIssues: state.addedIssues
+              .map((e) => e.index == i
+                  ? e.copyWith(
+                      images: [...state.addedIssues[i].images, ...images])
+                  : e)
+              .toList()));
 
   void onDeleteImagePressed(int i, String image) => state.tabIndex == 0
       ? emit(state.copyWith(
@@ -197,4 +200,17 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void onTabChanged(int i) => emit(state.copyWith(tabIndex: i));
+
+  void onChangedImagesPressed(int i, List<String> images) =>
+      emit(state.tabIndex == 0
+          ? state.copyWith(
+              createdIssues: [...state.createdIssues]
+                  .map((issue) =>
+                      issue.index == i ? issue.copyWith(images: images) : issue)
+                  .toList())
+          : state.copyWith(
+              addedIssues: [...state.addedIssues]
+                  .map((issue) =>
+                      issue.index == i ? issue.copyWith(images: images) : issue)
+                  .toList()));
 }

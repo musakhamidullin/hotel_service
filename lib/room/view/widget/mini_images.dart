@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 import '../../../common/widgets/cash_memory_image_provider.dart';
 import 'images_viewer/images_viewer.dart';
 
-
 class MiniImagesIssueCard extends StatelessWidget {
   const MiniImagesIssueCard({
     super.key,
     required this.index,
     required this.images,
+    required this.onChanged,
   });
 
   final int index;
   final List<String> images;
+  final void Function(List<String> images) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,7 @@ class MiniImagesIssueCard extends StatelessWidget {
                       builder: (context) => ImagesViewer(
                         images: images,
                         initImageIndex: images.indexOf(e),
-                        onChanged: (images) {
-
-                        },
+                        onChanged: (images) => onChanged(images),
                       ),
                     ),
                   );

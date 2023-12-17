@@ -17,7 +17,7 @@ class ImagesViewer extends StatefulWidget {
 
   final List<String> images;
   final int initImageIndex;
-  final Function(List<String>) onChanged;
+  final void Function(List<String>) onChanged;
 
   @override
   State<ImagesViewer> createState() => _ImagesViewerState();
@@ -28,8 +28,12 @@ class _ImagesViewerState extends State<ImagesViewer> {
   late int _currImage = widget.initImageIndex;
   late final _images = [...widget.images];
 
+  int indexAfterDeletedOperation = 0;
+
   @override
   Widget build(BuildContext context) {
+    if (_images.isEmpty) return const SizedBox.shrink();
+
     const sliderIndicatorHeight = 150.0;
     final screenHeight = MediaQuery.sizeOf(context).height;
     return Scaffold(
@@ -42,11 +46,15 @@ class _ImagesViewerState extends State<ImagesViewer> {
                 context,
                 MenuActions(
                   onRemoved: () {
+                    _currImage = indexAfterDeletedOperation;
                     setState(() {
                       _images.removeAt(_currImage);
                     });
                     if (_images.length > 1) _controller.nextPage();
+
                     widget.onChanged(_images);
+
+                    if (_images.isEmpty) Navigator.pop(context);
                   },
                 ),
                 showDragHandle: true,
@@ -63,6 +71,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
             itemCount: _images.length,
             itemBuilder:
                 (BuildContext context, int itemIndex, int pageViewIndex) {
+              indexAfterDeletedOperation = itemIndex;
               return InteractiveViewer(
                 child: Image(
                   image: CacheMemoryImageProvider(
