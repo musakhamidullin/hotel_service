@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:image_picker/image_picker.dart';
@@ -147,30 +144,6 @@ class RoomCubit extends Cubit<RoomState> {
               .map((e) => e.index == i ? e.copyWith(images: []) : e)
               .toList()));
 
-  void onAddImageFromCameraPressed(int i, XFile? image) {
-    if (image == null) return;
-
-    emit(state.tabIndex == 0
-        ? state.copyWith(
-            createdIssues: state.createdIssues
-                .map((e) => e.index == i
-                    ? e.copyWith(images: [
-                        ...state.createdIssues[i].images,
-                        base64UrlEncode(File(image.path).readAsBytesSync()),
-                      ])
-                    : e)
-                .toList())
-        : state.copyWith(
-            addedIssues: state.addedIssues
-                .map((e) => e.index == i
-                    ? e.copyWith(images: [
-                        ...state.addedIssues[i].images,
-                        base64UrlEncode(File(image.path).readAsBytesSync()),
-                      ])
-                    : e)
-                .toList()));
-  }
-
   void onAddImagesPressed(int i, List<String> images) =>
       emit(state.tabIndex == 0
           ? state.copyWith(
@@ -233,45 +206,4 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void onTabChanged(int i) => emit(state.copyWith(tabIndex: i));
-
-  void onAddTempImagesPressed(List<XFile> images) =>
-      emit(state.copyWith(tempImages: [
-        ...state.tempImages,
-        ...images.map((e) => base64UrlEncode(File(e.path).readAsBytesSync()))
-      ]));
-
-  void onClearTempImagesPressed() => emit(state.copyWith(tempImages: []));
-
-  void onDeleteTempImagePressed(String image) => emit(state.copyWith(
-      tempImages: [...state.tempImages]..removeWhere((e) => e == image)));
-
-  void onSaveImagesPressed(int issueIndex) {
-    if (state.tempImages.isEmpty) return;
-
-    emit(state.tabIndex == 0
-        ? state.copyWith(
-            createdIssues: state.createdIssues
-                .map((e) => e.index == issueIndex
-                    ? e.copyWith(
-                        images: [
-                          ...state.createdIssues[issueIndex].images,
-                          ...state.tempImages
-                        ],
-                      )
-                    : e)
-                .toList(),
-            tempImages: [])
-        : state.copyWith(
-            addedIssues: state.addedIssues
-                .map((e) => e.index == issueIndex
-                    ? e.copyWith(
-                        images: [
-                          ...state.addedIssues[issueIndex].images,
-                          ...state.tempImages
-                        ],
-                      )
-                    : e)
-                .toList(),
-            tempImages: []));
-  }
 }

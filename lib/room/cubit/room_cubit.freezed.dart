@@ -20,7 +20,6 @@ mixin _$RoomState {
   Room get room => throw _privateConstructorUsedError;
   List<IssuesState> get addedIssues => throw _privateConstructorUsedError;
   List<IssuesState> get createdIssues => throw _privateConstructorUsedError;
-  List<String> get tempImages => throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   int get tabIndex => throw _privateConstructorUsedError;
@@ -40,7 +39,6 @@ abstract class $RoomStateCopyWith<$Res> {
       Room room,
       List<IssuesState> addedIssues,
       List<IssuesState> createdIssues,
-      List<String> tempImages,
       List<Department> departments,
       User user,
       int tabIndex});
@@ -66,7 +64,6 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
     Object? room = null,
     Object? addedIssues = null,
     Object? createdIssues = null,
-    Object? tempImages = null,
     Object? departments = null,
     Object? user = null,
     Object? tabIndex = null,
@@ -88,10 +85,6 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.createdIssues
           : createdIssues // ignore: cast_nullable_to_non_nullable
               as List<IssuesState>,
-      tempImages: null == tempImages
-          ? _value.tempImages
-          : tempImages // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -137,7 +130,6 @@ abstract class _$$RoomStateImplCopyWith<$Res>
       Room room,
       List<IssuesState> addedIssues,
       List<IssuesState> createdIssues,
-      List<String> tempImages,
       List<Department> departments,
       User user,
       int tabIndex});
@@ -163,7 +155,6 @@ class __$$RoomStateImplCopyWithImpl<$Res>
     Object? room = null,
     Object? addedIssues = null,
     Object? createdIssues = null,
-    Object? tempImages = null,
     Object? departments = null,
     Object? user = null,
     Object? tabIndex = null,
@@ -185,10 +176,6 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value._createdIssues
           : createdIssues // ignore: cast_nullable_to_non_nullable
               as List<IssuesState>,
-      tempImages: null == tempImages
-          ? _value._tempImages
-          : tempImages // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -213,13 +200,11 @@ class _$RoomStateImpl extends _RoomState {
       this.room = const Room(),
       final List<IssuesState> addedIssues = const <IssuesState>[],
       final List<IssuesState> createdIssues = const <IssuesState>[],
-      final List<String> tempImages = const <String>[],
       final List<Department> departments = const <Department>[],
       this.user = const User(userId: '', personInfo: Person(id: 0)),
       this.tabIndex = 0})
       : _addedIssues = addedIssues,
         _createdIssues = createdIssues,
-        _tempImages = tempImages,
         _departments = departments,
         super._();
 
@@ -247,15 +232,6 @@ class _$RoomStateImpl extends _RoomState {
     return EqualUnmodifiableListView(_createdIssues);
   }
 
-  final List<String> _tempImages;
-  @override
-  @JsonKey()
-  List<String> get tempImages {
-    if (_tempImages is EqualUnmodifiableListView) return _tempImages;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_tempImages);
-  }
-
   final List<Department> _departments;
   @override
   @JsonKey()
@@ -274,7 +250,7 @@ class _$RoomStateImpl extends _RoomState {
 
   @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus, room: $room, addedIssues: $addedIssues, createdIssues: $createdIssues, tempImages: $tempImages, departments: $departments, user: $user, tabIndex: $tabIndex)';
+    return 'RoomState(fetchStatus: $fetchStatus, room: $room, addedIssues: $addedIssues, createdIssues: $createdIssues, departments: $departments, user: $user, tabIndex: $tabIndex)';
   }
 
   @override
@@ -290,8 +266,6 @@ class _$RoomStateImpl extends _RoomState {
             const DeepCollectionEquality()
                 .equals(other._createdIssues, _createdIssues) &&
             const DeepCollectionEquality()
-                .equals(other._tempImages, _tempImages) &&
-            const DeepCollectionEquality()
                 .equals(other._departments, _departments) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.tabIndex, tabIndex) ||
@@ -305,7 +279,6 @@ class _$RoomStateImpl extends _RoomState {
       room,
       const DeepCollectionEquality().hash(_addedIssues),
       const DeepCollectionEquality().hash(_createdIssues),
-      const DeepCollectionEquality().hash(_tempImages),
       const DeepCollectionEquality().hash(_departments),
       user,
       tabIndex);
@@ -323,7 +296,6 @@ abstract class _RoomState extends RoomState {
       final Room room,
       final List<IssuesState> addedIssues,
       final List<IssuesState> createdIssues,
-      final List<String> tempImages,
       final List<Department> departments,
       final User user,
       final int tabIndex}) = _$RoomStateImpl;
@@ -337,8 +309,6 @@ abstract class _RoomState extends RoomState {
   List<IssuesState> get addedIssues;
   @override
   List<IssuesState> get createdIssues;
-  @override
-  List<String> get tempImages;
   @override
   List<Department> get departments;
   @override

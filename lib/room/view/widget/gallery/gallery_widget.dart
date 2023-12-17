@@ -6,8 +6,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'images_widget.dart';
 
-class GallaryWidget extends StatefulWidget {
-  const GallaryWidget({
+class GalleryWidget extends StatefulWidget {
+  const GalleryWidget({
     super.key,
     required this.onSavePressed,
   });
@@ -15,10 +15,10 @@ class GallaryWidget extends StatefulWidget {
   final void Function(List<String> items) onSavePressed;
 
   @override
-  State<GallaryWidget> createState() => _GallaryWidgetState();
+  State<GalleryWidget> createState() => _GalleryWidgetState();
 }
 
-class _GallaryWidgetState extends State<GallaryWidget> {
+class _GalleryWidgetState extends State<GalleryWidget> {
   Future<void> _onSelectedFromGalleryPressed() async {
     final pickedImages = await ImagePicker().pickMultiImage();
 
@@ -27,7 +27,7 @@ class _GallaryWidgetState extends State<GallaryWidget> {
         .toList();
 
     setState(() {
-      images.addAll(bytes);
+      _images.addAll(bytes);
     });
   }
 
@@ -36,12 +36,12 @@ class _GallaryWidgetState extends State<GallaryWidget> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        images.add(base64UrlEncode(File(pickedImage.path).readAsBytesSync()));
+        _images.add(base64UrlEncode(File(pickedImage.path).readAsBytesSync()));
       });
     }
   }
 
-  final List<String> images = [];
+  final List<String> _images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _GallaryWidgetState extends State<GallaryWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (images.isEmpty)
+            if (_images.isEmpty)
               Flexible(
                 child: Center(
                   child: Opacity(
@@ -81,14 +81,14 @@ class _GallaryWidgetState extends State<GallaryWidget> {
                   ),
                 ),
               ),
-            if (images.isNotEmpty)
+            if (_images.isNotEmpty)
               ImagesWidget(
-                images: images,
+                images: _images,
                 onClearPressed: () => setState(() {
-                  images.clear();
+                  _images.clear();
                 }),
                 onDeleteItemPressed: (i) => setState(() {
-                  images.removeAt(i);
+                  _images.removeAt(i);
                 }),
                 scrollController: scrollController,
               ),
@@ -126,7 +126,7 @@ class _GallaryWidgetState extends State<GallaryWidget> {
                       width: double.infinity,
                       child: FilledButton.tonal(
                         onPressed: () {
-                          widget.onSavePressed(images);
+                          widget.onSavePressed(_images);
                           Navigator.of(context).pop();
                         },
                         child: const Text('Сохранить'),
