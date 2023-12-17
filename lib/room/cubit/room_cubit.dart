@@ -171,26 +171,20 @@ class RoomCubit extends Cubit<RoomState> {
                 .toList()));
   }
 
-  void onAddImagesFromGalleryPressed(int i, List<XFile> images) =>
+  void onAddImagesPressed(int i, List<String> images) =>
       emit(state.tabIndex == 0
           ? state.copyWith(
               createdIssues: state.createdIssues
                   .map((e) => e.index == i
-                      ? e.copyWith(images: [
-                          ...state.createdIssues[i].images,
-                          ...images.map((e) =>
-                              base64UrlEncode(File(e.path).readAsBytesSync()))
-                        ])
+                      ? e.copyWith(
+                          images: [...state.createdIssues[i].images, ...images])
                       : e)
                   .toList())
           : state.copyWith(
               addedIssues: state.addedIssues
                   .map((e) => e.index == i
-                      ? e.copyWith(images: [
-                          ...state.addedIssues[i].images,
-                          ...images.map((e) =>
-                              base64UrlEncode(File(e.path).readAsBytesSync()))
-                        ])
+                      ? e.copyWith(
+                          images: [...state.addedIssues[i].images, ...images])
                       : e)
                   .toList()));
 
