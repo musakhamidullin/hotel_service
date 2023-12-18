@@ -65,6 +65,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
         ],
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CarouselSlider.builder(
             carouselController: _controller,
