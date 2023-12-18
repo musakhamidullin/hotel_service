@@ -95,7 +95,11 @@ class _IssueCardState extends State<IssueCard> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context
+                            .read<RoomCubit>()
+                            .onDeleteIssuePressed(widget.index);
+                      },
                       icon: const Icon(Icons.delete),
                     )
                   ],
