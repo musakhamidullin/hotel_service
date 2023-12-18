@@ -27,7 +27,7 @@ class IssueReport with _$IssueReport {
   factory IssueReport.fromJson(Map<String, dynamic> json) =>
       _$IssueReportFromJson(json);
 
-  factory IssueReport.filledByIssueState(
+  static IssueReport filledByIssueState(
           RoomState roomState, IssuesState issue) =>
       IssueReport(
           personId: roomState.user.personInfo.id,
