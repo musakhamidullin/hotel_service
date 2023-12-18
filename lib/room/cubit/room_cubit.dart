@@ -190,10 +190,9 @@ class RoomCubit extends Cubit<RoomState> {
       final report = state.createdIssues
           .map(
               (issueState) => IssueReport.filledByIssueState(state, issueState))
-          .toList()
-          .last;
+          .toList();
 
-      // await _roomRep.sendReports(report);
+      await _roomRep.sendReports(report);
 
       emit(state.copyWith(fetchStatus: FetchStatus.success));
     } catch (e) {

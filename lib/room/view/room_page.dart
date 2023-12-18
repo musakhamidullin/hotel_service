@@ -111,13 +111,16 @@ class _RoomPageState extends State<RoomPage>
                                       const SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        DateFormat()
-                                            .add_Hm()
-                                            .add_yMMMd()
-                                            .format(DateTime.parse(
-                                                state.room.arrdate)),
-                                      )
+                                      if (state.room.arrdate.isNotEmpty)
+                                        Text(
+                                          DateFormat()
+                                              .add_Hm()
+                                              .add_yMMMd()
+                                              .format(DateTime.parse(
+                                                  state.room.arrdate)),
+                                        ),
+                                      if (state.room.arrdate.isEmpty)
+                                        const Text('Дата отсутствует')
                                     ],
                                   ),
                                 ),
@@ -128,13 +131,16 @@ class _RoomPageState extends State<RoomPage>
                                       const SizedBox(
                                         height: 4,
                                       ),
-                                      Text(
-                                        DateFormat()
-                                            .add_Hm()
-                                            .add_yMMMd()
-                                            .format(DateTime.parse(
-                                                state.room.depdate)),
-                                      )
+                                      if (state.room.depdate.isNotEmpty)
+                                        Text(
+                                          DateFormat()
+                                              .add_Hm()
+                                              .add_yMMMd()
+                                              .format(DateTime.parse(
+                                                  state.room.depdate)),
+                                        ),
+                                      if (state.room.depdate.isEmpty)
+                                        const Text('Дата отсутствует')
                                     ],
                                   ),
                                 )
