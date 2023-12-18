@@ -4,17 +4,19 @@ import 'defect.dart';
 import 'department_info.dart';
 
 part 'issues.freezed.dart';
+
 part 'issues.g.dart';
 
 @freezed
 class IssuesState with _$IssuesState {
-  const factory IssuesState(
-      {@Default(0) int index,
-      @Default(<String>[]) List<String> images,
-      @Default('') String comment,
-      @Default('') @DateSerializer() String date,
-      @Default(true) isMutable,
-      @Default(Department()) Department department}) = _IssuesState;
+  const factory IssuesState({
+    @Default(0) int index,
+    @Default(<String>[]) List<String> images,
+    @Default('') String comment,
+    @Default('') @DateSerializer() String date,
+    @Default(true) isMutable,
+    @Default(Department()) Department department,
+  }) = _IssuesState;
 
   factory IssuesState.fromJson(Map<String, dynamic> json) =>
       _$IssuesStateFromJson(json);

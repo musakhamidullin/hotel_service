@@ -87,6 +87,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
       _progress = 1.0;
     }
     return Card(
+      elevation: 6,
       child: Stack(
         children: [
           Row(

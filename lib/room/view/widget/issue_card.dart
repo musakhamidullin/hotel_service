@@ -54,8 +54,8 @@ class _IssueCardState extends State<IssueCard> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   ActionPane actionPane(int indexIssue, RoomCubit roomCubit) => ActionPane(
@@ -89,7 +89,9 @@ class _IssueCardState extends State<IssueCard> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        DateFormat.yMMMEd(localizations.languageCode).add_Hm().format(widget.dateTime),
+                        DateFormat.yMMMEd(localizations.languageCode)
+                            .add_Hm()
+                            .format(widget.dateTime),
                       ),
                     ),
                     IconButton(
@@ -121,16 +123,16 @@ class _IssueCardState extends State<IssueCard> {
                                             widget.index, department),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: Navigator.of(context).pop,
-                                    child: const Text('Отмена'),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: FilledButton.tonal(
+                                      onPressed: Navigator.of(context).pop,
+                                      child: const Text('Отмена'),
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 16,
-                                )
                               ],
                             ),
                           ));
@@ -174,6 +176,7 @@ class _IssueCardState extends State<IssueCard> {
                     );
                   },
                 ),
+                if (widget.images.isNotEmpty) const SizedBox(height: 8),
                 IssueTextField(
                   readOnly: _readOnlyInput,
                   textEditingController: _controller,
