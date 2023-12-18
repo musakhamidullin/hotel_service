@@ -113,9 +113,8 @@ class _FilterSheetState extends State<FilterSheet> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  color: theme.canvasColor,
-                  child: OutlinedButton(
+                  padding: const EdgeInsets.all(16),
+                  child: ElevatedButton(
                     onPressed: () {
                       widget.homeCubit.filtered(_filter);
                       Navigator.of(context).pop();
@@ -141,7 +140,7 @@ class _AppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.only(left: 12, right: 8),
+      padding: const EdgeInsets.only(left: 16, right: 16),
       color: Colors.grey[100],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +149,7 @@ class _AppBar extends StatelessWidget {
             'Фильтр',
             style: theme.textTheme.titleLarge,
           ),
-          ElevatedButton(
+          FilledButton.tonal(
             onPressed: () {
               context.read<HomeCubit>().resetFilter();
               Navigator.of(context).pop();

@@ -71,44 +71,19 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_images.isEmpty)
-              Flexible(
-                child: Center(
-                  child: Opacity(
-                    opacity: 0.7,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.photo_library_outlined,
-                          size: 128,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Text(
-                          'Добавьте фотографии',
-                          style: theme.textTheme.titleLarge,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            if (_images.isNotEmpty)
-              ImagesWidget(
-                images: _images,
-                onClearPressed: () => setState(() {
-                  widget.onClearPressed();
-                  _images.clear();
-                }),
-                onDeleteItemPressed: (i) => setState(() {
-                  widget.onDeletePressed(_images[i]);
+            ImagesWidget(
+              images: _images,
+              onClearPressed: () => setState(() {
+                widget.onClearPressed();
+                _images.clear();
+              }),
+              onDeleteItemPressed: (i) => setState(() {
+                widget.onDeletePressed(_images[i]);
 
-                  _images.removeAt(i);
-                }),
-                scrollController: scrollController,
-              ),
+                _images.removeAt(i);
+              }),
+              scrollController: scrollController,
+            ),
             const SizedBox(
               height: 8,
             ),
@@ -117,13 +92,14 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               onTap: () async => await _onSelectedFromGalleryPressed(),
               title: const Text('Выбрать из галереи'),
             ),
+            const Divider(endIndent: 16, indent: 16,),
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
               onTap: () async => await _onSelectedCameraPressed(),
               title: const Text('Сделать фото'),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -153,7 +129,6 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                 ],
               ),
             ),
-            const SizedBox(height: 8)
           ],
         );
       },

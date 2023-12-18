@@ -16,7 +16,7 @@ class Fabs extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(
-          width: 12,
+          width: 16,
         ),
         Expanded(
           child: SizedBox(
@@ -42,7 +42,7 @@ class Fabs extends StatelessWidget {
           icon: const Icon(Icons.add),
         ),
         const SizedBox(
-          width: 12,
+          width: 16,
         ),
       ],
     );
