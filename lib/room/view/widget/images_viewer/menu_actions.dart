@@ -35,7 +35,6 @@ class MenuActions extends StatelessWidget {
               const Spacer(),
               SizedBox(
                 width: double.infinity,
-                height: 50,
                 child: FilledButton.tonal(
                   onPressed: Navigator.of(context).pop,
                   child: const Text('Закрыть'),
