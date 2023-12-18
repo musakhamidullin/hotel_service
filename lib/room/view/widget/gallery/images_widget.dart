@@ -32,7 +32,7 @@ class ImagesWidget extends StatelessWidget {
               children: [
                 Text(
                   'Прикрепленные фото',
-                  style: theme.textTheme.titleMedium,
+                  style: theme.textTheme.titleLarge,
                 ),
                 FilledButton.tonal(
                   onPressed: onClearPressed,
