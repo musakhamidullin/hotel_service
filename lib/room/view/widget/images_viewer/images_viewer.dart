@@ -85,7 +85,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
             options: CarouselOptions(
               initialPage: widget.initImageIndex,
               enableInfiniteScroll: true,
-              height: screenHeight - sliderIndicatorHeight - 62,
+              height: screenHeight - sliderIndicatorHeight - 112,
               viewportFraction: 1.0,
               scrollDirection: Axis.horizontal,
               onPageChanged: (index, _) {
