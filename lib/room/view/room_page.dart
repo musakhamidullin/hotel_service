@@ -60,6 +60,7 @@ class _RoomPageState extends State<RoomPage>
 
   @override
   Widget build(BuildContext context) {
+    final localizations = Localizations.localeOf(context);
     return BlocProvider(
       create: (_) => _roomCubit..fetchRoom(widget.room.id),
       child: Scaffold(
@@ -113,9 +114,8 @@ class _RoomPageState extends State<RoomPage>
                                       ),
                                       if (state.room.arrdate.isNotEmpty)
                                         Text(
-                                          DateFormat()
-                                              .add_Hm()
-                                              .add_yMMMd()
+                                          DateFormat.yMMMEd(
+                                                  localizations.languageCode)
                                               .format(DateTime.parse(
                                                   state.room.arrdate)),
                                         ),
@@ -133,9 +133,8 @@ class _RoomPageState extends State<RoomPage>
                                       ),
                                       if (state.room.depdate.isNotEmpty)
                                         Text(
-                                          DateFormat()
-                                              .add_Hm()
-                                              .add_yMMMd()
+                                          DateFormat.yMMMEd(
+                                                  localizations.languageCode)
                                               .format(DateTime.parse(
                                                   state.room.depdate)),
                                         ),

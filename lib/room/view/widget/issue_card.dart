@@ -72,6 +72,7 @@ class _IssueCardState extends State<IssueCard> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = Localizations.localeOf(context);
     return BlocProvider.value(
       value: BlocProvider.of<RoomCubit>(context),
       child: Slidable(
@@ -88,10 +89,7 @@ class _IssueCardState extends State<IssueCard> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        DateFormat()
-                            .add_Hm()
-                            .add_yMMMd()
-                            .format(widget.dateTime),
+                        DateFormat.yMMMEd(localizations.languageCode).add_Hm().format(widget.dateTime),
                       ),
                     ),
                     IconButton(
