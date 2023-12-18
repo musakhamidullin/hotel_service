@@ -26,14 +26,11 @@ final class RoomRep {
     return deparments;
   }
 
-  Future<void> sendReports(IssueReport report) async {
-
-    log(report.problemMedia.first.mediaBase64);
-
-    final reportToJson = report.toJson();
+  Future<void> sendReports(List<IssueReport> report) async {
+    final data = report.map((e) => e.toJson());
 
     final result = await DioClient()
-        .post(path: 'HouseKeeping/ReportCleaningProblem', data: reportToJson);
+        .post(path: 'HouseKeeping/ReportCleaningProblem', data: data);
     // if (result =) throw Exception();
   }
 }

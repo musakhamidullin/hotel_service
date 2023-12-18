@@ -155,15 +155,17 @@ class RoomCubit extends Cubit<RoomState> {
                   : e)
               .toList()));
 
-  void onDeleteImagePressed(int i, String image) => state.tabIndex == 0
-      ? emit(state.copyWith(
+  void onDeleteImagePressed(int i, String image) => emit(state.tabIndex == 0
+      ? state.copyWith(
+          fetchStatus: FetchStatus.success,
           createdIssues: [...state.createdIssues]
               .map((issue) => issue.index == i
                   ? issue.copyWith(
                       images: [...issue.images]..removeWhere((e) => e == image))
                   : issue)
-              .toList()))
-      : emit(state.copyWith(
+              .toList())
+      : state.copyWith(
+          fetchStatus: FetchStatus.success,
           addedIssues: [...state.addedIssues]
               .map((issue) => issue.index == i
                   ? issue.copyWith(
@@ -188,10 +190,9 @@ class RoomCubit extends Cubit<RoomState> {
       final report = state.createdIssues
           .map(
               (issueState) => IssueReport.filledByIssueState(state, issueState))
-          .toList()
-          .last;
+          .toList();
 
-      // await _roomRep.sendReports(report);
+      await _roomRep.sendReports(report);
 
       emit(state.copyWith(fetchStatus: FetchStatus.success));
     } catch (e) {

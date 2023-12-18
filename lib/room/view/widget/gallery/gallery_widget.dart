@@ -103,6 +103,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                   _images.clear();
                 }),
                 onDeleteItemPressed: (i) => setState(() {
+                  widget.onDeletePressed(_images[i]);
+
                   _images.removeAt(i);
                 }),
                 scrollController: scrollController,
