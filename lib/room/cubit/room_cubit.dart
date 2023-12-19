@@ -63,11 +63,15 @@ class RoomCubit extends Cubit<RoomState> {
 
     final mutabled = _mutabledIssues(issuesState);
 
-    emit(state.copyWith(
-        fetchStatus: FetchStatus.success, issues: {state.tabIndex: mutabled}));
+    final map = {...state.issues};
+
+    map[state.tabIndex] = mutabled;
+
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
   List<IssuesModel> _mutabledIssues(IssuesModel issuesState) {
+    // TODO возможно, нужно искать по айди
     final index = state.issues[state.tabIndex]!
         .indexWhere((e) => e.date == issuesState.date);
 
@@ -81,18 +85,36 @@ class RoomCubit extends Cubit<RoomState> {
   void onAddIssuePressed() {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
 
-    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: {
-      1: [...state.issues[state.tabIndex] ?? [], IssuesModel.newIssue()]
-    }));
+    late final Map<int, List<IssuesModel>> newMap;
+
+    if (state.issues[1] == null) {
+      newMap = {
+        ...state.issues,
+        ...{
+          1: [IssuesModel.newIssue()]
+        }
+      };
+    } else {
+      newMap = {
+        ...state.issues,
+        ...{
+          1: [...state.issues[1]!, IssuesModel.newIssue()]
+        }
+      };
+    }
+
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: newMap));
   }
 
   void onDeleteIssuePressed(IssuesModel issuesState) {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
 
-    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: {
-      state.tabIndex: [...state.issues[state.tabIndex]!]
-        ..removeWhere((e) => e == issuesState)
-    }));
+    final map = {...state.issues};
+
+    map[state.tabIndex] = [...state.issues[state.tabIndex]!]
+      ..removeWhere((e) => e == issuesState);
+
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
   void onCompletePressed(IssuesModel issuesModel) async {

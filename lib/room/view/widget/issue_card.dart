@@ -39,12 +39,6 @@ class _IssueCardState extends State<IssueCard> {
   var _readOnlyInput = false;
 
   @override
-  void initState() {
-    super.initState();
-    _controller.text = widget.issuesState.comment;
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -176,7 +170,8 @@ class _IssueCardState extends State<IssueCard> {
                   const SizedBox(height: 8),
                 IssueTextField(
                   readOnly: _readOnlyInput,
-                  textEditingController: _controller,
+                  textEditingController: _controller
+                    ..text = widget.issuesState.comment,
                   index: widget.index,
                   onTextChanged: (String text) => context
                       .read<RoomCubit>()
