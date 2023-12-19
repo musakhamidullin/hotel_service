@@ -25,12 +25,12 @@ final class ListViewBuilder<T> extends StatefulWidget {
 }
 
 class _ListViewBuilderState<T> extends State<ListViewBuilder<T>> {
-  @override
-  void dispose() {
-    super.dispose();
+  // @override
+  // void dispose() {
+  //   super.dispose();
 
-    widget.scrollController?.dispose();
-  }
+  //   widget.scrollController?.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

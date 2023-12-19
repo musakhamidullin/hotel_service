@@ -15,7 +15,6 @@ _$IssueReportImpl _$$IssueReportImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => ProblemMedia.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <ProblemMedia>[],
-      departmentId: json['DepartmentId'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$IssueReportImplToJson(_$IssueReportImpl instance) =>
@@ -24,7 +23,6 @@ Map<String, dynamic> _$$IssueReportImplToJson(_$IssueReportImpl instance) =>
       'RoomId': instance.roomId,
       'ProblemText': instance.problemText,
       'ProblemMedia': instance.problemMedia,
-      'DepartmentId': instance.departmentId,
     };
 
 _$ProblemMediaImpl _$$ProblemMediaImplFromJson(Map<String, dynamic> json) =>

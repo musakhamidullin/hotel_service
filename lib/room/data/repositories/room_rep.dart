@@ -28,13 +28,14 @@ final class RoomRep {
   }
 
   Future<void> sendReport(IssueReport report) async {
-    final data = report.toJson();
+    try {
+      final data = report.toJson();
 
-    final result = await DioClient()
-        .post(path: 'HouseKeeping/ReportCleaningProblem', data: data);
-    // if (result =) throw Exception();
-
-    print(result);
+      final result = await DioClient()
+          .post(path: 'HouseKeeping/ReportCleaningProblem', data: data);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> sendReports(Reports reports) async {

@@ -28,7 +28,7 @@ class IssueCard extends StatefulWidget {
 
   final int index;
   final String tabName;
-  final IssuesState issuesState;
+  final IssuesModel issuesState;
 
   @override
   State<IssueCard> createState() => _IssueCardState();
@@ -114,12 +114,12 @@ class _IssueCardState extends State<IssueCard> {
                               children: [
                                 Expanded(
                                   child: DepartmentsList(
-                                    scrollController: scrollControl,
-                                    departments: cubit.state.departments,
-                                    onDepartmentChanged: (department) =>
-                                        cubit.onDepartmentChanged(
-                                            widget.index, department),
-                                  ),
+                                      scrollController: scrollControl,
+                                      departments: cubit.state.departments,
+                                      onDepartmentChanged: (department) =>
+                                          cubit.onIssueModelChanged(
+                                              widget.issuesState.copyWith(
+                                                  department: department))),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
@@ -151,9 +151,8 @@ class _IssueCardState extends State<IssueCard> {
                         index: widget.index,
                         images: widget.issuesState.images,
                         onChanged: (List<String> items) {
-                          context
-                              .read<RoomCubit>()
-                              .onChangedImagesPressed(widget.index, items);
+                          context.read<RoomCubit>().onIssueModelChanged(
+                              widget.issuesState.copyWith(images: items));
                         },
                       ),
                       const SizedBox(
@@ -182,11 +181,11 @@ class _IssueCardState extends State<IssueCard> {
                   index: widget.index,
                   onTextChanged: (String text) => context
                       .read<RoomCubit>()
-                      .onIssueStateChanged(
+                      .onIssueModelChanged(
                           widget.issuesState.copyWith(comment: text)),
                   onClearPressed: () => context
                       .read<RoomCubit>()
-                      .onIssueStateChanged(
+                      .onIssueModelChanged(
                           widget.issuesState.copyWith(comment: '')),
                 ),
                 const SizedBox(
@@ -195,22 +194,39 @@ class _IssueCardState extends State<IssueCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Expanded(
+                      child: FilledButton.tonal(
+                        onPressed: () => context
+                            .read<RoomCubit>()
+                            .onCompletePressed(widget.issuesState),
+                        child: const Text('Отправить'),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
                     IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
-                        final images = <String>[];
-                        // final images = widget.isCreatedTab
-                        //     ? cubit.state.createdIssues[widget.index].images
-                        //     : cubit.state.addedIssues[widget.index].images;
+                        final images = cubit
+                                .state
+                                .issues[cubit.state.tabIndex]?[widget.index]
+                                .images ??
+                            [];
+
                         Modals.showBottomSheet(
                           context,
                           GalleryWidget(
                             onSavePressed: (List<String> items) =>
-                                cubit.onAddImagesPressed(widget.index, items),
+                                cubit.onIssueModelChanged(
+                                    widget.issuesState.copyWith(images: items)),
                             images: images,
                             onDeletePressed: (String item) =>
-                                cubit.onDeleteImagePressed(widget.index, item),
-                            onClearPressed: () => cubit.onIssueStateChanged(
+                                cubit.onIssueModelChanged(widget.issuesState
+                                    .copyWith(
+                                        images: [...widget.issuesState.images]
+                                          ..removeWhere((e) => e == item))),
+                            onClearPressed: () => cubit.onIssueModelChanged(
                                 widget.issuesState.copyWith(images: [])),
                           ),
                         );

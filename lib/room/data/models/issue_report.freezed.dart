@@ -24,7 +24,6 @@ mixin _$IssueReport {
   int get roomId => throw _privateConstructorUsedError;
   String get problemText => throw _privateConstructorUsedError;
   List<ProblemMedia> get problemMedia => throw _privateConstructorUsedError;
-  int get departmentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,8 +41,7 @@ abstract class $IssueReportCopyWith<$Res> {
       {int personId,
       int roomId,
       String problemText,
-      List<ProblemMedia> problemMedia,
-      int departmentId});
+      List<ProblemMedia> problemMedia});
 }
 
 /// @nodoc
@@ -63,7 +61,6 @@ class _$IssueReportCopyWithImpl<$Res, $Val extends IssueReport>
     Object? roomId = null,
     Object? problemText = null,
     Object? problemMedia = null,
-    Object? departmentId = null,
   }) {
     return _then(_value.copyWith(
       personId: null == personId
@@ -82,10 +79,6 @@ class _$IssueReportCopyWithImpl<$Res, $Val extends IssueReport>
           ? _value.problemMedia
           : problemMedia // ignore: cast_nullable_to_non_nullable
               as List<ProblemMedia>,
-      departmentId: null == departmentId
-          ? _value.departmentId
-          : departmentId // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -102,8 +95,7 @@ abstract class _$$IssueReportImplCopyWith<$Res>
       {int personId,
       int roomId,
       String problemText,
-      List<ProblemMedia> problemMedia,
-      int departmentId});
+      List<ProblemMedia> problemMedia});
 }
 
 /// @nodoc
@@ -121,7 +113,6 @@ class __$$IssueReportImplCopyWithImpl<$Res>
     Object? roomId = null,
     Object? problemText = null,
     Object? problemMedia = null,
-    Object? departmentId = null,
   }) {
     return _then(_$IssueReportImpl(
       personId: null == personId
@@ -140,10 +131,6 @@ class __$$IssueReportImplCopyWithImpl<$Res>
           ? _value._problemMedia
           : problemMedia // ignore: cast_nullable_to_non_nullable
               as List<ProblemMedia>,
-      departmentId: null == departmentId
-          ? _value.departmentId
-          : departmentId // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -156,8 +143,7 @@ class _$IssueReportImpl implements _IssueReport {
       {this.personId = 0,
       this.roomId = 0,
       this.problemText = '',
-      final List<ProblemMedia> problemMedia = const <ProblemMedia>[],
-      this.departmentId = 0})
+      final List<ProblemMedia> problemMedia = const <ProblemMedia>[]})
       : _problemMedia = problemMedia;
 
   factory _$IssueReportImpl.fromJson(Map<String, dynamic> json) =>
@@ -182,12 +168,8 @@ class _$IssueReportImpl implements _IssueReport {
   }
 
   @override
-  @JsonKey()
-  final int departmentId;
-
-  @override
   String toString() {
-    return 'IssueReport(personId: $personId, roomId: $roomId, problemText: $problemText, problemMedia: $problemMedia, departmentId: $departmentId)';
+    return 'IssueReport(personId: $personId, roomId: $roomId, problemText: $problemText, problemMedia: $problemMedia)';
   }
 
   @override
@@ -201,15 +183,13 @@ class _$IssueReportImpl implements _IssueReport {
             (identical(other.problemText, problemText) ||
                 other.problemText == problemText) &&
             const DeepCollectionEquality()
-                .equals(other._problemMedia, _problemMedia) &&
-            (identical(other.departmentId, departmentId) ||
-                other.departmentId == departmentId));
+                .equals(other._problemMedia, _problemMedia));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, personId, roomId, problemText,
-      const DeepCollectionEquality().hash(_problemMedia), departmentId);
+      const DeepCollectionEquality().hash(_problemMedia));
 
   @JsonKey(ignore: true)
   @override
@@ -230,8 +210,7 @@ abstract class _IssueReport implements IssueReport {
       {final int personId,
       final int roomId,
       final String problemText,
-      final List<ProblemMedia> problemMedia,
-      final int departmentId}) = _$IssueReportImpl;
+      final List<ProblemMedia> problemMedia}) = _$IssueReportImpl;
 
   factory _IssueReport.fromJson(Map<String, dynamic> json) =
       _$IssueReportImpl.fromJson;
@@ -244,8 +223,6 @@ abstract class _IssueReport implements IssueReport {
   String get problemText;
   @override
   List<ProblemMedia> get problemMedia;
-  @override
-  int get departmentId;
   @override
   @JsonKey(ignore: true)
   _$$IssueReportImplCopyWith<_$IssueReportImpl> get copyWith =>
@@ -260,6 +237,7 @@ ProblemMedia _$ProblemMediaFromJson(Map<String, dynamic> json) {
 mixin _$ProblemMedia {
   String get mediaBase64 => throw _privateConstructorUsedError;
   String get mediaType => throw _privateConstructorUsedError;
+  @JsonSerializable(includeIfNull: false)
   String get mediaInBase64 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -274,7 +252,10 @@ abstract class $ProblemMediaCopyWith<$Res> {
           ProblemMedia value, $Res Function(ProblemMedia) then) =
       _$ProblemMediaCopyWithImpl<$Res, ProblemMedia>;
   @useResult
-  $Res call({String mediaBase64, String mediaType, String mediaInBase64});
+  $Res call(
+      {String mediaBase64,
+      String mediaType,
+      @JsonSerializable(includeIfNull: false) String mediaInBase64});
 }
 
 /// @nodoc
@@ -319,7 +300,10 @@ abstract class _$$ProblemMediaImplCopyWith<$Res>
       __$$ProblemMediaImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String mediaBase64, String mediaType, String mediaInBase64});
+  $Res call(
+      {String mediaBase64,
+      String mediaType,
+      @JsonSerializable(includeIfNull: false) String mediaInBase64});
 }
 
 /// @nodoc
@@ -359,7 +343,9 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.pascal)
 class _$ProblemMediaImpl implements _ProblemMedia {
   const _$ProblemMediaImpl(
-      {this.mediaBase64 = '', this.mediaType = '', this.mediaInBase64 = ''});
+      {this.mediaBase64 = '',
+      this.mediaType = '',
+      @JsonSerializable(includeIfNull: false) this.mediaInBase64 = ''});
 
   factory _$ProblemMediaImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProblemMediaImplFromJson(json);
@@ -372,6 +358,7 @@ class _$ProblemMediaImpl implements _ProblemMedia {
   final String mediaType;
   @override
   @JsonKey()
+  @JsonSerializable(includeIfNull: false)
   final String mediaInBase64;
 
   @override
@@ -413,9 +400,10 @@ class _$ProblemMediaImpl implements _ProblemMedia {
 
 abstract class _ProblemMedia implements ProblemMedia {
   const factory _ProblemMedia(
-      {final String mediaBase64,
-      final String mediaType,
-      final String mediaInBase64}) = _$ProblemMediaImpl;
+          {final String mediaBase64,
+          final String mediaType,
+          @JsonSerializable(includeIfNull: false) final String mediaInBase64}) =
+      _$ProblemMediaImpl;
 
   factory _ProblemMedia.fromJson(Map<String, dynamic> json) =
       _$ProblemMediaImpl.fromJson;
@@ -425,6 +413,7 @@ abstract class _ProblemMedia implements ProblemMedia {
   @override
   String get mediaType;
   @override
+  @JsonSerializable(includeIfNull: false)
   String get mediaInBase64;
   @override
   @JsonKey(ignore: true)

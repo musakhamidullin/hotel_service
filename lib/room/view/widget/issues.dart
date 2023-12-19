@@ -7,12 +7,12 @@ import 'listview_builder.dart';
 class IssuesList extends StatelessWidget {
   const IssuesList({super.key, required this.issues, required this.tabName});
 
-  final List<IssuesState> issues;
+  final List<IssuesModel> issues;
   final String tabName;
 
   @override
   Widget build(BuildContext context) {
-    return ListViewBuilder<IssuesState>(
+    return ListViewBuilder<IssuesModel>(
       itemBuilder: (context, i) => IssueCard(
         index: i,
         tabName: tabName,

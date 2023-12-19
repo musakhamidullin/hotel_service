@@ -22,7 +22,7 @@ class Reports with _$Reports {
   factory Reports.fromJson(Map<String, dynamic> json) =>
       _$ReportsFromJson(json);
 
-  // factory Reports.fill(RoomState roomState, List<ProblemList> problemList) =>
+  // static Reports fill(RoomState roomState, List<ProblemList> problemList) =>
   //     Reports(
   //         roomId: roomState.room.roomId,
   //         personId: roomState.user.personInfo.id,
@@ -41,7 +41,7 @@ class ProblemList with _$ProblemList {
   factory ProblemList.fromJson(Map<String, dynamic> json) =>
       _$ProblemListFromJson(json);
 
-  // factory ProblemList.fill(IssuesState state) => ProblemList(
+  // static ProblemList fill(IssuesModel state) => ProblemList(
   //     departmentId: state.department.id,
   //     problemMedia: state.images.map((e) {
   //       final bytes = const Base64Decoder().convert(e);

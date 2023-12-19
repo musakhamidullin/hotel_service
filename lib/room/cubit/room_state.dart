@@ -7,9 +7,7 @@ class RoomState with _$RoomState {
   const factory RoomState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(Room()) Room room,
-    @Default({}) Map<int, List<IssuesState>> issues,
-    // @Default(<IssuesState>[]) List<IssuesState> addedIssues,
-    // @Default(<IssuesState>[]) List<IssuesState> createdIssues,
+    @Default({}) Map<int, List<IssuesModel>> issues,
     @Default(<Department>[]) List<Department> departments,
     @Default(User(userId: '', personInfo: Person(id: 0))) User user,
     @Default(0) int tabIndex,

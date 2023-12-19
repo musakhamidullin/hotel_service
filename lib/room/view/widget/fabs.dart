@@ -22,7 +22,7 @@ class Fabs extends StatelessWidget {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: context.read<RoomCubit>().onCompletePressed,
+              onPressed: () {},
               child: const Text('Завершить'),
             ),
           ),

@@ -18,9 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   Room get room => throw _privateConstructorUsedError;
-  Map<int, List<IssuesState>> get issues =>
-      throw _privateConstructorUsedError; // @Default(<IssuesState>[]) List<IssuesState> addedIssues,
-// @Default(<IssuesState>[]) List<IssuesState> createdIssues,
+  Map<int, List<IssuesModel>> get issues => throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   int get tabIndex => throw _privateConstructorUsedError;
@@ -38,7 +36,7 @@ abstract class $RoomStateCopyWith<$Res> {
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      Map<int, List<IssuesState>> issues,
+      Map<int, List<IssuesModel>> issues,
       List<Department> departments,
       User user,
       int tabIndex});
@@ -79,7 +77,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
       issues: null == issues
           ? _value.issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as Map<int, List<IssuesState>>,
+              as Map<int, List<IssuesModel>>,
       departments: null == departments
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -123,7 +121,7 @@ abstract class _$$RoomStateImplCopyWith<$Res>
   $Res call(
       {FetchStatus fetchStatus,
       Room room,
-      Map<int, List<IssuesState>> issues,
+      Map<int, List<IssuesModel>> issues,
       List<Department> departments,
       User user,
       int tabIndex});
@@ -164,7 +162,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
       issues: null == issues
           ? _value._issues
           : issues // ignore: cast_nullable_to_non_nullable
-              as Map<int, List<IssuesState>>,
+              as Map<int, List<IssuesModel>>,
       departments: null == departments
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
@@ -187,7 +185,7 @@ class _$RoomStateImpl extends _RoomState {
   const _$RoomStateImpl(
       {this.fetchStatus = FetchStatus.init,
       this.room = const Room(),
-      final Map<int, List<IssuesState>> issues = const {},
+      final Map<int, List<IssuesModel>> issues = const {},
       final List<Department> departments = const <Department>[],
       this.user = const User(userId: '', personInfo: Person(id: 0)),
       this.tabIndex = 0})
@@ -201,20 +199,16 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final Room room;
-  final Map<int, List<IssuesState>> _issues;
+  final Map<int, List<IssuesModel>> _issues;
   @override
   @JsonKey()
-  Map<int, List<IssuesState>> get issues {
+  Map<int, List<IssuesModel>> get issues {
     if (_issues is EqualUnmodifiableMapView) return _issues;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_issues);
   }
 
-// @Default(<IssuesState>[]) List<IssuesState> addedIssues,
-// @Default(<IssuesState>[]) List<IssuesState> createdIssues,
   final List<Department> _departments;
-// @Default(<IssuesState>[]) List<IssuesState> addedIssues,
-// @Default(<IssuesState>[]) List<IssuesState> createdIssues,
   @override
   @JsonKey()
   List<Department> get departments {
@@ -272,7 +266,7 @@ abstract class _RoomState extends RoomState {
   const factory _RoomState(
       {final FetchStatus fetchStatus,
       final Room room,
-      final Map<int, List<IssuesState>> issues,
+      final Map<int, List<IssuesModel>> issues,
       final List<Department> departments,
       final User user,
       final int tabIndex}) = _$RoomStateImpl;
@@ -283,9 +277,8 @@ abstract class _RoomState extends RoomState {
   @override
   Room get room;
   @override
-  Map<int, List<IssuesState>> get issues;
-  @override // @Default(<IssuesState>[]) List<IssuesState> addedIssues,
-// @Default(<IssuesState>[]) List<IssuesState> createdIssues,
+  Map<int, List<IssuesModel>> get issues;
+  @override
   List<Department> get departments;
   @override
   User get user;

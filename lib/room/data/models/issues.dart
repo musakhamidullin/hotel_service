@@ -9,25 +9,25 @@ part 'issues.freezed.dart';
 part 'issues.g.dart';
 
 @freezed
-class IssuesState extends Equatable with _$IssuesState {
-  const factory IssuesState({
+class IssuesModel with _$IssuesModel {
+  const factory IssuesModel({
     @Default(<String>[]) List<String> images,
     @Default('') String comment,
     @Default('') @DateSerializer() String date,
     @Default(true) isMutable,
     @Default(Department()) Department department,
-  }) = _IssuesState;
+  }) = _IssuesModel;
 
-  const IssuesState._();
+  const IssuesModel._();
 
-  factory IssuesState.fromJson(Map<String, dynamic> json) =>
-      _$IssuesStateFromJson(json);
+  factory IssuesModel.fromJson(Map<String, dynamic> json) =>
+      _$IssuesModelFromJson(json);
 
-  factory IssuesState.newIssue() => IssuesState(
+  factory IssuesModel.newIssue() => IssuesModel(
         date: DateTime.now().toString(),
       );
 
-  factory IssuesState.filledByDefect(Defect defect) => IssuesState(
+  factory IssuesModel.filledByDefect(Defect defect) => IssuesModel(
         comment: defect.text,
         images: defect.hotelDefectMedias.map((e) => e.mediaInBase64).toList(),
         date: defect.createDate.toString(),

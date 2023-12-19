@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     final pickedImages = await ImagePicker().pickMultiImage();
 
     final bytes = pickedImages
-        .map((e) => base64UrlEncode(File(e.path).readAsBytesSync()))
+        .map((e) => base64Encode(File(e.path).readAsBytesSync()))
         .toList();
 
     setState(() {
@@ -43,7 +44,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        _images.add(base64UrlEncode(File(pickedImage.path).readAsBytesSync()));
+        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
       });
     }
   }
@@ -91,7 +92,10 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               onTap: () async => await _onSelectedFromGalleryPressed(),
               title: const Text('Выбрать из галереи'),
             ),
-            const Divider(endIndent: 16, indent: 16,),
+            const Divider(
+              endIndent: 16,
+              indent: 16,
+            ),
             ListTile(
               leading: const Icon(Icons.photo_camera_outlined),
               onTap: () async => await _onSelectedCameraPressed(),
