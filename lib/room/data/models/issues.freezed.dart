@@ -20,7 +20,6 @@ IssuesState _$IssuesStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$IssuesState {
-  int get index => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
@@ -41,8 +40,7 @@ abstract class $IssuesStateCopyWith<$Res> {
       _$IssuesStateCopyWithImpl<$Res, IssuesState>;
   @useResult
   $Res call(
-      {int index,
-      List<String> images,
+      {List<String> images,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -64,7 +62,6 @@ class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? index = null,
     Object? images = null,
     Object? comment = null,
     Object? date = null,
@@ -72,10 +69,6 @@ class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
     Object? department = null,
   }) {
     return _then(_value.copyWith(
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
@@ -117,8 +110,7 @@ abstract class _$$IssuesStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int index,
-      List<String> images,
+      {List<String> images,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -139,7 +131,6 @@ class __$$IssuesStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? index = null,
     Object? images = null,
     Object? comment = null,
     Object? date = null,
@@ -147,10 +138,6 @@ class __$$IssuesStateImplCopyWithImpl<$Res>
     Object? department = null,
   }) {
     return _then(_$IssuesStateImpl(
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -174,22 +161,19 @@ class __$$IssuesStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$IssuesStateImpl implements _IssuesState {
+class _$IssuesStateImpl extends _IssuesState {
   const _$IssuesStateImpl(
-      {this.index = 0,
-      final List<String> images = const <String>[],
+      {final List<String> images = const <String>[],
       this.comment = '',
       @DateSerializer() this.date = '',
       this.isMutable = true,
       this.department = const Department()})
-      : _images = images;
+      : _images = images,
+        super._();
 
   factory _$IssuesStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$IssuesStateImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final int index;
   final List<String> _images;
   @override
   @JsonKey()
@@ -213,36 +197,6 @@ class _$IssuesStateImpl implements _IssuesState {
   @JsonKey()
   final Department department;
 
-  @override
-  String toString() {
-    return 'IssuesState(index: $index, images: $images, comment: $comment, date: $date, isMutable: $isMutable, department: $department)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IssuesStateImpl &&
-            (identical(other.index, index) || other.index == index) &&
-            const DeepCollectionEquality().equals(other._images, _images) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.date, date) || other.date == date) &&
-            const DeepCollectionEquality().equals(other.isMutable, isMutable) &&
-            (identical(other.department, department) ||
-                other.department == department));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      index,
-      const DeepCollectionEquality().hash(_images),
-      comment,
-      date,
-      const DeepCollectionEquality().hash(isMutable),
-      department);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
@@ -257,20 +211,18 @@ class _$IssuesStateImpl implements _IssuesState {
   }
 }
 
-abstract class _IssuesState implements IssuesState {
+abstract class _IssuesState extends IssuesState {
   const factory _IssuesState(
-      {final int index,
-      final List<String> images,
+      {final List<String> images,
       final String comment,
       @DateSerializer() final String date,
       final dynamic isMutable,
       final Department department}) = _$IssuesStateImpl;
+  const _IssuesState._() : super._();
 
   factory _IssuesState.fromJson(Map<String, dynamic> json) =
       _$IssuesStateImpl.fromJson;
 
-  @override
-  int get index;
   @override
   List<String> get images;
   @override

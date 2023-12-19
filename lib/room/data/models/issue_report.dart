@@ -17,26 +17,26 @@ String issueReportToJson(IssueReport data) => json.encode(data.toJson());
 @freezed
 class IssueReport with _$IssueReport {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory IssueReport({
-    @Default(0) int personId,
-    @Default(0) int roomId,
-    @Default('') String problemText,
-    @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
-  }) = _IssueReport;
+  const factory IssueReport(
+      {@Default(0) int personId,
+      @Default(0) int roomId,
+      @Default('') String problemText,
+      @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
+      @Default(0) int departmentId}) = _IssueReport;
 
   factory IssueReport.fromJson(Map<String, dynamic> json) =>
       _$IssueReportFromJson(json);
 
-  static IssueReport filledByIssueState(
-          RoomState roomState, IssuesState issue) =>
-      IssueReport(
-          personId: roomState.user.personInfo.id,
-          problemMedia: issue.images.map((e) {
-            final bytes = const Base64Decoder().convert(e);
-            return ProblemMedia.fromFile(e, _getExtension(bytes));
-          }).toList(),
-          problemText: issue.comment,
-          roomId: roomState.room.roomId);
+  // factory IssueReport.filledByIssueState(
+  //         RoomState roomState, IssuesState issue) =>
+  //     IssueReport(
+  //         personId: roomState.user.personInfo.id,
+  //         problemMedia: issue.images.map((e) {
+  //           final bytes = const Base64Decoder().convert(e);
+  //           return ProblemMedia.fromFile(e, _getExtension(bytes));
+  //         }).toList(),
+  //         problemText: issue.comment,
+  //         roomId: roomState.room.roomId);
 
   static String _getExtension(Uint8List data) {
     if (data[0] == 0xff && data[1] == 0xd8) {
@@ -74,11 +74,10 @@ class IssueReport with _$IssueReport {
 @freezed
 class ProblemMedia with _$ProblemMedia {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory ProblemMedia({
-    @Default('') String mediaBase64,
-    @Default('') String mediaType,
-    @Default('') String mediaInBase64,
-  }) = _ProblemMedia;
+  const factory ProblemMedia(
+      {@Default('') String mediaBase64,
+      @Default('') String mediaType,
+      @Default('') String mediaInBase64}) = _ProblemMedia;
 
   factory ProblemMedia.fromFile(String bytes, String extension) => ProblemMedia(
       mediaType: extension, mediaInBase64: bytes, mediaBase64: bytes);

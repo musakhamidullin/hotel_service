@@ -12,6 +12,7 @@ import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 import '../../data/models/department_info.dart';
 
+import '../../data/models/issues.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -21,21 +22,13 @@ class IssueCard extends StatefulWidget {
   const IssueCard({
     super.key,
     required this.index,
-    required this.dateTime,
-    required this.text,
-    required this.department,
-    required this.isCreatedTab,
     required this.tabName,
-    required this.images,
+    required this.issuesState,
   });
 
   final int index;
-  final DateTime dateTime;
-  final String text;
-  final bool isCreatedTab;
-  final Department department;
   final String tabName;
-  final List<String> images;
+  final IssuesState issuesState;
 
   @override
   State<IssueCard> createState() => _IssueCardState();
@@ -49,7 +42,7 @@ class _IssueCardState extends State<IssueCard> {
   @override
   void initState() {
     super.initState();
-    _controller.text = widget.text;
+    _controller.text = widget.issuesState.comment;
   }
 
   @override
@@ -63,7 +56,8 @@ class _IssueCardState extends State<IssueCard> {
         children: [
           SlidableAction(
             icon: Icons.delete,
-            onPressed: (_) => roomCubit.onDeleteIssuePressed(indexIssue),
+            onPressed: (_) =>
+                roomCubit.onDeleteIssuePressed(widget.issuesState),
             borderRadius: BorderRadius.circular(10),
             backgroundColor: Colors.red,
           )
@@ -91,14 +85,14 @@ class _IssueCardState extends State<IssueCard> {
                       child: Text(
                         DateFormat.yMMMEd(localizations.languageCode)
                             .add_Hm()
-                            .format(widget.dateTime),
+                            .format(DateTime.parse(widget.issuesState.date)),
                       ),
                     ),
                     IconButton(
                       onPressed: () {
                         context
                             .read<RoomCubit>()
-                            .onDeleteIssuePressed(widget.index);
+                            .onDeleteIssuePressed(widget.issuesState);
                       },
                       icon: const Icon(Icons.delete),
                     )
@@ -142,12 +136,12 @@ class _IssueCardState extends State<IssueCard> {
                           ));
                     },
                     icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    label: Text(widget.department.fullName.isEmpty
+                    label: Text(widget.issuesState.department.fullName.isEmpty
                         ? 'Выбрать службу'
-                        : widget.department.fullName),
+                        : widget.issuesState.department.fullName),
                   ),
                 ),
-                if (widget.images.isNotEmpty)
+                if (widget.issuesState.images.isNotEmpty)
                   Column(
                     children: [
                       const SizedBox(
@@ -155,7 +149,7 @@ class _IssueCardState extends State<IssueCard> {
                       ),
                       MiniImagesIssueCard(
                         index: widget.index,
-                        images: widget.images,
+                        images: widget.issuesState.images,
                         onChanged: (List<String> items) {
                           context
                               .read<RoomCubit>()
@@ -180,17 +174,20 @@ class _IssueCardState extends State<IssueCard> {
                     );
                   },
                 ),
-                if (widget.images.isNotEmpty) const SizedBox(height: 8),
+                if (widget.issuesState.images.isNotEmpty)
+                  const SizedBox(height: 8),
                 IssueTextField(
                   readOnly: _readOnlyInput,
                   textEditingController: _controller,
                   index: widget.index,
                   onTextChanged: (String text) => context
                       .read<RoomCubit>()
-                      .onCommentChanged(widget.index, text),
+                      .onIssueStateChanged(
+                          widget.issuesState.copyWith(comment: text)),
                   onClearPressed: () => context
                       .read<RoomCubit>()
-                      .onClearCommentPressed(widget.index),
+                      .onIssueStateChanged(
+                          widget.issuesState.copyWith(comment: '')),
                 ),
                 const SizedBox(
                   height: 12,
@@ -201,9 +198,10 @@ class _IssueCardState extends State<IssueCard> {
                     IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
-                        final images = widget.isCreatedTab
-                            ? cubit.state.createdIssues[widget.index].images
-                            : cubit.state.addedIssues[widget.index].images;
+                        final images = <String>[];
+                        // final images = widget.isCreatedTab
+                        //     ? cubit.state.createdIssues[widget.index].images
+                        //     : cubit.state.addedIssues[widget.index].images;
                         Modals.showBottomSheet(
                           context,
                           GalleryWidget(
@@ -212,8 +210,8 @@ class _IssueCardState extends State<IssueCard> {
                             images: images,
                             onDeletePressed: (String item) =>
                                 cubit.onDeleteImagePressed(widget.index, item),
-                            onClearPressed: () =>
-                                cubit.onClearImagesPressed(widget.index),
+                            onClearPressed: () => cubit.onIssueStateChanged(
+                                widget.issuesState.copyWith(images: [])),
                           ),
                         );
                       },
