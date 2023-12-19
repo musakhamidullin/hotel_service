@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../cubit/room_cubit.dart';
 import 'issue_report.dart';
-import 'issues.dart';
 
 part 'reports.freezed.dart';
 part 'reports.g.dart';

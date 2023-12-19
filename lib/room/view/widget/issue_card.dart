@@ -10,7 +10,6 @@ import '../../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../../../voice_messanger/view/message_audio_player.dart';
 import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
-import '../../data/models/department_info.dart';
 
 import '../../data/models/issues.dart';
 import 'gallery/gallery_widget.dart';

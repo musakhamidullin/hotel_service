@@ -9,7 +9,7 @@ part 'issues.freezed.dart';
 part 'issues.g.dart';
 
 @freezed
-class IssuesModel with _$IssuesModel {
+class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel({
     @Default(<String>[]) List<String> images,
     @Default('') String comment,

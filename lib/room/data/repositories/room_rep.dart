@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
 import '../models/department_info.dart';
