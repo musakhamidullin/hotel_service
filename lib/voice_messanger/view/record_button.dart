@@ -53,7 +53,8 @@ class _RecordButtonState extends State<RecordButton> {
                   widget.onRecord(_recording);
                 },
                 child: Icon(
-                  _recording ? Icons.mic_off_rounded : Icons.mic,
+                  _recording ? Icons.stop_circle_rounded : Icons.mic,
+                  color: _recording ? Colors.red : null,
                   size: 34,
                 ),
               ),
