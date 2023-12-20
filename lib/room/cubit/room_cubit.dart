@@ -121,16 +121,6 @@ class RoomCubit extends Cubit<RoomState> {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
 
-      // final tempIssues = <IssuesModel>[];
-
-      // //todo Musa тут ты тупо все перебираешь
-      // //можно же по индексу 1 перебирать, не?
-      // for (var e in state.issues.values) {
-      //   for (var i in e) {
-      //     tempIssues.add(i);
-      //   }
-      // }
-
       final issue = state.issues[1]?.firstWhere((i) => i == issuesModel);
 
       if (issue == null) return;
@@ -142,15 +132,12 @@ class RoomCubit extends Cubit<RoomState> {
 
       final updatedIssues = {...state.issues};
 
-      //todo Musa тут ты по индексу удалешь
       updatedIssues[1]!.removeWhere((i) => i == issuesModel);
 
       emit(state.copyWith(
           fetchStatus: FetchStatus.success, issues: updatedIssues));
 
       if (tabController?.index != 0) tabController?.animateTo(0);
-      //todo лишний запрос
-      await fetchRoom(state.room.roomId, refresh: true);
     } catch (e) {
       //todo failure
       // emit(state.copyWith(fetchStatus: FetchStatus.failure));
