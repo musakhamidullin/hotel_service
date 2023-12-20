@@ -15,6 +15,29 @@ import 'widget/issues_list.dart';
 import 'widget/fabs.dart';
 import 'widget/room_info.dart';
 
+class TabControllerScope extends InheritedWidget {
+  const TabControllerScope({
+    super.key,
+    required Widget child,
+    required this.value,
+  }) : super(child: child);
+
+  final TabController value;
+
+  static TabController of(BuildContext context) {
+    final result =
+        context.getElementForInheritedWidgetOfExactType<TabControllerScope>();
+    final widget = result?.widget;
+    assert(widget is TabControllerScope);
+    return (widget as TabControllerScope).value;
+  }
+
+  @override
+  bool updateShouldNotify(TabControllerScope oldWidget) {
+    return value != oldWidget.value;
+  }
+}
+
 @RoutePage()
 class RoomPage extends StatefulWidget {
   const RoomPage({
@@ -57,37 +80,29 @@ class _RoomPageState extends State<RoomPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _roomCubit..fetchRoom(widget.room.id),
-      child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: BlocBuilder<RoomCubit, RoomState>(
-          builder: (context, state) {
-            if (state.fetchStatus != FetchStatus.success) {
-              return const SizedBox.shrink();
-            }
-            return Fabs(tabController: _tabController);
-          },
-        ),
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text('Номер ${widget.room.roomNumber}'),
-          centerTitle: true,
-        ),
-        body: BlocBuilder<RoomCubit, RoomState>(
-          builder: (context, state) {
-            if (state.failure()) {
-              return FailureWidget(
-                onPressed: () => _roomCubit.fetchRoom(widget.room.id),
-              );
-            }
-
-            if (state.loading()) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state.success() || state.refreshing()) {
-              return Padding(
+    return TabControllerScope(
+      value: _tabController,
+      child: BlocProvider(
+        create: (_) => _roomCubit..fetchRoom(widget.room.id),
+        child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: BlocBuilder<RoomCubit, RoomState>(
+            builder: (context, state) {
+              if (state.fetchStatus != FetchStatus.success) {
+                return const SizedBox.shrink();
+              }
+              return Fabs(tabController: _tabController);
+            },
+          ),
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text('Номер ${widget.room.roomNumber}'),
+            centerTitle: true,
+          ),
+          body: BlocBuilder<RoomCubit, RoomState>(
+            builder: (context, state) {
+              const loadingView = Center(child: CircularProgressIndicator());
+              final mainView = Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: RefreshIndicator(
                   notificationPredicate: (notification) {
@@ -114,18 +129,35 @@ class _RoomPageState extends State<RoomPage>
                               issues: state.issues[0] ?? [],
                               tabName: 'Созданные'),
                           IssuesList(
-                              issues: state.issues[1] ?? [],
-                              tabName: 'Новые')
+                              issues: state.issues[1] ?? [], tabName: 'Новые')
                         ],
                       ),
                     ),
                   ),
                 ),
               );
-            }
+              if (state.failure()) {
+                return FailureWidget(
+                  onPressed: () => _roomCubit.fetchRoom(widget.room.id),
+                );
+              }
 
-            return const SizedBox.shrink();
-          },
+              if (state.loading()) {
+                return loadingView;
+              }
+
+              if (state.success() || state.refreshing()) {
+                return Stack(
+                  children: [
+                    mainView,
+                    if (state.refreshing()) loadingView,
+                  ],
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );

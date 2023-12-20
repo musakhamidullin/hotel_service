@@ -26,14 +26,9 @@ final class RoomRep {
   }
 
   Future<void> sendReport(IssueReport report) async {
-    try {
-      final data = report.toJson();
-
-      final result = await DioClient()
-          .post(path: 'HouseKeeping/ReportCleaningProblem', data: data);
-    } catch (e) {
-      print(e);
-    }
+    await DioClient()
+        .dio
+        .post('HouseKeeping/ReportCleaningProblem', data: report.toJson());
   }
 
   Future<void> sendReports(Reports reports) async {

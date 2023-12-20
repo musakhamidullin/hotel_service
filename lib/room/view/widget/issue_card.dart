@@ -12,6 +12,7 @@ import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 
 import '../../data/models/issues.dart';
+import '../room_page.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -60,195 +61,194 @@ class _IssueCardState extends State<IssueCard> {
   @override
   Widget build(BuildContext context) {
     final localizations = Localizations.localeOf(context);
-    return BlocProvider.value(
-      value: BlocProvider.of<RoomCubit>(context),
-      child: Slidable(
-        endActionPane: actionPane(widget.index, context.read<RoomCubit>()),
-        startActionPane: actionPane(widget.index, context.read<RoomCubit>()),
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        DateFormat.yMMMEd(localizations.languageCode)
-                            .add_Hm()
-                            .format(DateTime.parse(widget.issuesState.date)),
-                      ),
+    return Slidable(
+      endActionPane: actionPane(widget.index, context.read<RoomCubit>()),
+      startActionPane: actionPane(widget.index, context.read<RoomCubit>()),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      DateFormat.yMMMEd(localizations.languageCode)
+                          .add_Hm()
+                          .format(DateTime.parse(widget.issuesState.date)),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        context
-                            .read<RoomCubit>()
-                            .onDeleteIssuePressed(widget.issuesState);
-                      },
-                      icon: const Icon(Icons.delete),
-                    )
-                  ],
-                ),
-                Center(
-                  child: TextButton.icon(
+                  ),
+                  IconButton(
                     onPressed: () {
-                      final cubit = context.read<RoomCubit>();
-                      Modals.showBottomSheet(
-                          showDragHandle: true,
-                          context,
-                          DraggableScrollableSheet(
-                            expand: false,
-                            initialChildSize: 0.4,
-                            minChildSize: 0.2,
-                            maxChildSize: 0.4,
-                            builder: (context, scrollControl) => Column(
-                              children: [
-                                Expanded(
-                                  child: DepartmentsList(
-                                      scrollController: scrollControl,
-                                      departments: cubit.state.departments,
-                                      onDepartmentChanged: (department) =>
-                                          cubit.onIssueModelChanged(
-                                              widget.issuesState.copyWith(
-                                                  department: department))),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: FilledButton.tonal(
-                                      onPressed: Navigator.of(context).pop,
-                                      child: const Text('Отмена'),
-                                    ),
+                      context
+                          .read<RoomCubit>()
+                          .onDeleteIssuePressed(widget.issuesState);
+                    },
+                    icon: const Icon(Icons.delete),
+                  )
+                ],
+              ),
+              Center(
+                child: TextButton.icon(
+                  onPressed: () {
+                    final cubit = context.read<RoomCubit>();
+                    Modals.showBottomSheet(
+                        showDragHandle: true,
+                        context,
+                        DraggableScrollableSheet(
+                          expand: false,
+                          initialChildSize: 0.4,
+                          minChildSize: 0.2,
+                          maxChildSize: 0.4,
+                          builder: (context, scrollControl) => Column(
+                            children: [
+                              Expanded(
+                                child: DepartmentsList(
+                                    scrollController: scrollControl,
+                                    departments: cubit.state.departments,
+                                    onDepartmentChanged: (department) => cubit
+                                        .onIssueModelChanged(widget.issuesState
+                                            .copyWith(department: department))),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: FilledButton.tonal(
+                                    onPressed: Navigator.of(context).pop,
+                                    child: const Text('Отмена'),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ));
-                    },
-                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                    label: Text(widget.issuesState.department.fullName.isEmpty
-                        ? 'Выбрать службу'
-                        : widget.issuesState.department.fullName),
-                  ),
-                ),
-                if (widget.issuesState.images.isNotEmpty)
-                  Column(
-                    children: [
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      MiniImagesIssueCard(
-                        index: widget.index,
-                        images: widget.issuesState.images,
-                        onChanged: (List<String> items) {
-                          context.read<RoomCubit>().onIssueModelChanged(
-                              widget.issuesState.copyWith(images: items));
-                        },
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                    ],
-                  ),
-                BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
-                  builder: (context, state) {
-                    return Column(
-                      children: state
-                          .getRecordsByButtonId(_recordButtonId)
-                          .map(
-                            (e) => MessageAudioPlayer(
-                                key: ObjectKey(e), voiceValue: e),
-                          )
-                          .toList(),
-                    );
+                              ),
+                            ],
+                          ),
+                        ));
                   },
+                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                  label: Text(widget.issuesState.department.fullName.isEmpty
+                      ? 'Выбрать службу'
+                      : widget.issuesState.department.fullName),
                 ),
-                if (widget.issuesState.images.isNotEmpty)
-                  const SizedBox(height: 8),
-                IssueTextField(
-                  readOnly: _readOnlyInput,
-                  textEditingController: _controller
-                    ..text = widget.issuesState.comment,
-                  index: widget.index,
-                  onTextChanged: (String text) => context
-                      .read<RoomCubit>()
-                      .onIssueModelChanged(
-                          widget.issuesState.copyWith(comment: text)),
-                  onClearPressed: () => context
-                      .read<RoomCubit>()
-                      .onIssueModelChanged(
-                          widget.issuesState.copyWith(comment: '')),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              ),
+              if (widget.issuesState.images.isNotEmpty)
+                Column(
                   children: [
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    MiniImagesIssueCard(
+                      index: widget.index,
+                      images: widget.issuesState.images,
+                      onChanged: (List<String> items) {
+                        context.read<RoomCubit>().onIssueModelChanged(
+                            widget.issuesState.copyWith(images: items));
+                      },
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  ],
+                ),
+              BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
+                builder: (context, state) {
+                  return Column(
+                    children: state
+                        .getRecordsByButtonId(_recordButtonId)
+                        .map(
+                          (e) => MessageAudioPlayer(
+                              key: ObjectKey(e), voiceValue: e),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
+              if (widget.issuesState.images.isNotEmpty)
+                const SizedBox(height: 8),
+              IssueTextField(
+                readOnly: _readOnlyInput,
+                textEditingController: _controller
+                  ..text = widget.issuesState.comment,
+                index: widget.index,
+                onTextChanged: (String text) => context
+                    .read<RoomCubit>()
+                    .onIssueModelChanged(
+                        widget.issuesState.copyWith(comment: text)),
+                onClearPressed: () => context
+                    .read<RoomCubit>()
+                    .onIssueModelChanged(
+                        widget.issuesState.copyWith(comment: '')),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (!_readOnlyInput)
                     Expanded(
                       child: FilledButton.tonal(
-                        onPressed: () => context
-                            .read<RoomCubit>()
-                            .onSendPressed(widget.issuesState),
+                        onPressed: () =>
+                            context.read<RoomCubit>().onSendPressed(
+                                  widget.issuesState,
+                                  tabController: TabControllerScope.of(context),
+                                ),
                         child: const Text('Отправить'),
                       ),
                     ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        final cubit = context.read<RoomCubit>();
-                        final images = cubit
-                                .state
-                                .issues[cubit.state.tabIndex]?[widget.index]
-                                .images ??
-                            [];
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      final cubit = context.read<RoomCubit>();
+                      final images = cubit
+                              .state
+                              .issues[cubit.state.tabIndex]?[widget.index]
+                              .images ??
+                          [];
 
-                        Modals.showBottomSheet(
-                          context,
-                          GalleryWidget(
-                              onSavePressed: (List<String> items) =>
-                                  cubit.onIssueModelChanged(widget.issuesState
-                                      .copyWith(images: items)),
-                              images: images,
-                              onDeletePressed: (String item) =>
-                                  cubit.onIssueModelChanged(
-                                    widget.issuesState.copyWith(
-                                        images: [...widget.issuesState.images]
-                                          ..removeWhere((e) => e == item)),
-                                  ),
-                              onClearPressed: () => cubit.onIssueModelChanged(
-                                  widget.issuesState.copyWith(images: []))),
-                        );
-                      },
-                      icon: const Icon(Icons.attach_file_rounded),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    RecordButton(
-                      id: _recordButtonId,
-                      onRecord: (value) {
-                        setState(() {
-                          _readOnlyInput = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    IconButton(
-                      onPressed: _controller.clear,
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                )
-              ],
-            ),
+                      Modals.showBottomSheet(
+                        context,
+                        GalleryWidget(
+                            onSavePressed: (List<String> items) =>
+                                cubit.onIssueModelChanged(
+                                    widget.issuesState.copyWith(images: items)),
+                            images: images,
+                            onDeletePressed: (String item) =>
+                                cubit.onIssueModelChanged(
+                                  widget.issuesState.copyWith(
+                                      images: [...widget.issuesState.images]
+                                        ..removeWhere((e) => e == item)),
+                                ),
+                            onClearPressed: () => cubit.onIssueModelChanged(
+                                widget.issuesState.copyWith(images: []))),
+                      );
+                    },
+                    icon: const Icon(Icons.attach_file_rounded),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  RecordButton(
+                    id: _recordButtonId,
+                    onRecord: (value) {
+                      setState(() {
+                        _readOnlyInput = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  IconButton(
+                    onPressed: _controller.clear,
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),

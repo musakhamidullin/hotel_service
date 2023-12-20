@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../auth/data/model/user.dart';
@@ -65,7 +66,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   void onIssueModelChanged(IssuesModel issuesState) {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
-
+    //todo Musa заебал, че с наймингом?
     final mutabled = _mutabledIssues(issuesState);
 
     final map = {...state.issues};
@@ -75,6 +76,7 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
+  //todo Musa заебал, че с наймингом?
   List<IssuesModel> _mutabledIssues(IssuesModel issuesState) {
     // TODO возможно, нужно искать по айди
     final index = state.issues[state.tabIndex]!
@@ -96,8 +98,8 @@ class RoomCubit extends Cubit<RoomState> {
           ...state.issues,
           ...{
             1: [
-              ...?state.issues[1],
               IssuesModel.newIssue(),
+              ...?state.issues[1],
             ]
           }
         },
@@ -116,12 +118,15 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
-  void onSendPressed(IssuesModel issuesModel) async {
+  void onSendPressed(IssuesModel issuesModel,
+      {TabController? tabController}) async {
     try {
-      emit(state.copyWith(fetchStatus: FetchStatus.loading));
+      emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
 
       final tempIssues = <IssuesModel>[];
 
+      //todo Musa тут ты тупо все перебираешь
+      //можно же по индексу 1 перебирать, не?
       for (var e in state.issues.values) {
         for (var i in e) {
           tempIssues.add(i);
@@ -136,13 +141,17 @@ class RoomCubit extends Cubit<RoomState> {
 
       final updatedIssues = {...state.issues};
 
+      //todo Musa тут ты по индексу удалешь
       updatedIssues[1]!.removeWhere((i) => i == issuesModel);
 
       emit(state.copyWith(
           fetchStatus: FetchStatus.success, issues: updatedIssues));
 
-      await fetchRoom(state.room.roomId);
+      if (tabController?.index != 0) tabController?.animateTo(0);
+
+      await fetchRoom(state.room.roomId, refresh: true);
     } catch (e) {
+      //todo failure
       // emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
