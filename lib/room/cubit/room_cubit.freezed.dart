@@ -185,7 +185,8 @@ class _$RoomStateImpl extends _RoomState {
   const _$RoomStateImpl(
       {this.fetchStatus = FetchStatus.init,
       this.room = const Room(),
-      final Map<int, List<IssuesModel>> issues = const {},
+      final Map<int, List<IssuesModel>> issues =
+          const <int, List<IssuesModel>>{},
       final List<Department> departments = const <Department>[],
       this.user = const User(userId: '', personInfo: Person(id: 0)),
       this.tabIndex = 0})

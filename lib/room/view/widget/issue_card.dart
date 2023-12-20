@@ -211,18 +211,18 @@ class _IssueCardState extends State<IssueCard> {
                         Modals.showBottomSheet(
                           context,
                           GalleryWidget(
-                            onSavePressed: (List<String> items) =>
-                                cubit.onIssueModelChanged(
-                                    widget.issuesState.copyWith(images: items)),
-                            images: images,
-                            onDeletePressed: (String item) =>
-                                cubit.onIssueModelChanged(widget.issuesState
-                                    .copyWith(
+                              onSavePressed: (List<String> items) =>
+                                  cubit.onIssueModelChanged(widget.issuesState
+                                      .copyWith(images: items)),
+                              images: images,
+                              onDeletePressed: (String item) =>
+                                  cubit.onIssueModelChanged(
+                                    widget.issuesState.copyWith(
                                         images: [...widget.issuesState.images]
-                                          ..removeWhere((e) => e == item))),
-                            onClearPressed: () => cubit.onIssueModelChanged(
-                                widget.issuesState.copyWith(images: [])),
-                          ),
+                                          ..removeWhere((e) => e == item)),
+                                  ),
+                              onClearPressed: () => cubit.onIssueModelChanged(
+                                  widget.issuesState.copyWith(images: []))),
                         );
                       },
                       icon: const Icon(Icons.attach_file_rounded),
@@ -242,9 +242,7 @@ class _IssueCardState extends State<IssueCard> {
                       width: 12,
                     ),
                     IconButton(
-                      onPressed: () {
-                        _controller.clear();
-                      },
+                      onPressed: _controller.clear,
                       icon: const Icon(Icons.close),
                     ),
                   ],
