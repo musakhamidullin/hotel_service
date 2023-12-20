@@ -27,13 +27,13 @@ class RoomCubit extends Cubit<RoomState> {
 
       final room = await _roomRep.fetchRoom(id);
 
-      final issues = {
-        0: room.defects
-            .map((d) => IssuesModel.filledByDefect(
-                  d,
-                ))
-            .toList()
-      };
+      final issues = {...state.issues};
+
+      issues[0] = room.defects
+          .map((d) => IssuesModel.filledByDefect(
+                d,
+              ))
+          .toList();
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
@@ -135,7 +135,12 @@ class RoomCubit extends Cubit<RoomState> {
 
       await _roomRep.sendReport(report);
 
-      emit(state.copyWith(fetchStatus: FetchStatus.success));
+      final updatedIssues = {...state.issues};
+
+      updatedIssues[1]!.removeWhere((i) => i == issuesModel);
+
+      emit(state.copyWith(
+          fetchStatus: FetchStatus.success, issues: updatedIssues));
 
       await fetchRoom(state.room.roomId);
     } catch (e) {
