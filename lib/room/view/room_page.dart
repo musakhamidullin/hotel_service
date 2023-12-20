@@ -82,151 +82,158 @@ class _RoomPageState extends State<RoomPage>
             if (state.success()) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: NestedScrollView(
-                  body: BlocProvider(
-                    create: (context) => VoiceManagerCubit(),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        IssuesList(
-                            issues: state.issues[0] ?? [],
-                            tabName: 'Созданные'),
-                        IssuesList(
-                            issues: state.issues[1] ?? [], tabName: 'Новые')
-                      ],
-                    ),
-                  ),
-                  headerSliverBuilder: (_, isElevated) {
-                    return [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      const Text('Заезд'),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      if (state.room.arrdate.isNotEmpty)
-                                        Text(
-                                          DateFormat.yMMMEd(
-                                                  localizations.languageCode)
-                                              .format(DateTime.parse(
-                                                  state.room.arrdate)),
-                                        ),
-                                      if (state.room.arrdate.isEmpty)
-                                        const Text('Дата отсутствует')
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      const Text('Выезд'),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      if (state.room.depdate.isNotEmpty)
-                                        Text(
-                                          DateFormat.yMMMEd(
-                                                  localizations.languageCode)
-                                              .format(DateTime.parse(
-                                                  state.room.depdate)),
-                                        ),
-                                      if (state.room.depdate.isEmpty)
-                                        const Text('Дата отсутствует')
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            const Divider(),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: const Icon(Icons.star),
-                              title: RoomBuilder(
-                                buildWhen: (pState, cState) =>
-                                    pState.room.roomType !=
-                                    cState.room.roomType,
-                                builder: (context, state) {
-                                  return Text(state.room.roomType);
-                                },
-                              ),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading: const Icon(Icons.warning_rounded),
-                              title: RoomBuilder(
-                                buildWhen: (pState, cState) =>
-                                    pState.room.cleanStatusName !=
-                                    cState.room.cleanStatusName,
-                                builder: (context, state) {
-                                  return Text(state.room.cleanStatusName);
-                                },
-                              ),
-                            ),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              leading:
-                                  const Icon(Icons.cleaning_services_rounded),
-                              title: RoomBuilder(
-                                buildWhen: (pState, cState) =>
-                                    pState.room.cleaningTypeName !=
-                                    cState.room.cleaningTypeName,
-                                builder: (context, state) {
-                                  return Text(state.room.cleaningTypeName);
-                                },
-                              ),
-                            ),
-                            const Divider(),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                          ],
-                        ),
+                child: RefreshIndicator(
+                  notificationPredicate: (notification) {
+                    return notification.depth == 2;
+                  },
+                  onRefresh: () async =>
+                      await context.read<RoomCubit>().fetchRoom(widget.room.id),
+                  child: NestedScrollView(
+                    body: BlocProvider(
+                      create: (context) => VoiceManagerCubit(),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          IssuesList(
+                              issues: state.issues[0] ?? [],
+                              tabName: 'Созданные'),
+                          IssuesList(
+                              issues: state.issues[1] ?? [], tabName: 'Новые')
+                        ],
                       ),
-                      SliverToBoxAdapter(
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          height: 40,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              color: Colors.grey.withOpacity(0.2)),
-                          child: TabBar(
-                            controller: _tabController,
-                            dividerHeight: 0,
-                            splashBorderRadius: BorderRadius.circular(24),
-                            indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.5)),
-                            indicatorColor: Colors.transparent,
-                            indicatorPadding: EdgeInsets.zero,
-                            indicatorWeight: 0,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelPadding: EdgeInsets.zero,
-                            tabs: const [
-                              Tab(child: Text('Cозданные')),
-                              Tab(child: Text('Новые')),
+                    ),
+                    headerSliverBuilder: (_, isElevated) {
+                      return [
+                        SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        const Text('Заезд'),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        if (state.room.arrdate.isNotEmpty)
+                                          Text(
+                                            DateFormat.yMMMEd(
+                                                    localizations.languageCode)
+                                                .format(DateTime.parse(
+                                                    state.room.arrdate)),
+                                          ),
+                                        if (state.room.arrdate.isEmpty)
+                                          const Text('Дата отсутствует')
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        const Text('Выезд'),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        if (state.room.depdate.isNotEmpty)
+                                          Text(
+                                            DateFormat.yMMMEd(
+                                                    localizations.languageCode)
+                                                .format(DateTime.parse(
+                                                    state.room.depdate)),
+                                          ),
+                                        if (state.room.depdate.isEmpty)
+                                          const Text('Дата отсутствует')
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Divider(),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: const Icon(Icons.star),
+                                title: RoomBuilder(
+                                  buildWhen: (pState, cState) =>
+                                      pState.room.roomType !=
+                                      cState.room.roomType,
+                                  builder: (context, state) {
+                                    return Text(state.room.roomType);
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: const Icon(Icons.warning_rounded),
+                                title: RoomBuilder(
+                                  buildWhen: (pState, cState) =>
+                                      pState.room.cleanStatusName !=
+                                      cState.room.cleanStatusName,
+                                  builder: (context, state) {
+                                    return Text(state.room.cleanStatusName);
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading:
+                                    const Icon(Icons.cleaning_services_rounded),
+                                title: RoomBuilder(
+                                  buildWhen: (pState, cState) =>
+                                      pState.room.cleaningTypeName !=
+                                      cState.room.cleaningTypeName,
+                                  builder: (context, state) {
+                                    return Text(state.room.cleaningTypeName);
+                                  },
+                                ),
+                              ),
+                              const Divider(),
+                              const SizedBox(
+                                height: 16,
+                              ),
                             ],
-                            labelColor: Colors.black,
                           ),
                         ),
-                      ),
-                    ];
-                  },
+                        SliverToBoxAdapter(
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            height: 40,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                color: Colors.grey.withOpacity(0.2)),
+                            child: TabBar(
+                              controller: _tabController,
+                              dividerHeight: 0,
+                              splashBorderRadius: BorderRadius.circular(24),
+                              indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.5)),
+                              indicatorColor: Colors.transparent,
+                              indicatorPadding: EdgeInsets.zero,
+                              indicatorWeight: 0,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              labelPadding: EdgeInsets.zero,
+                              tabs: const [
+                                Tab(child: Text('Cозданные')),
+                                Tab(child: Text('Новые')),
+                              ],
+                              labelColor: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ];
+                    },
+                  ),
                 ),
               );
             }
