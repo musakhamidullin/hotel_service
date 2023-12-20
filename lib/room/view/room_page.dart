@@ -11,7 +11,7 @@ import '../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
 
 import '../data/repositories/room_rep.dart';
-import 'widget/issues.dart';
+import 'widget/issues_list.dart';
 import 'widget/fabs.dart';
 
 @RoutePage()
