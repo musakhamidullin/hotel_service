@@ -66,18 +66,16 @@ class RoomCubit extends Cubit<RoomState> {
 
   void onIssueModelChanged(IssuesModel issuesState) {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
-    //todo Musa заебал, че с наймингом?
-    final mutabled = _mutabledIssues(issuesState);
+    final updatedIssueModel = _updateIssueModel(issuesState);
 
     final map = {...state.issues};
 
-    map[state.tabIndex] = mutabled;
+    map[state.tabIndex] = updatedIssueModel;
 
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
-  //todo Musa заебал, че с наймингом?
-  List<IssuesModel> _mutabledIssues(IssuesModel issuesState) {
+  List<IssuesModel> _updateIssueModel(IssuesModel issuesState) {
     // TODO возможно, нужно искать по айди
     final index = state.issues[state.tabIndex]!
         .indexWhere((e) => e.date == issuesState.date);
@@ -123,17 +121,19 @@ class RoomCubit extends Cubit<RoomState> {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
 
-      final tempIssues = <IssuesModel>[];
+      // final tempIssues = <IssuesModel>[];
 
-      //todo Musa тут ты тупо все перебираешь
-      //можно же по индексу 1 перебирать, не?
-      for (var e in state.issues.values) {
-        for (var i in e) {
-          tempIssues.add(i);
-        }
-      }
+      // //todo Musa тут ты тупо все перебираешь
+      // //можно же по индексу 1 перебирать, не?
+      // for (var e in state.issues.values) {
+      //   for (var i in e) {
+      //     tempIssues.add(i);
+      //   }
+      // }
 
-      final issue = tempIssues.firstWhere((i) => i == issuesModel);
+      final issue = state.issues[1]?.firstWhere((i) => i == issuesModel);
+
+      if (issue == null) return;
 
       final report = IssueReport.fill(state, issue);
 
