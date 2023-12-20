@@ -34,7 +34,7 @@ abstract class Modals {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(text),
+          title: Text(text, textAlign: TextAlign.center,),
           actionsPadding: const EdgeInsets.all(16),
           actions: <Widget>[
             TextButton(

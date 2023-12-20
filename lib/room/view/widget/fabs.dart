@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/widgets/modals.dart';
 import '../../cubit/room_cubit.dart';
 
 class Fabs extends StatelessWidget {
@@ -22,7 +23,24 @@ class Fabs extends StatelessWidget {
           child: SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                final isCreatedExists =
+                    context.read<RoomCubit>().state.issues[1]?.isNotEmpty ??
+                        false;
+                if (isCreatedExists) {
+                  final request = await Modals.showConfirmationDialog(context,
+                          'Остались неотправленные заявки.\nВы уверены что хотите завершить?') ??
+                      false;
+
+                  if (request) {
+                    Future.sync(() => Navigator.pop(context));
+                  }
+
+                  return;
+                }
+
+                Future.sync(() => Navigator.pop(context));
+              },
               child: const Text('Завершить'),
             ),
           ),
