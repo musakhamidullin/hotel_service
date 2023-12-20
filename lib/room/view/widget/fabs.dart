@@ -34,6 +34,8 @@ class Fabs extends StatelessWidget {
 
                   if (request) {
                     Future.sync(() => Navigator.pop(context));
+                  } else {
+                    tabController.index = 1;
                   }
 
                   return;
