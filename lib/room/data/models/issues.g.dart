@@ -12,6 +12,10 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
+      audios: (json['audios'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
       comment: json['comment'] as String? ?? '',
       date: json['date'] == null
           ? ''
@@ -25,6 +29,7 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$IssuesModelImplToJson(_$IssuesModelImpl instance) =>
     <String, dynamic>{
       'images': instance.images,
+      'audios': instance.audios,
       'comment': instance.comment,
       'date': const DateSerializer().toJson(instance.date),
       'isMutable': instance.isMutable,

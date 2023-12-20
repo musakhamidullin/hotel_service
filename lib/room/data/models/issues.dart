@@ -12,6 +12,7 @@ part 'issues.g.dart';
 class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel({
     @Default(<String>[]) List<String> images,
+    @Default(<String>[]) List<String> audios,
     @Default('') String comment,
     @Default('') @DateSerializer() String date,
     @Default(true) isMutable,

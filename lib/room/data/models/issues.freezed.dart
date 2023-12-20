@@ -21,6 +21,7 @@ IssuesModel _$IssuesModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$IssuesModel {
   List<String> get images => throw _privateConstructorUsedError;
+  List<String> get audios => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
   String get date => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $IssuesModelCopyWith<$Res> {
   @useResult
   $Res call(
       {List<String> images,
+      List<String> audios,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -63,6 +65,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
   @override
   $Res call({
     Object? images = null,
+    Object? audios = null,
     Object? comment = null,
     Object? date = null,
     Object? isMutable = freezed,
@@ -72,6 +75,10 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      audios: null == audios
+          ? _value.audios
+          : audios // ignore: cast_nullable_to_non_nullable
               as List<String>,
       comment: null == comment
           ? _value.comment
@@ -111,6 +118,7 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<String> images,
+      List<String> audios,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -132,6 +140,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? images = null,
+    Object? audios = null,
     Object? comment = null,
     Object? date = null,
     Object? isMutable = freezed,
@@ -141,6 +150,10 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      audios: null == audios
+          ? _value._audios
+          : audios // ignore: cast_nullable_to_non_nullable
               as List<String>,
       comment: null == comment
           ? _value.comment
@@ -164,11 +177,13 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
 class _$IssuesModelImpl extends _IssuesModel {
   const _$IssuesModelImpl(
       {final List<String> images = const <String>[],
+      final List<String> audios = const <String>[],
       this.comment = '',
       @DateSerializer() this.date = '',
       this.isMutable = true,
       this.department = const Department()})
       : _images = images,
+        _audios = audios,
         super._();
 
   factory _$IssuesModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -181,6 +196,15 @@ class _$IssuesModelImpl extends _IssuesModel {
     if (_images is EqualUnmodifiableListView) return _images;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_images);
+  }
+
+  final List<String> _audios;
+  @override
+  @JsonKey()
+  List<String> get audios {
+    if (_audios is EqualUnmodifiableListView) return _audios;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_audios);
   }
 
   @override
@@ -196,34 +220,6 @@ class _$IssuesModelImpl extends _IssuesModel {
   @override
   @JsonKey()
   final Department department;
-
-  @override
-  String toString() {
-    return 'IssuesModel(images: $images, comment: $comment, date: $date, isMutable: $isMutable, department: $department)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IssuesModelImpl &&
-            const DeepCollectionEquality().equals(other._images, _images) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.date, date) || other.date == date) &&
-            const DeepCollectionEquality().equals(other.isMutable, isMutable) &&
-            (identical(other.department, department) ||
-                other.department == department));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_images),
-      comment,
-      date,
-      const DeepCollectionEquality().hash(isMutable),
-      department);
 
   @JsonKey(ignore: true)
   @override
@@ -242,6 +238,7 @@ class _$IssuesModelImpl extends _IssuesModel {
 abstract class _IssuesModel extends IssuesModel {
   const factory _IssuesModel(
       {final List<String> images,
+      final List<String> audios,
       final String comment,
       @DateSerializer() final String date,
       final dynamic isMutable,
@@ -253,6 +250,8 @@ abstract class _IssuesModel extends IssuesModel {
 
   @override
   List<String> get images;
+  @override
+  List<String> get audios;
   @override
   String get comment;
   @override
