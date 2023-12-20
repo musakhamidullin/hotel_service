@@ -13,27 +13,6 @@ import '../data/repositories/room_rep.dart';
 part 'room_state.dart';
 part 'room_cubit.freezed.dart';
 
-extension DeleteIssue on List<IssuesState> {
-  List<IssuesState> deleteIssue(List<IssuesState> issues, int i) {
-    final mutabledIssues = [...issues]..removeWhere((e) => e.index == i);
-
-    final List<IssuesState> updatedIssues = [];
-
-    for (var i = 0; i < mutabledIssues.length; i++) {
-      updatedIssues.add(mutabledIssues[i].copyWith(index: i));
-    }
-
-    return updatedIssues;
-  }
-}
-
-extension IndexedIterable<E> on Iterable<E> {
-  Iterable<T> mapIndexed<T>(T Function(E e, int i) f) {
-    var i = 0;
-    return map((e) => f(e, i++));
-  }
-}
-
 class RoomCubit extends Cubit<RoomState> {
   RoomCubit({required RoomRep roomRep, required User user})
       : _roomRep = roomRep,
@@ -48,16 +27,17 @@ class RoomCubit extends Cubit<RoomState> {
 
       final room = await _roomRep.fetchRoom(id);
 
-      final defects = room.defects
-          .mapIndexed((d, i) => IssuesState.filledByDefect(
-                d,
-                i,
-              ))
-          .toList();
+      final issues = {
+        0: room.defects
+            .map((d) => IssuesModel.filledByDefect(
+                  d,
+                ))
+            .toList()
+      };
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
-        createdIssues: defects,
+        issues: issues,
         room: room,
       ));
 
@@ -78,145 +58,90 @@ class RoomCubit extends Cubit<RoomState> {
     ]));
   }
 
-  void onClearCommentPressed(int i) => state.tabIndex == 0
-      ? emit(state.copyWith(createdIssues: [
-          ...state.createdIssues
-              .map((e) => e.index == i ? e.copyWith(comment: '') : e)
-              .toList()
-        ]))
-      : emit(state.copyWith(addedIssues: [
-          ...state.addedIssues
-              .map((e) => e.index == i ? e.copyWith(comment: '') : e)
-              .toList()
-        ]));
+  void onIssueModelChanged(IssuesModel issuesState) {
+    emit(state.copyWith(fetchStatus: FetchStatus.init));
 
-  void onCommentChanged(int i, String text) => state.tabIndex == 0
-      ? emit(state.copyWith(createdIssues: [
-          ...state.createdIssues
-              .map((e) => e.index == i ? e.copyWith(comment: text) : e)
-              .toList()
-        ]))
-      : emit(state.copyWith(addedIssues: [
-          ...state.addedIssues
-              .map((e) => e.index == i ? e.copyWith(comment: text) : e)
-              .toList()
-        ]));
+    final mutabled = _mutabledIssues(issuesState);
 
-  void onAddIssuePressed() {
-    int index = 0;
+    final map = {...state.issues};
 
-    index = state.addedIssues.isEmpty
-        ? 0
-        : index = state.addedIssues.lastIndexOf(state.addedIssues.last) + 1;
+    map[state.tabIndex] = mutabled;
 
-    emit(state.copyWith(addedIssues: [
-      ...state.addedIssues,
-      IssuesState.newIssue(
-        state.addedIssues.isEmpty ? 0 : index,
-      )
-    ]));
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
-  void onDeleteIssuePressed(int i) => state.tabIndex == 0
-      ? emit(state.copyWith(createdIssues: [
-          ...state.createdIssues.deleteIssue(state.createdIssues, i)
-        ]))
-      : emit(state.copyWith(addedIssues: [
-          ...state.addedIssues.deleteIssue(state.addedIssues, i)
-        ]));
+  List<IssuesModel> _mutabledIssues(IssuesModel issuesState) {
+    // TODO возможно, нужно искать по айди
+    final index = state.issues[state.tabIndex]!
+        .indexWhere((e) => e.date == issuesState.date);
 
-  void onClearImagesPressed(int i) => state.tabIndex == 0
-      ? emit(state.copyWith(
-          createdIssues: state.createdIssues
-              .map((e) => e.index == i ? e.copyWith(images: []) : e)
-              .toList()))
-      : emit(state.copyWith(
-          addedIssues: state.addedIssues
-              .map((e) => e.index == i ? e.copyWith(images: []) : e)
-              .toList()));
+    final mutableList = [...state.issues[state.tabIndex]!];
 
-  void onAddImagesPressed(int i, List<String> images) => emit(state.tabIndex ==
-          0
-      ? state.copyWith(
-          createdIssues: state.createdIssues
-              .map((e) => e.index == i
-                  ? e.copyWith(
-                      images: <String>{
-                      ...state.createdIssues[i].images,
-                      ...images
-                    }.toList())
-                  : e)
-              .toList())
-      : state.copyWith(
-          addedIssues: state.addedIssues
-              .map((e) => e.index == i
-                  ? e.copyWith(
-                      images: [...state.addedIssues[i].images, ...images])
-                  : e)
-              .toList()));
+    mutableList[index] = issuesState;
 
-  void onDeleteImagePressed(int i, String image) => emit(state.tabIndex == 0
-      ? state.copyWith(
-          fetchStatus: FetchStatus.success,
-          createdIssues: [...state.createdIssues]
-              .map((issue) => issue.index == i
-                  ? issue.copyWith(
-                      images: [...issue.images]..removeWhere((e) => e == image))
-                  : issue)
-              .toList())
-      : state.copyWith(
-          fetchStatus: FetchStatus.success,
-          addedIssues: [...state.addedIssues]
-              .map((issue) => issue.index == i
-                  ? issue.copyWith(
-                      images: [...issue.images]..removeWhere((e) => e == image))
-                  : issue)
-              .toList()));
+    return mutableList;
+  }
 
-  void onDepartmentChanged(int i, Department department) => state.tabIndex == 0
-      ? emit(state.copyWith(
-          createdIssues: state.createdIssues
-              .map((e) => e.index == i ? e.copyWith(department: department) : e)
-              .toList()))
-      : emit(state.copyWith(
-          addedIssues: state.addedIssues
-              .map((e) => e.index == i ? e.copyWith(department: department) : e)
-              .toList()));
+  void onAddIssuePressed() {
+    emit(state.copyWith(fetchStatus: FetchStatus.init));
 
-  void onCompletePressed() async {
+    late final Map<int, List<IssuesModel>> newMap;
+
+    if (state.issues[1] == null) {
+      newMap = {
+        ...state.issues,
+        ...{
+          1: [IssuesModel.newIssue()]
+        }
+      };
+    } else {
+      newMap = {
+        ...state.issues,
+        ...{
+          1: [...state.issues[1]!, IssuesModel.newIssue()]
+        }
+      };
+    }
+
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: newMap));
+  }
+
+  void onDeleteIssuePressed(IssuesModel issuesState) {
+    emit(state.copyWith(fetchStatus: FetchStatus.init));
+
+    final map = {...state.issues};
+
+    map[state.tabIndex] = [...state.issues[state.tabIndex]!]
+      ..removeWhere((e) => e == issuesState);
+
+    emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
+  }
+
+  void onCompletePressed(IssuesModel issuesModel) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
-      final report = state.createdIssues
-          .map(
-              (issueState) => IssueReport.filledByIssueState(state, issueState))
-          .toList();
+      final tempIssues = <IssuesModel>[];
 
-      await _roomRep.sendReports(report);
+      for (var e in state.issues.values) {
+        for (var i in e) {
+          tempIssues.add(i);
+        }
+      }
+
+      final issue = tempIssues.firstWhere((i) => i == issuesModel);
+
+      final report = IssueReport.fill(state, issue);
+
+      await _roomRep.sendReport(report);
 
       emit(state.copyWith(fetchStatus: FetchStatus.success));
+
+      await fetchRoom(state.room.roomId);
     } catch (e) {
-      print(e);
+      // emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
   void onTabChanged(int i) => emit(state.copyWith(tabIndex: i));
-
-  void onChangedImagesPressed(int i, List<String> images) {
-    emit(state.copyWith(fetchStatus: FetchStatus.init));
-
-    emit(state.tabIndex == 0
-        ? state.copyWith(
-            fetchStatus: FetchStatus.success,
-            createdIssues: [...state.createdIssues]
-                .map((issue) =>
-                    issue.index == i ? issue.copyWith(images: images) : issue)
-                .toList())
-        : state.copyWith(
-            fetchStatus: FetchStatus.success,
-            addedIssues: [...state.addedIssues]
-                .map((issue) =>
-                    issue.index == i ? issue.copyWith(images: images) : issue)
-                .toList()));
-  }
 }

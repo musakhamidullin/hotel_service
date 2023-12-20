@@ -11,8 +11,7 @@ import '../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
 
 import '../data/repositories/room_rep.dart';
-import 'widget/added_issues_list.dart';
-import 'widget/created_issues_list.dart';
+import 'widget/issues.dart';
 import 'widget/fabs.dart';
 
 @RoutePage()
@@ -89,8 +88,11 @@ class _RoomPageState extends State<RoomPage>
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        CreatedIssuesList(createdIssues: state.createdIssues),
-                        AddedIssuesList(addedIssues: state.addedIssues)
+                        IssuesList(
+                            issues: state.issues[0] ?? [],
+                            tabName: 'Созданные'),
+                        IssuesList(
+                            issues: state.issues[1] ?? [], tabName: 'Новые')
                       ],
                     ),
                   ),

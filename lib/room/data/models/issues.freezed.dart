@@ -14,13 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-IssuesState _$IssuesStateFromJson(Map<String, dynamic> json) {
-  return _IssuesState.fromJson(json);
+IssuesModel _$IssuesModelFromJson(Map<String, dynamic> json) {
+  return _IssuesModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$IssuesState {
-  int get index => throw _privateConstructorUsedError;
+mixin _$IssuesModel {
   List<String> get images => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
@@ -30,19 +29,18 @@ mixin _$IssuesState {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $IssuesStateCopyWith<IssuesState> get copyWith =>
+  $IssuesModelCopyWith<IssuesModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $IssuesStateCopyWith<$Res> {
-  factory $IssuesStateCopyWith(
-          IssuesState value, $Res Function(IssuesState) then) =
-      _$IssuesStateCopyWithImpl<$Res, IssuesState>;
+abstract class $IssuesModelCopyWith<$Res> {
+  factory $IssuesModelCopyWith(
+          IssuesModel value, $Res Function(IssuesModel) then) =
+      _$IssuesModelCopyWithImpl<$Res, IssuesModel>;
   @useResult
   $Res call(
-      {int index,
-      List<String> images,
+      {List<String> images,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -52,9 +50,9 @@ abstract class $IssuesStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
-    implements $IssuesStateCopyWith<$Res> {
-  _$IssuesStateCopyWithImpl(this._value, this._then);
+class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
+    implements $IssuesModelCopyWith<$Res> {
+  _$IssuesModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -64,7 +62,6 @@ class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? index = null,
     Object? images = null,
     Object? comment = null,
     Object? date = null,
@@ -72,10 +69,6 @@ class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
     Object? department = null,
   }) {
     return _then(_value.copyWith(
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
@@ -109,16 +102,15 @@ class _$IssuesStateCopyWithImpl<$Res, $Val extends IssuesState>
 }
 
 /// @nodoc
-abstract class _$$IssuesStateImplCopyWith<$Res>
-    implements $IssuesStateCopyWith<$Res> {
-  factory _$$IssuesStateImplCopyWith(
-          _$IssuesStateImpl value, $Res Function(_$IssuesStateImpl) then) =
-      __$$IssuesStateImplCopyWithImpl<$Res>;
+abstract class _$$IssuesModelImplCopyWith<$Res>
+    implements $IssuesModelCopyWith<$Res> {
+  factory _$$IssuesModelImplCopyWith(
+          _$IssuesModelImpl value, $Res Function(_$IssuesModelImpl) then) =
+      __$$IssuesModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {int index,
-      List<String> images,
+      {List<String> images,
       String comment,
       @DateSerializer() String date,
       dynamic isMutable,
@@ -129,28 +121,23 @@ abstract class _$$IssuesStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$IssuesStateImplCopyWithImpl<$Res>
-    extends _$IssuesStateCopyWithImpl<$Res, _$IssuesStateImpl>
-    implements _$$IssuesStateImplCopyWith<$Res> {
-  __$$IssuesStateImplCopyWithImpl(
-      _$IssuesStateImpl _value, $Res Function(_$IssuesStateImpl) _then)
+class __$$IssuesModelImplCopyWithImpl<$Res>
+    extends _$IssuesModelCopyWithImpl<$Res, _$IssuesModelImpl>
+    implements _$$IssuesModelImplCopyWith<$Res> {
+  __$$IssuesModelImplCopyWithImpl(
+      _$IssuesModelImpl _value, $Res Function(_$IssuesModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? index = null,
     Object? images = null,
     Object? comment = null,
     Object? date = null,
     Object? isMutable = freezed,
     Object? department = null,
   }) {
-    return _then(_$IssuesStateImpl(
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
+    return _then(_$IssuesModelImpl(
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -174,22 +161,19 @@ class __$$IssuesStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$IssuesStateImpl implements _IssuesState {
-  const _$IssuesStateImpl(
-      {this.index = 0,
-      final List<String> images = const <String>[],
+class _$IssuesModelImpl extends _IssuesModel {
+  const _$IssuesModelImpl(
+      {final List<String> images = const <String>[],
       this.comment = '',
       @DateSerializer() this.date = '',
       this.isMutable = true,
       this.department = const Department()})
-      : _images = images;
+      : _images = images,
+        super._();
 
-  factory _$IssuesStateImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IssuesStateImplFromJson(json);
+  factory _$IssuesModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IssuesModelImplFromJson(json);
 
-  @override
-  @JsonKey()
-  final int index;
   final List<String> _images;
   @override
   @JsonKey()
@@ -215,15 +199,14 @@ class _$IssuesStateImpl implements _IssuesState {
 
   @override
   String toString() {
-    return 'IssuesState(index: $index, images: $images, comment: $comment, date: $date, isMutable: $isMutable, department: $department)';
+    return 'IssuesModel(images: $images, comment: $comment, date: $date, isMutable: $isMutable, department: $department)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$IssuesStateImpl &&
-            (identical(other.index, index) || other.index == index) &&
+            other is _$IssuesModelImpl &&
             const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.date, date) || other.date == date) &&
@@ -236,7 +219,6 @@ class _$IssuesStateImpl implements _IssuesState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      index,
       const DeepCollectionEquality().hash(_images),
       comment,
       date,
@@ -246,31 +228,29 @@ class _$IssuesStateImpl implements _IssuesState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$IssuesStateImplCopyWith<_$IssuesStateImpl> get copyWith =>
-      __$$IssuesStateImplCopyWithImpl<_$IssuesStateImpl>(this, _$identity);
+  _$$IssuesModelImplCopyWith<_$IssuesModelImpl> get copyWith =>
+      __$$IssuesModelImplCopyWithImpl<_$IssuesModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IssuesStateImplToJson(
+    return _$$IssuesModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _IssuesState implements IssuesState {
-  const factory _IssuesState(
-      {final int index,
-      final List<String> images,
+abstract class _IssuesModel extends IssuesModel {
+  const factory _IssuesModel(
+      {final List<String> images,
       final String comment,
       @DateSerializer() final String date,
       final dynamic isMutable,
-      final Department department}) = _$IssuesStateImpl;
+      final Department department}) = _$IssuesModelImpl;
+  const _IssuesModel._() : super._();
 
-  factory _IssuesState.fromJson(Map<String, dynamic> json) =
-      _$IssuesStateImpl.fromJson;
+  factory _IssuesModel.fromJson(Map<String, dynamic> json) =
+      _$IssuesModelImpl.fromJson;
 
-  @override
-  int get index;
   @override
   List<String> get images;
   @override
@@ -284,6 +264,6 @@ abstract class _IssuesState implements IssuesState {
   Department get department;
   @override
   @JsonKey(ignore: true)
-  _$$IssuesStateImplCopyWith<_$IssuesStateImpl> get copyWith =>
+  _$$IssuesModelImplCopyWith<_$IssuesModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'defect.dart';
@@ -8,31 +9,33 @@ part 'issues.freezed.dart';
 part 'issues.g.dart';
 
 @freezed
-class IssuesState with _$IssuesState {
-  const factory IssuesState({
-    @Default(0) int index,
+class IssuesModel extends Equatable with _$IssuesModel {
+  const factory IssuesModel({
     @Default(<String>[]) List<String> images,
     @Default('') String comment,
     @Default('') @DateSerializer() String date,
     @Default(true) isMutable,
     @Default(Department()) Department department,
-  }) = _IssuesState;
+  }) = _IssuesModel;
 
-  factory IssuesState.fromJson(Map<String, dynamic> json) =>
-      _$IssuesStateFromJson(json);
+  const IssuesModel._();
 
-  factory IssuesState.newIssue(int i) => IssuesState(
-        index: i,
+  factory IssuesModel.fromJson(Map<String, dynamic> json) =>
+      _$IssuesModelFromJson(json);
+
+  factory IssuesModel.newIssue() => IssuesModel(
         date: DateTime.now().toString(),
       );
 
-  factory IssuesState.filledByDefect(Defect defect, int i) => IssuesState(
-        index: i,
+  factory IssuesModel.filledByDefect(Defect defect) => IssuesModel(
         comment: defect.text,
         images: defect.hotelDefectMedias.map((e) => e.mediaInBase64).toList(),
         date: defect.createDate.toString(),
         isMutable: false,
       );
+
+  @override
+  List<Object?> get props => [images, comment, date, isMutable, department];
 }
 
 class DateSerializer implements JsonConverter<String, dynamic> {

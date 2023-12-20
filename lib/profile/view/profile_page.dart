@@ -11,7 +11,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Профиль'),
+        title: const Text('Профиль'),
         actions: const [LogoutButton()],
       ),
     );
