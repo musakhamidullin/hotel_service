@@ -21,10 +21,11 @@ class RoomCubit extends Cubit<RoomState> {
 
   final RoomRep _roomRep;
 
-  Future<void> fetchRoom(int id) async {
+  Future<void> fetchRoom(int id, {bool refresh = false}) async {
     if (isClosed) return;
     try {
-      emit(state.copyWith(fetchStatus: FetchStatus.loading));
+      emit(state.copyWith(
+          fetchStatus: refresh ? FetchStatus.refreshing : FetchStatus.loading));
 
       final room = await _roomRep.fetchRoom(id);
 

@@ -73,53 +73,54 @@ class _RoomPageState extends State<RoomPage>
         appBar: AppBar(
           title: Text('Номер ${widget.room.roomNumber}'),
           centerTitle: true,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  _roomCubit.fetchRoom(widget.room.id);
-                },
-                icon: const Icon(Icons.refresh_rounded))
-          ],
         ),
         body: BlocBuilder<RoomCubit, RoomState>(
           builder: (context, state) {
-            if (state.success()) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: NestedScrollView(
-                  body: BlocProvider(
-                    create: (context) => VoiceManagerCubit(),
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        IssuesList(
-                            issues: state.issues[0] ?? [],
-                            tabName: 'Созданные'),
-                        IssuesList(
-                            issues: state.issues[1] ?? [], tabName: 'Новые')
-                      ],
-                    ),
-                  ),
-                  headerSliverBuilder: (_, isElevated) {
-                    return [
-                      const SliverToBoxAdapter(child: RoomInfo()),
-                      SliverToBoxAdapter(
-                        child: IssueTab(controller: _tabController),
-                      ),
-                    ];
-                  },
-                ),
-              );
-            }
-            if (state.loading()) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
             if (state.failure()) {
               return FailureWidget(
                 onPressed: () => _roomCubit.fetchRoom(widget.room.id),
+              );
+            }
+
+            if (state.loading()) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state.success() || state.refreshing()) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: RefreshIndicator(
+                  notificationPredicate: (notification) {
+                    return notification.depth == 2;
+                  },
+                  onRefresh: () async {
+                    await _roomCubit.fetchRoom(widget.room.id, refresh: true);
+                  },
+                  child: NestedScrollView(
+                    headerSliverBuilder: (_, isElevated) {
+                      return [
+                        const SliverToBoxAdapter(child: RoomInfo()),
+                        SliverToBoxAdapter(
+                          child: IssueTab(controller: _tabController),
+                        ),
+                      ];
+                    },
+                    body: BlocProvider(
+                      create: (context) => VoiceManagerCubit(),
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          IssuesList(
+                              issues: state.issues[0] ?? [],
+                              tabName: 'Созданные'),
+                          IssuesList(
+                              issues: state.issues[1] ?? [],
+                              tabName: 'Новые')
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               );
             }
 
