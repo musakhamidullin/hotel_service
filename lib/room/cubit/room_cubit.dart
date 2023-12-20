@@ -137,6 +137,7 @@ class RoomCubit extends Cubit<RoomState> {
 
       final report = IssueReport.fill(state, issue);
 
+      //todo тут мы должны получать обновленную заявку
       await _roomRep.sendReport(report);
 
       final updatedIssues = {...state.issues};
@@ -148,7 +149,7 @@ class RoomCubit extends Cubit<RoomState> {
           fetchStatus: FetchStatus.success, issues: updatedIssues));
 
       if (tabController?.index != 0) tabController?.animateTo(0);
-
+      //todo лишний запрос
       await fetchRoom(state.room.roomId, refresh: true);
     } catch (e) {
       //todo failure
