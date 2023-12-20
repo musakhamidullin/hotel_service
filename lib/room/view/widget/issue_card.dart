@@ -192,7 +192,7 @@ class _IssueCardState extends State<IssueCard> {
                       child: FilledButton.tonal(
                         onPressed: () => context
                             .read<RoomCubit>()
-                            .onCompletePressed(widget.issuesState),
+                            .onSendPressed(widget.issuesState),
                         child: const Text('Отправить'),
                       ),
                     ),

@@ -117,7 +117,7 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
-  void onCompletePressed(IssuesModel issuesModel) async {
+  void onSendPressed(IssuesModel issuesModel) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
