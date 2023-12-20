@@ -17,19 +17,19 @@ String issueReportToJson(IssueReport data) => json.encode(data.toJson());
 @freezed
 class IssueReport with _$IssueReport {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory IssueReport({
-    @Default(0) int personId,
-    @Default(0) int roomId,
-    @Default('') String problemText,
-    @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
-    // @Default(0) int departmentId
-  }) = _IssueReport;
+  const factory IssueReport(
+      {@Default(0) int personId,
+      @Default(0) int roomId,
+      @Default('') String problemText,
+      @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
+      @Default(0) int departmentId}) = _IssueReport;
 
   factory IssueReport.fromJson(Map<String, dynamic> json) =>
       _$IssueReportFromJson(json);
 
   static IssueReport fill(RoomState roomState, IssuesModel issue) =>
       IssueReport(
+          departmentId: issue.department.id,
           personId: roomState.user.personInfo.id,
           problemMedia: issue.images.map((e) {
             final bytes = const Base64Decoder().convert(e);

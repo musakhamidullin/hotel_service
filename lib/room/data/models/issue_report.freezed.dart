@@ -24,6 +24,7 @@ mixin _$IssueReport {
   int get roomId => throw _privateConstructorUsedError;
   String get problemText => throw _privateConstructorUsedError;
   List<ProblemMedia> get problemMedia => throw _privateConstructorUsedError;
+  int get departmentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +42,8 @@ abstract class $IssueReportCopyWith<$Res> {
       {int personId,
       int roomId,
       String problemText,
-      List<ProblemMedia> problemMedia});
+      List<ProblemMedia> problemMedia,
+      int departmentId});
 }
 
 /// @nodoc
@@ -61,6 +63,7 @@ class _$IssueReportCopyWithImpl<$Res, $Val extends IssueReport>
     Object? roomId = null,
     Object? problemText = null,
     Object? problemMedia = null,
+    Object? departmentId = null,
   }) {
     return _then(_value.copyWith(
       personId: null == personId
@@ -79,6 +82,10 @@ class _$IssueReportCopyWithImpl<$Res, $Val extends IssueReport>
           ? _value.problemMedia
           : problemMedia // ignore: cast_nullable_to_non_nullable
               as List<ProblemMedia>,
+      departmentId: null == departmentId
+          ? _value.departmentId
+          : departmentId // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -95,7 +102,8 @@ abstract class _$$IssueReportImplCopyWith<$Res>
       {int personId,
       int roomId,
       String problemText,
-      List<ProblemMedia> problemMedia});
+      List<ProblemMedia> problemMedia,
+      int departmentId});
 }
 
 /// @nodoc
@@ -113,6 +121,7 @@ class __$$IssueReportImplCopyWithImpl<$Res>
     Object? roomId = null,
     Object? problemText = null,
     Object? problemMedia = null,
+    Object? departmentId = null,
   }) {
     return _then(_$IssueReportImpl(
       personId: null == personId
@@ -131,6 +140,10 @@ class __$$IssueReportImplCopyWithImpl<$Res>
           ? _value._problemMedia
           : problemMedia // ignore: cast_nullable_to_non_nullable
               as List<ProblemMedia>,
+      departmentId: null == departmentId
+          ? _value.departmentId
+          : departmentId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -143,7 +156,8 @@ class _$IssueReportImpl implements _IssueReport {
       {this.personId = 0,
       this.roomId = 0,
       this.problemText = '',
-      final List<ProblemMedia> problemMedia = const <ProblemMedia>[]})
+      final List<ProblemMedia> problemMedia = const <ProblemMedia>[],
+      this.departmentId = 0})
       : _problemMedia = problemMedia;
 
   factory _$IssueReportImpl.fromJson(Map<String, dynamic> json) =>
@@ -168,8 +182,12 @@ class _$IssueReportImpl implements _IssueReport {
   }
 
   @override
+  @JsonKey()
+  final int departmentId;
+
+  @override
   String toString() {
-    return 'IssueReport(personId: $personId, roomId: $roomId, problemText: $problemText, problemMedia: $problemMedia)';
+    return 'IssueReport(personId: $personId, roomId: $roomId, problemText: $problemText, problemMedia: $problemMedia, departmentId: $departmentId)';
   }
 
   @override
@@ -183,13 +201,15 @@ class _$IssueReportImpl implements _IssueReport {
             (identical(other.problemText, problemText) ||
                 other.problemText == problemText) &&
             const DeepCollectionEquality()
-                .equals(other._problemMedia, _problemMedia));
+                .equals(other._problemMedia, _problemMedia) &&
+            (identical(other.departmentId, departmentId) ||
+                other.departmentId == departmentId));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, personId, roomId, problemText,
-      const DeepCollectionEquality().hash(_problemMedia));
+      const DeepCollectionEquality().hash(_problemMedia), departmentId);
 
   @JsonKey(ignore: true)
   @override
@@ -210,7 +230,8 @@ abstract class _IssueReport implements IssueReport {
       {final int personId,
       final int roomId,
       final String problemText,
-      final List<ProblemMedia> problemMedia}) = _$IssueReportImpl;
+      final List<ProblemMedia> problemMedia,
+      final int departmentId}) = _$IssueReportImpl;
 
   factory _IssueReport.fromJson(Map<String, dynamic> json) =
       _$IssueReportImpl.fromJson;
@@ -223,6 +244,8 @@ abstract class _IssueReport implements IssueReport {
   String get problemText;
   @override
   List<ProblemMedia> get problemMedia;
+  @override
+  int get departmentId;
   @override
   @JsonKey(ignore: true)
   _$$IssueReportImplCopyWith<_$IssueReportImpl> get copyWith =>
