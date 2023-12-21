@@ -138,6 +138,8 @@ class RoomCubit extends Cubit<RoomState> {
           fetchStatus: FetchStatus.success, issues: updatedIssues));
 
       if (tabController?.index != 0) tabController?.animateTo(0);
+      // пока нужен т к .sendReport(report) ничего не возвращает
+      await fetchRoom(state.room.roomId, refresh: true);
     } catch (e) {
       //todo failure
       // emit(state.copyWith(fetchStatus: FetchStatus.failure));

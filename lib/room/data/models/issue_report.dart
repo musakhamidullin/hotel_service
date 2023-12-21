@@ -7,6 +7,7 @@ import '../../cubit/room_cubit.dart';
 import 'issues.dart';
 
 part 'issue_report.freezed.dart';
+
 part 'issue_report.g.dart';
 
 IssueReport issueReportFromJson(String str) =>
@@ -74,12 +75,11 @@ class IssueReport with _$IssueReport {
 @freezed
 class ProblemMedia with _$ProblemMedia {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory ProblemMedia(
-      {@Default('') String mediaBase64,
-      @Default('') String mediaType,
-      @Default('')
-      @JsonSerializable(includeIfNull: false)
-      String mediaInBase64}) = _ProblemMedia;
+  const factory ProblemMedia({
+    @Default('') String mediaBase64,
+    @Default('') String mediaType,
+    @Default('') @JsonSerializable(includeIfNull: false) String mediaInBase64,
+  }) = _ProblemMedia;
 
   factory ProblemMedia.fromFile(String bytes, String extension) =>
       ProblemMedia(mediaType: extension, mediaInBase64: '', mediaBase64: bytes);

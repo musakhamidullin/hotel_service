@@ -7,6 +7,7 @@ class RoomState with _$RoomState {
   const factory RoomState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(Room()) Room room,
+    //todo int перевести в enum
     @Default(<int, List<IssuesModel>>{}) Map<int, List<IssuesModel>> issues,
     @Default(<Department>[]) List<Department> departments,
     @Default(User(userId: '', personInfo: Person(id: 0))) User user,
