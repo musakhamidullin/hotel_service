@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RoomState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
-  Room get room => throw _privateConstructorUsedError;
+  Room get room =>
+      throw _privateConstructorUsedError; //todo int перевести в enum
   Map<int, List<IssuesModel>> get issues => throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
@@ -200,7 +201,9 @@ class _$RoomStateImpl extends _RoomState {
   @override
   @JsonKey()
   final Room room;
+//todo int перевести в enum
   final Map<int, List<IssuesModel>> _issues;
+//todo int перевести в enum
   @override
   @JsonKey()
   Map<int, List<IssuesModel>> get issues {
@@ -277,7 +280,7 @@ abstract class _RoomState extends RoomState {
   FetchStatus get fetchStatus;
   @override
   Room get room;
-  @override
+  @override //todo int перевести в enum
   Map<int, List<IssuesModel>> get issues;
   @override
   List<Department> get departments;

@@ -259,7 +259,8 @@ ProblemMedia _$ProblemMediaFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProblemMedia {
   String get mediaBase64 => throw _privateConstructorUsedError;
-  String get mediaType => throw _privateConstructorUsedError;
+  @MediaTypeConverter()
+  MediaType get mediaType => throw _privateConstructorUsedError;
   @JsonSerializable(includeIfNull: false)
   String get mediaInBase64 => throw _privateConstructorUsedError;
 
@@ -277,7 +278,7 @@ abstract class $ProblemMediaCopyWith<$Res> {
   @useResult
   $Res call(
       {String mediaBase64,
-      String mediaType,
+      @MediaTypeConverter() MediaType mediaType,
       @JsonSerializable(includeIfNull: false) String mediaInBase64});
 }
 
@@ -306,7 +307,7 @@ class _$ProblemMediaCopyWithImpl<$Res, $Val extends ProblemMedia>
       mediaType: null == mediaType
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MediaType,
       mediaInBase64: null == mediaInBase64
           ? _value.mediaInBase64
           : mediaInBase64 // ignore: cast_nullable_to_non_nullable
@@ -325,7 +326,7 @@ abstract class _$$ProblemMediaImplCopyWith<$Res>
   @useResult
   $Res call(
       {String mediaBase64,
-      String mediaType,
+      @MediaTypeConverter() MediaType mediaType,
       @JsonSerializable(includeIfNull: false) String mediaInBase64});
 }
 
@@ -352,7 +353,7 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
       mediaType: null == mediaType
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MediaType,
       mediaInBase64: null == mediaInBase64
           ? _value.mediaInBase64
           : mediaInBase64 // ignore: cast_nullable_to_non_nullable
@@ -367,7 +368,7 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
 class _$ProblemMediaImpl implements _ProblemMedia {
   const _$ProblemMediaImpl(
       {this.mediaBase64 = '',
-      this.mediaType = '',
+      @MediaTypeConverter() this.mediaType = MediaType.jpg,
       @JsonSerializable(includeIfNull: false) this.mediaInBase64 = ''});
 
   factory _$ProblemMediaImpl.fromJson(Map<String, dynamic> json) =>
@@ -378,7 +379,8 @@ class _$ProblemMediaImpl implements _ProblemMedia {
   final String mediaBase64;
   @override
   @JsonKey()
-  final String mediaType;
+  @MediaTypeConverter()
+  final MediaType mediaType;
   @override
   @JsonKey()
   @JsonSerializable(includeIfNull: false)
@@ -424,7 +426,7 @@ class _$ProblemMediaImpl implements _ProblemMedia {
 abstract class _ProblemMedia implements ProblemMedia {
   const factory _ProblemMedia(
           {final String mediaBase64,
-          final String mediaType,
+          @MediaTypeConverter() final MediaType mediaType,
           @JsonSerializable(includeIfNull: false) final String mediaInBase64}) =
       _$ProblemMediaImpl;
 
@@ -434,7 +436,8 @@ abstract class _ProblemMedia implements ProblemMedia {
   @override
   String get mediaBase64;
   @override
-  String get mediaType;
+  @MediaTypeConverter()
+  MediaType get mediaType;
   @override
   @JsonSerializable(includeIfNull: false)
   String get mediaInBase64;

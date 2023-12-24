@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'defect.dart';
 import 'department_info.dart';
+import 'issue_report.dart';
 
 part 'issues.freezed.dart';
 
@@ -28,12 +29,24 @@ class IssuesModel extends Equatable with _$IssuesModel {
         date: DateTime.now().toString(),
       );
 
-  factory IssuesModel.filledByDefect(Defect defect) => IssuesModel(
+  factory IssuesModel.filledByDefect(Defect defect) {
+    final images = <String>[];
+    final audios = <String>[];
+    for (final e in defect.hotelDefectMedias) {
+      if (e.mediaType.isAudio()) {
+        audios.add(e.mediaInBase64);
+      } else {
+        images.add(e.mediaInBase64);
+      }
+    }
+    return IssuesModel(
         comment: defect.text,
-        images: defect.hotelDefectMedias.map((e) => e.mediaInBase64).toList(),
+        images: images,
+        audios: audios,
         date: defect.createDate.toString(),
         isMutable: false,
       );
+  }
 
   @override
   List<Object?> get props => [images, comment, date, isMutable, department];

@@ -18,37 +18,40 @@ String issueReportToJson(IssueReport data) => json.encode(data.toJson());
 @freezed
 class IssueReport with _$IssueReport {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory IssueReport(
-      {@Default(0) int personId,
-      @Default(0) int roomId,
-      @Default('') String problemText,
-      @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
-      @Default(0) int departmentId}) = _IssueReport;
+  const factory IssueReport({
+    @Default(0) int personId,
+    @Default(0) int roomId,
+    @Default('') String problemText,
+    @Default(<ProblemMedia>[]) List<ProblemMedia> problemMedia,
+    @Default(0) int departmentId,
+  }) = _IssueReport;
 
   factory IssueReport.fromJson(Map<String, dynamic> json) =>
       _$IssueReportFromJson(json);
 
-  static IssueReport fill(RoomState roomState, IssuesModel issue) =>
-      IssueReport(
+  static IssueReport fill(RoomState roomState, IssuesModel issue) {
+    final images = issue.images.map((e) {
+      final bytes = const Base64Decoder().convert(e);
+      return ProblemMedia.fromFile(e, _getExtension(bytes));
+    }).toList();
+    return IssueReport(
           departmentId: issue.department.id,
           personId: roomState.user.personInfo.id,
-          problemMedia: issue.images.map((e) {
-            final bytes = const Base64Decoder().convert(e);
-            return ProblemMedia.fromFile(e, _getExtension(bytes));
-          }).toList(),
+          problemMedia: [...images],
           problemText: issue.comment,
           roomId: roomState.room.roomId);
+  }
 
-  static String _getExtension(Uint8List data) {
+  static MediaType _getExtension(Uint8List data) {
     if (data[0] == 0xff && data[1] == 0xd8) {
-      return '.jpg';
+      return MediaType.jpg;
     } else if (data[0] == 0x89 &&
         data[1] == 0x50 &&
         data[2] == 0x4e &&
         data[3] == 0x47) {
-      return '.png';
+      return MediaType.png;
     } else if (data[0] == 0x47 && data[1] == 0x49 && data[2] == 0x46) {
-      return '.gif';
+      return MediaType.gif;
     } else if (data[0] == 0x49 && data[1] == 0x44 && data[2] == 0x33) {
       int offset = 10;
       while (offset + 10 < data.length) {
@@ -63,7 +66,7 @@ class IssueReport with _$IssueReport {
             data[offset + 1] == 0x50 &&
             data[offset + 2] == 0x45 &&
             data[offset + 3] == 0x31) {
-          return '.mp3';
+          return MediaType.mp3;
         }
         offset += frameSize + 10;
       }
@@ -72,16 +75,44 @@ class IssueReport with _$IssueReport {
   }
 }
 
+enum MediaType {
+  jpg,
+  png,
+  gif,
+  mp3,
+  m4a,
+  unknown;
+
+  bool isPic() => this == MediaType.jpg || this == MediaType.png;
+  bool isAudio() => this == MediaType.mp3 || this == MediaType.m4a;
+}
+
+class MediaTypeConverter implements JsonConverter<MediaType, String> {
+  const MediaTypeConverter();
+
+  @override
+  MediaType fromJson(String value) {
+    try {
+      return MediaType.values.byName(value);
+    } catch (_) {
+      return MediaType.unknown;
+    }
+  }
+
+  @override
+  String toJson(MediaType value) => '.${value.name}';
+}
+
 @freezed
 class ProblemMedia with _$ProblemMedia {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory ProblemMedia({
     @Default('') String mediaBase64,
-    @Default('') String mediaType,
-    @Default('') @JsonSerializable(includeIfNull: false) String mediaInBase64,
+    @Default(MediaType.jpg) @MediaTypeConverter() MediaType mediaType,
+    @JsonSerializable(includeIfNull: false) @Default('') String mediaInBase64,
   }) = _ProblemMedia;
 
-  factory ProblemMedia.fromFile(String bytes, String extension) =>
+  factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
       ProblemMedia(mediaType: extension, mediaInBase64: '', mediaBase64: bytes);
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
