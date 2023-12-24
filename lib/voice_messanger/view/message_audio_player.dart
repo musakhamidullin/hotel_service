@@ -12,10 +12,12 @@ class MessageAudioPlayer extends StatefulWidget {
     super.key,
     required this.voiceValue,
     required this.index,
+    required this.onRemove,
   });
 
   final VoiceValue voiceValue;
   final int index;
+  final Function(int) onRemove;
 
   @override
   State<MessageAudioPlayer> createState() => _MessageAudioPlayerState();
@@ -120,7 +122,9 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.onRemove(widget.index);
+                },
                 icon: const Icon(Icons.delete_outline_rounded),
               ),
             ],

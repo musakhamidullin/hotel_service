@@ -159,6 +159,9 @@ class _IssueCardState extends State<IssueCard> {
                         key: ObjectKey(e),
                         voiceValue: VoiceValue(base64: e),
                         index: widget.issuesState.audios.indexOf(e),
+                        onRemove: (value) {
+                          context.read<RoomCubit>().onAudioRemoved(index: value, model: widget.issuesState);
+                        },
                       ),
                     )
                     .toList(),

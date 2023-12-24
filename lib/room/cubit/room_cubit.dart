@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -90,6 +87,29 @@ class RoomCubit extends Cubit<RoomState> {
       ),
     );
 
+    //todo дупликад кода
+    final map = {...state.issues};
+
+    map[state.tabIndex] = updatedIssueModel;
+
+    emit(
+      state.copyWith(
+        fetchStatus: FetchStatus.success,
+        issues: map,
+      ),
+    );
+  }
+
+  Future<void> onAudioRemoved({required int index, required IssuesModel model}) async {
+    emit(state.copyWith(fetchStatus: FetchStatus.init));
+
+    final updatedIssueModel = _updateIssueModel(
+      model.copyWith(
+        audios: [...model.audios]..removeAt(index),
+      ),
+    );
+
+    //todo дупликад кода
     final map = {...state.issues};
 
     map[state.tabIndex] = updatedIssueModel;
