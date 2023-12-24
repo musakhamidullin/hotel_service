@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../common/widgets/modals.dart';
 
 import '../../../voice_messanger/cubit/voice_manager_cubit.dart';
+import '../../../voice_messanger/data/models/voice_value.dart';
 import '../../../voice_messanger/view/message_audio_player.dart';
 import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
@@ -151,18 +152,16 @@ class _IssueCardState extends State<IssueCard> {
                     ),
                   ],
                 ),
-              BlocBuilder<VoiceManagerCubit, VoiceManagerState>(
-                builder: (context, state) {
-                  return Column(
-                    children: state
-                        .getRecordsByButtonId(_recordButtonId)
-                        .map(
-                          (e) => MessageAudioPlayer(
-                              key: ObjectKey(e), voiceValue: e),
-                        )
-                        .toList(),
-                  );
-                },
+              Column(
+                children: widget.issuesState.audios
+                    .map(
+                      (e) => MessageAudioPlayer(
+                        key: ObjectKey(e),
+                        voiceValue: VoiceValue(base64: e),
+                        index: widget.issuesState.audios.indexOf(e),
+                      ),
+                    )
+                    .toList(),
               ),
               if (widget.issuesState.images.isNotEmpty)
                 const SizedBox(height: 8),
@@ -234,9 +233,13 @@ class _IssueCardState extends State<IssueCard> {
                   RecordButton(
                     id: _recordButtonId,
                     onRecord: (value) {
-                      setState(() {
-                        _readOnlyInput = value;
-                      });
+                      setState(() => _readOnlyInput = value);
+                    },
+                    onStop: (value) {
+                      context.read<RoomCubit>().onAudioRecorded(
+                            base64: value,
+                            model: widget.issuesState,
+                          );
                     },
                   ),
                   const SizedBox(

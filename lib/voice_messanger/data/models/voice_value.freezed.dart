@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$VoiceValue {
-  String get filePath => throw _privateConstructorUsedError;
+  String get base64 => throw _privateConstructorUsedError;
   String get buttonId => throw _privateConstructorUsedError;
   String get duration => throw _privateConstructorUsedError;
 
@@ -31,7 +31,7 @@ abstract class $VoiceValueCopyWith<$Res> {
           VoiceValue value, $Res Function(VoiceValue) then) =
       _$VoiceValueCopyWithImpl<$Res, VoiceValue>;
   @useResult
-  $Res call({String filePath, String buttonId, String duration});
+  $Res call({String base64, String buttonId, String duration});
 }
 
 /// @nodoc
@@ -47,14 +47,14 @@ class _$VoiceValueCopyWithImpl<$Res, $Val extends VoiceValue>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filePath = null,
+    Object? base64 = null,
     Object? buttonId = null,
     Object? duration = null,
   }) {
     return _then(_value.copyWith(
-      filePath: null == filePath
-          ? _value.filePath
-          : filePath // ignore: cast_nullable_to_non_nullable
+      base64: null == base64
+          ? _value.base64
+          : base64 // ignore: cast_nullable_to_non_nullable
               as String,
       buttonId: null == buttonId
           ? _value.buttonId
@@ -76,7 +76,7 @@ abstract class _$$VoiceValueImplCopyWith<$Res>
       __$$VoiceValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String filePath, String buttonId, String duration});
+  $Res call({String base64, String buttonId, String duration});
 }
 
 /// @nodoc
@@ -90,14 +90,14 @@ class __$$VoiceValueImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filePath = null,
+    Object? base64 = null,
     Object? buttonId = null,
     Object? duration = null,
   }) {
     return _then(_$VoiceValueImpl(
-      filePath: null == filePath
-          ? _value.filePath
-          : filePath // ignore: cast_nullable_to_non_nullable
+      base64: null == base64
+          ? _value.base64
+          : base64 // ignore: cast_nullable_to_non_nullable
               as String,
       buttonId: null == buttonId
           ? _value.buttonId
@@ -115,10 +115,11 @@ class __$$VoiceValueImplCopyWithImpl<$Res>
 
 class _$VoiceValueImpl implements _VoiceValue {
   const _$VoiceValueImpl(
-      {required this.filePath, this.buttonId = '', this.duration = ''});
+      {this.base64 = '', this.buttonId = '', this.duration = ''});
 
   @override
-  final String filePath;
+  @JsonKey()
+  final String base64;
   @override
   @JsonKey()
   final String buttonId;
@@ -128,7 +129,7 @@ class _$VoiceValueImpl implements _VoiceValue {
 
   @override
   String toString() {
-    return 'VoiceValue(filePath: $filePath, buttonId: $buttonId, duration: $duration)';
+    return 'VoiceValue(base64: $base64, buttonId: $buttonId, duration: $duration)';
   }
 
   @override
@@ -136,8 +137,7 @@ class _$VoiceValueImpl implements _VoiceValue {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VoiceValueImpl &&
-            (identical(other.filePath, filePath) ||
-                other.filePath == filePath) &&
+            (identical(other.base64, base64) || other.base64 == base64) &&
             (identical(other.buttonId, buttonId) ||
                 other.buttonId == buttonId) &&
             (identical(other.duration, duration) ||
@@ -145,7 +145,7 @@ class _$VoiceValueImpl implements _VoiceValue {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, filePath, buttonId, duration);
+  int get hashCode => Object.hash(runtimeType, base64, buttonId, duration);
 
   @JsonKey(ignore: true)
   @override
@@ -156,12 +156,12 @@ class _$VoiceValueImpl implements _VoiceValue {
 
 abstract class _VoiceValue implements VoiceValue {
   const factory _VoiceValue(
-      {required final String filePath,
+      {final String base64,
       final String buttonId,
       final String duration}) = _$VoiceValueImpl;
 
   @override
-  String get filePath;
+  String get base64;
   @override
   String get buttonId;
   @override

@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
     <string>For voice recorde enable permission</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Для отправки голосовых сообщений, нажмите "ОК"</string>
 </dict>
 </plist>

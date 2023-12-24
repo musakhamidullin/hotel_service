@@ -9,10 +9,12 @@ class RecordButton extends StatefulWidget {
     super.key,
     required this.id,
     required this.onRecord,
+    required this.onStop,
   });
 
   final String id;
   final Function(bool) onRecord;
+  final Function(String) onStop;
 
   @override
   State<RecordButton> createState() => _RecordButtonState();
@@ -45,10 +47,12 @@ class _RecordButtonState extends State<RecordButton> {
                   if (_recording) {
                     context.read<VoiceManagerCubit>().record();
                   } else {
-                    context.read<VoiceManagerCubit>().stopRecord(
+                    final path = await context.read<VoiceManagerCubit>().stopRecord(
                           buttonId: widget.id,
                           duration: _duration,
                         );
+
+                    if (path.isNotEmpty) widget.onStop(path);
                   }
                   widget.onRecord(_recording);
                 },

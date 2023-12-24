@@ -17,21 +17,19 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$VoiceManagerState {
   bool get enableRecord => throw _privateConstructorUsedError;
-  List<VoiceValue> get records => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool enableRecord, List<VoiceValue> records)
-        initial,
+    required TResult Function(bool enableRecord) initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool enableRecord, List<VoiceValue> records)? initial,
+    TResult? Function(bool enableRecord)? initial,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool enableRecord, List<VoiceValue> records)? initial,
+    TResult Function(bool enableRecord)? initial,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -63,7 +61,7 @@ abstract class $VoiceManagerStateCopyWith<$Res> {
           VoiceManagerState value, $Res Function(VoiceManagerState) then) =
       _$VoiceManagerStateCopyWithImpl<$Res, VoiceManagerState>;
   @useResult
-  $Res call({bool enableRecord, List<VoiceValue> records});
+  $Res call({bool enableRecord});
 }
 
 /// @nodoc
@@ -80,17 +78,12 @@ class _$VoiceManagerStateCopyWithImpl<$Res, $Val extends VoiceManagerState>
   @override
   $Res call({
     Object? enableRecord = null,
-    Object? records = null,
   }) {
     return _then(_value.copyWith(
       enableRecord: null == enableRecord
           ? _value.enableRecord
           : enableRecord // ignore: cast_nullable_to_non_nullable
               as bool,
-      records: null == records
-          ? _value.records
-          : records // ignore: cast_nullable_to_non_nullable
-              as List<VoiceValue>,
     ) as $Val);
   }
 }
@@ -103,7 +96,7 @@ abstract class _$$InitialImplCopyWith<$Res>
       __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool enableRecord, List<VoiceValue> records});
+  $Res call({bool enableRecord});
 }
 
 /// @nodoc
@@ -118,17 +111,12 @@ class __$$InitialImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? enableRecord = null,
-    Object? records = null,
   }) {
     return _then(_$InitialImpl(
       enableRecord: null == enableRecord
           ? _value.enableRecord
           : enableRecord // ignore: cast_nullable_to_non_nullable
               as bool,
-      records: null == records
-          ? _value._records
-          : records // ignore: cast_nullable_to_non_nullable
-              as List<VoiceValue>,
     ));
   }
 }
@@ -136,27 +124,15 @@ class __$$InitialImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$InitialImpl extends _Initial {
-  const _$InitialImpl(
-      {this.enableRecord = false,
-      final List<VoiceValue> records = const <VoiceValue>[]})
-      : _records = records,
-        super._();
+  const _$InitialImpl({this.enableRecord = false}) : super._();
 
   @override
   @JsonKey()
   final bool enableRecord;
-  final List<VoiceValue> _records;
-  @override
-  @JsonKey()
-  List<VoiceValue> get records {
-    if (_records is EqualUnmodifiableListView) return _records;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_records);
-  }
 
   @override
   String toString() {
-    return 'VoiceManagerState.initial(enableRecord: $enableRecord, records: $records)';
+    return 'VoiceManagerState.initial(enableRecord: $enableRecord)';
   }
 
   @override
@@ -165,13 +141,11 @@ class _$InitialImpl extends _Initial {
         (other.runtimeType == runtimeType &&
             other is _$InitialImpl &&
             (identical(other.enableRecord, enableRecord) ||
-                other.enableRecord == enableRecord) &&
-            const DeepCollectionEquality().equals(other._records, _records));
+                other.enableRecord == enableRecord));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, enableRecord, const DeepCollectionEquality().hash(_records));
+  int get hashCode => Object.hash(runtimeType, enableRecord);
 
   @JsonKey(ignore: true)
   @override
@@ -182,28 +156,27 @@ class _$InitialImpl extends _Initial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool enableRecord, List<VoiceValue> records)
-        initial,
+    required TResult Function(bool enableRecord) initial,
   }) {
-    return initial(enableRecord, records);
+    return initial(enableRecord);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool enableRecord, List<VoiceValue> records)? initial,
+    TResult? Function(bool enableRecord)? initial,
   }) {
-    return initial?.call(enableRecord, records);
+    return initial?.call(enableRecord);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool enableRecord, List<VoiceValue> records)? initial,
+    TResult Function(bool enableRecord)? initial,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial(enableRecord, records);
+      return initial(enableRecord);
     }
     return orElse();
   }
@@ -238,15 +211,11 @@ class _$InitialImpl extends _Initial {
 }
 
 abstract class _Initial extends VoiceManagerState {
-  const factory _Initial(
-      {final bool enableRecord,
-      final List<VoiceValue> records}) = _$InitialImpl;
+  const factory _Initial({final bool enableRecord}) = _$InitialImpl;
   const _Initial._() : super._();
 
   @override
   bool get enableRecord;
-  @override
-  List<VoiceValue> get records;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>

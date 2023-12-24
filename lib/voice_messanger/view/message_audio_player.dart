@@ -11,9 +11,11 @@ class MessageAudioPlayer extends StatefulWidget {
   const MessageAudioPlayer({
     super.key,
     required this.voiceValue,
+    required this.index,
   });
 
   final VoiceValue voiceValue;
+  final int index;
 
   @override
   State<MessageAudioPlayer> createState() => _MessageAudioPlayerState();
@@ -38,7 +40,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
     final managerCubit = context.read<VoiceManagerCubit>();
     _onPlayerStateChanged =
         managerCubit.audioPlayer.onPlayerStateChanged.listen((event) {
-      if (managerCubit.currentlyPlayingFile != widget.voiceValue.filePath) {
+      if (managerCubit.currentlyPlayingIndex != widget.index) {
         if (_playerState != PlayerState.stopped) {
           setState(() => _playerState = PlayerState.stopped);
         }
@@ -49,14 +51,14 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
     });
     _onDurationChanged =
         managerCubit.audioPlayer.onDurationChanged.listen((event) {
-      if (managerCubit.currentlyPlayingFile != widget.voiceValue.filePath) {
+      if (managerCubit.currentlyPlayingIndex != widget.index) {
         return;
       }
       _duration = event;
     });
     _onPositionChanged =
         managerCubit.audioPlayer.onPositionChanged.listen((event) {
-      if (managerCubit.currentlyPlayingFile != widget.voiceValue.filePath) {
+      if (managerCubit.currentlyPlayingIndex != widget.index) {
         if (_position.inMilliseconds != 0) {
           setState(() {
             _position = const Duration();
@@ -98,7 +100,10 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                   if (_playerState != PlayerState.playing) {
                     await context
                         .read<VoiceManagerCubit>()
-                        .playMessage(widget.voiceValue.filePath);
+                        .playMessageFromBytes(
+                          base64: widget.voiceValue.base64,
+                          index: widget.index,
+                        );
                   } else {
                     await context
                         .read<VoiceManagerCubit>()
@@ -115,9 +120,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  context.read<VoiceManagerCubit>().removeMessage(widget.voiceValue.filePath);
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.delete_outline_rounded),
               ),
             ],

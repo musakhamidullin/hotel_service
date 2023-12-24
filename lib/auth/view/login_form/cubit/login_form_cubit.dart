@@ -7,6 +7,7 @@ part 'login_form_cubit.freezed.dart';
 
 part 'login_form_cubit.g.dart';
 
+// todo add secure storage
 class LoginFormCubit extends Cubit<LoginFormState>
     with HydratedMixin<LoginFormState> {
   LoginFormCubit() : super(const LoginFormState()) {

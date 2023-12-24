@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -6,8 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
-
-import '../data/models/voice_value.dart';
 
 part 'voice_manager_cubit.freezed.dart';
 
@@ -25,9 +24,9 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
 
   AudioPlayer get audioPlayer => _audioPlayer;
 
-  String _currentlyPlayingFile = '';
+  int _currentlyPlayingIndex = -1;
 
-  String get currentlyPlayingFile => _currentlyPlayingFile;
+  int get currentlyPlayingIndex => _currentlyPlayingIndex;
 
   Future<String> _getPath() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -46,55 +45,26 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
     await _recorder.start(const RecordConfig(), path: path);
   }
 
-  Future<void> stopRecord({String buttonId = '', String duration = ''}) async {
+  Future<String> stopRecord({String buttonId = '', String duration = ''}) async {
     final path = await _recorder.stop();
-    if (path == null) return;
+    if (path == null) return '';
 
-    emit(
-      state.copyWith(
-        records: [
-          VoiceValue(
-            filePath: path,
-            buttonId: buttonId,
-            duration: duration,
-          ),
-          ...state.records
-        ],
-      ),
-    );
+    final bytes = File(path).readAsBytesSync();
+    await File(path).delete();
+    return base64Encode(bytes);
   }
 
-  Future<void> playMessage(String filePath) async {
-    _currentlyPlayingFile = filePath;
-    await _audioPlayer.play(DeviceFileSource(filePath));
+  Future<void> playMessageFromBytes({required String base64, required int index}) async {
+    _currentlyPlayingIndex = index;
+    await _audioPlayer.play(BytesSource(base64Decode(base64)));
   }
 
   Future<void> stopPlayingMessage() async {
     await _audioPlayer.pause();
   }
 
-  Future<void> removeMessage(String path) async {
-    try {
-      await File(path).delete();
-      emit(
-        state.copyWith(
-          records: [...state.records]..removeWhere((e) => e.filePath == path),
-        ),
-      );
-    } catch (_) {}
-  }
-
-  Future<void> _removeFiles() async {
-    try {
-      for (final message in state.records) {
-        await File(message.filePath).delete();
-      }
-    } catch (_) {}
-  }
-
   @override
   Future<void> close() async {
-    await _removeFiles();
     _recorder.dispose();
     _audioPlayer.dispose();
     return super.close();

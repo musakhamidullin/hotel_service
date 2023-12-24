@@ -34,12 +34,16 @@ class IssueReport with _$IssueReport {
       final bytes = const Base64Decoder().convert(e);
       return ProblemMedia.fromFile(e, _getExtension(bytes));
     }).toList();
+
+    //харкод типа аудио записи
+    final audio = issue.audios.map((e) => ProblemMedia.fromFile(e, MediaType.m4a)).toList();
     return IssueReport(
-          departmentId: issue.department.id,
-          personId: roomState.user.personInfo.id,
-          problemMedia: [...images],
-          problemText: issue.comment,
-          roomId: roomState.room.roomId);
+      departmentId: issue.department.id,
+      personId: roomState.user.personInfo.id,
+      problemMedia: [...images, ...audio],
+      problemText: issue.comment,
+      roomId: roomState.room.roomId,
+    );
   }
 
   static MediaType _getExtension(Uint8List data) {
@@ -84,6 +88,7 @@ enum MediaType {
   unknown;
 
   bool isPic() => this == MediaType.jpg || this == MediaType.png;
+
   bool isAudio() => this == MediaType.mp3 || this == MediaType.m4a;
 }
 

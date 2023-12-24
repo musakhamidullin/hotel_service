@@ -5,7 +5,7 @@ part 'voice_value.freezed.dart';
 @freezed
 class VoiceValue with _$VoiceValue {
   const factory VoiceValue({
-    required String filePath,
+    @Default('') String base64,
     @Default('') String buttonId,
     @Default('') String duration,
 }) = _VoiceValue;

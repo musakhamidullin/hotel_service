@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'defect.dart';
 import 'department_info.dart';
-import 'issue_report.dart';
 
 part 'issues.freezed.dart';
 

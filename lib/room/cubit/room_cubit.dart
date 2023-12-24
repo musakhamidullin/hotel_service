@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -75,6 +78,30 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
+  Future<void> onAudioRecorded({required String base64, required IssuesModel model}) async {
+    emit(state.copyWith(fetchStatus: FetchStatus.init));
+
+    final updatedIssueModel = _updateIssueModel(
+      model.copyWith(
+        audios: [
+          base64,
+          ...model.audios,
+        ],
+      ),
+    );
+
+    final map = {...state.issues};
+
+    map[state.tabIndex] = updatedIssueModel;
+
+    emit(
+      state.copyWith(
+        fetchStatus: FetchStatus.success,
+        issues: map,
+      ),
+    );
+  }
+
   List<IssuesModel> _updateIssueModel(IssuesModel issuesState) {
     // TODO возможно, нужно искать по айди
     final index = state.issues[state.tabIndex]!
@@ -121,6 +148,7 @@ class RoomCubit extends Cubit<RoomState> {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
 
+      //todo как менять уже созданные?
       final issue = state.issues[1]?.firstWhere((i) => i == issuesModel);
 
       if (issue == null) return;
