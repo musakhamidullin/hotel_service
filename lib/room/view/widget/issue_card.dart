@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 
 import '../../../common/widgets/modals.dart';
 
-import '../../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../../../voice_messanger/data/models/voice_value.dart';
 import '../../../voice_messanger/view/message_audio_player.dart';
 import '../../../voice_messanger/view/record_button.dart';
@@ -61,6 +60,7 @@ class _IssueCardState extends State<IssueCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localizations = Localizations.localeOf(context);
     return Slidable(
       endActionPane: actionPane(widget.index, context.read<RoomCubit>()),
@@ -73,12 +73,10 @@ class _IssueCardState extends State<IssueCard> {
             children: [
               Row(
                 children: [
-                  const SizedBox(width: 12),
                   Expanded(
+                    // TODO нужно получать номер заявки
                     child: Text(
-                      DateFormat.yMMMEd(localizations.languageCode)
-                          .add_Hm()
-                          .format(DateTime.parse(widget.issuesState.date)),
+                      '${DateFormat.yMMMEd(localizations.languageCode).add_Hm().format(DateTime.parse(widget.issuesState.date))}, №1337228',
                     ),
                   ),
                   IconButton(
@@ -91,47 +89,82 @@ class _IssueCardState extends State<IssueCard> {
                   )
                 ],
               ),
-              Center(
-                child: TextButton.icon(
-                  onPressed: () {
-                    final cubit = context.read<RoomCubit>();
-                    Modals.showBottomSheet(
-                        showDragHandle: true,
-                        context,
-                        DraggableScrollableSheet(
-                          expand: false,
-                          initialChildSize: 0.4,
-                          minChildSize: 0.2,
-                          maxChildSize: 0.4,
-                          builder: (context, scrollControl) => Column(
-                            children: [
-                              Expanded(
-                                child: DepartmentsList(
-                                    scrollController: scrollControl,
-                                    departments: cubit.state.departments,
-                                    onDepartmentChanged: (department) => cubit
-                                        .onIssueModelChanged(widget.issuesState
-                                            .copyWith(department: department))),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: FilledButton.tonal(
-                                    onPressed: Navigator.of(context).pop,
-                                    child: const Text('Отмена'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        final cubit = context.read<RoomCubit>();
+                        Modals.showBottomSheet(
+                            showDragHandle: true,
+                            context,
+                            DraggableScrollableSheet(
+                              expand: false,
+                              initialChildSize: 0.4,
+                              minChildSize: 0.2,
+                              maxChildSize: 0.4,
+                              builder: (context, scrollControl) => Column(
+                                children: [
+                                  Expanded(
+                                    child: DepartmentsList(
+                                        scrollController: scrollControl,
+                                        departments: cubit.state.departments,
+                                        onDepartmentChanged: (department) =>
+                                            cubit.onIssueModelChanged(
+                                                widget.issuesState.copyWith(
+                                                    department: department))),
                                   ),
-                                ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: FilledButton.tonal(
+                                        onPressed: Navigator.of(context).pop,
+                                        child: const Text('Отмена'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ));
+                      },
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              widget.issuesState.department.fullName.isEmpty
+                                  ? 'Выбрать отдел'
+                                  : widget.issuesState.department.fullName,
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(color: theme.primaryColor),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ));
-                  },
-                  icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                  label: Text(widget.issuesState.department.fullName.isEmpty
-                      ? 'Выбрать службу'
-                      : widget.issuesState.department.fullName),
-                ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: theme.primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // TODO нужно получить статус заявки
+                  Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.green.withOpacity(0.5)),
+                      child: const Text('Создано')),
+                ],
+              ),
+              const SizedBox(
+                height: 8,
               ),
               if (widget.issuesState.images.isNotEmpty)
                 Column(
@@ -160,7 +193,8 @@ class _IssueCardState extends State<IssueCard> {
                         voiceValue: VoiceValue(base64: e),
                         index: widget.issuesState.audios.indexOf(e),
                         onRemove: (value) {
-                          context.read<RoomCubit>().onAudioRemoved(index: value, model: widget.issuesState);
+                          context.read<RoomCubit>().onAudioRemoved(
+                              index: value, model: widget.issuesState);
                         },
                       ),
                     )
