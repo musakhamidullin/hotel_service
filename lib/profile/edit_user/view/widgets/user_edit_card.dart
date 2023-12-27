@@ -17,7 +17,7 @@ class UserEditCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         onTap: () {
-          context.router.push(EditUserRoute());
+          context.router.push(const EditUserRoute());
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
