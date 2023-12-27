@@ -43,6 +43,10 @@ class AppRouter extends $AppRouter {
               path: '',
               page: ProfileRoute.page,
             ),
+            AutoRoute(
+              path: '',
+              page: EditUserRoute.page,
+            ),
           ],
         ),
       ],

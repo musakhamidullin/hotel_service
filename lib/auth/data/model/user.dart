@@ -19,13 +19,14 @@ class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
 
-@Freezed(unionValueCase: FreezedUnionCase.pascal)
+@freezed
 class Person with _$Person {
+  @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory Person({
-    required int id,
-    //TODO should remove 1366
-    @Default(1366) int ownerId,
+    @JsonKey(name: 'id') required int id,
+    required int ownerId,
     @Default('') String firstName,
+    @Default('') String lastName,
     @Default('') String patronymic,
     @Default('') String gender,
     DateTime? birthday,
@@ -34,7 +35,11 @@ class Person with _$Person {
     @Default('') String notes,
   }) = _Person;
 
+  const Person._();
+
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+
+  String fullName() => '$firstName $lastName';
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)

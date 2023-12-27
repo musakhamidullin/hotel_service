@@ -10,7 +10,13 @@ class RoomState with _$RoomState {
     //todo int перевести в enum
     @Default(<int, List<IssuesModel>>{}) Map<int, List<IssuesModel>> issues,
     @Default(<Department>[]) List<Department> departments,
-    @Default(User(userId: '', personInfo: Person(id: 0))) User user,
+    @Default(
+      User(
+        userId: '',
+        personInfo: Person(id: 0, ownerId: 0),
+      ),
+    )
+    User user,
     @Default(0) int tabIndex,
   }) = _RoomState;
 

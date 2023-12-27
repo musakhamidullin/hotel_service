@@ -189,7 +189,7 @@ class _$RoomStateImpl extends _RoomState {
       final Map<int, List<IssuesModel>> issues =
           const <int, List<IssuesModel>>{},
       final List<Department> departments = const <Department>[],
-      this.user = const User(userId: '', personInfo: Person(id: 0)),
+      this.user = const User(userId: '', personInfo: Person(id: 0, ownerId: 0)),
       this.tabIndex = 0})
       : _issues = issues,
         _departments = departments,

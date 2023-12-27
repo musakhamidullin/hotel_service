@@ -219,9 +219,11 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Person {
-  int get id => throw _privateConstructorUsedError; //TODO should remove 1366
+  @JsonKey(name: 'id')
+  int get id => throw _privateConstructorUsedError;
   int get ownerId => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
+  String get lastName => throw _privateConstructorUsedError;
   String get patronymic => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
   DateTime? get birthday => throw _privateConstructorUsedError;
@@ -242,9 +244,10 @@ abstract class $PersonCopyWith<$Res> {
       _$PersonCopyWithImpl<$Res, Person>;
   @useResult
   $Res call(
-      {int id,
+      {@JsonKey(name: 'id') int id,
       int ownerId,
       String firstName,
+      String lastName,
       String patronymic,
       String gender,
       DateTime? birthday,
@@ -269,6 +272,7 @@ class _$PersonCopyWithImpl<$Res, $Val extends Person>
     Object? id = null,
     Object? ownerId = null,
     Object? firstName = null,
+    Object? lastName = null,
     Object? patronymic = null,
     Object? gender = null,
     Object? birthday = freezed,
@@ -288,6 +292,10 @@ class _$PersonCopyWithImpl<$Res, $Val extends Person>
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
               as String,
       patronymic: null == patronymic
           ? _value.patronymic
@@ -325,9 +333,10 @@ abstract class _$$PersonImplCopyWith<$Res> implements $PersonCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int id,
+      {@JsonKey(name: 'id') int id,
       int ownerId,
       String firstName,
+      String lastName,
       String patronymic,
       String gender,
       DateTime? birthday,
@@ -350,6 +359,7 @@ class __$$PersonImplCopyWithImpl<$Res>
     Object? id = null,
     Object? ownerId = null,
     Object? firstName = null,
+    Object? lastName = null,
     Object? patronymic = null,
     Object? gender = null,
     Object? birthday = freezed,
@@ -369,6 +379,10 @@ class __$$PersonImplCopyWithImpl<$Res>
       firstName: null == firstName
           ? _value.firstName
           : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
               as String,
       patronymic: null == patronymic
           ? _value.patronymic
@@ -399,31 +413,36 @@ class __$$PersonImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
-class _$PersonImpl implements _Person {
+
+@JsonSerializable(fieldRename: FieldRename.pascal)
+class _$PersonImpl extends _Person {
   const _$PersonImpl(
-      {required this.id,
-      this.ownerId = 1366,
+      {@JsonKey(name: 'id') required this.id,
+      required this.ownerId,
       this.firstName = '',
+      this.lastName = '',
       this.patronymic = '',
       this.gender = '',
       this.birthday,
       @JsonKey(name: 'Phone_1') this.phoneOne = '',
       @JsonKey(name: 'Phone_2') this.phoneSecond = '',
-      this.notes = ''});
+      this.notes = ''})
+      : super._();
 
   factory _$PersonImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonImplFromJson(json);
 
   @override
+  @JsonKey(name: 'id')
   final int id;
-//TODO should remove 1366
   @override
-  @JsonKey()
   final int ownerId;
   @override
   @JsonKey()
   final String firstName;
+  @override
+  @JsonKey()
+  final String lastName;
   @override
   @JsonKey()
   final String patronymic;
@@ -444,7 +463,7 @@ class _$PersonImpl implements _Person {
 
   @override
   String toString() {
-    return 'Person(id: $id, ownerId: $ownerId, firstName: $firstName, patronymic: $patronymic, gender: $gender, birthday: $birthday, phoneOne: $phoneOne, phoneSecond: $phoneSecond, notes: $notes)';
+    return 'Person(id: $id, ownerId: $ownerId, firstName: $firstName, lastName: $lastName, patronymic: $patronymic, gender: $gender, birthday: $birthday, phoneOne: $phoneOne, phoneSecond: $phoneSecond, notes: $notes)';
   }
 
   @override
@@ -456,6 +475,8 @@ class _$PersonImpl implements _Person {
             (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
             (identical(other.firstName, firstName) ||
                 other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
             (identical(other.patronymic, patronymic) ||
                 other.patronymic == patronymic) &&
             (identical(other.gender, gender) || other.gender == gender) &&
@@ -470,7 +491,7 @@ class _$PersonImpl implements _Person {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, ownerId, firstName,
+  int get hashCode => Object.hash(runtimeType, id, ownerId, firstName, lastName,
       patronymic, gender, birthday, phoneOne, phoneSecond, notes);
 
   @JsonKey(ignore: true)
@@ -487,26 +508,31 @@ class _$PersonImpl implements _Person {
   }
 }
 
-abstract class _Person implements Person {
+abstract class _Person extends Person {
   const factory _Person(
-      {required final int id,
-      final int ownerId,
+      {@JsonKey(name: 'id') required final int id,
+      required final int ownerId,
       final String firstName,
+      final String lastName,
       final String patronymic,
       final String gender,
       final DateTime? birthday,
       @JsonKey(name: 'Phone_1') final String phoneOne,
       @JsonKey(name: 'Phone_2') final String phoneSecond,
       final String notes}) = _$PersonImpl;
+  const _Person._() : super._();
 
   factory _Person.fromJson(Map<String, dynamic> json) = _$PersonImpl.fromJson;
 
   @override
+  @JsonKey(name: 'id')
   int get id;
-  @override //TODO should remove 1366
+  @override
   int get ownerId;
   @override
   String get firstName;
+  @override
+  String get lastName;
   @override
   String get patronymic;
   @override
