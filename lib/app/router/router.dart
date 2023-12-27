@@ -51,6 +51,10 @@ class AppRouter extends $AppRouter {
               path: '',
               page: MyScheduleRoute.page,
             ),
+            AutoRoute(
+              path: '',
+              page: MyDefectListRoute.page,
+            ),
           ],
         ),
       ],

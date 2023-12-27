@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../auth/data/repositories/auth_rep.dart';
 import '../edit_user/view/widgets/user_edit_card.dart';
+import '../my_defect_list/view/widgets/my_defects_button.dart';
 import '../my_schedule/view/widgets/my_schedule_button.dart';
 import 'widgets/avatar.dart';
 import 'widgets/logout_button.dart';
@@ -32,6 +33,8 @@ class ProfilePage extends StatelessWidget {
               const UserEditCard(),
               const SizedBox(height: 8,),
               const MyScheduleButton(),
+              const SizedBox(height: 8,),
+              const MyDefectsButton(),
             ],
           ),
         ),
