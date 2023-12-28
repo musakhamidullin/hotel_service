@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 import 'defect.dart';
 import 'department_info.dart';
@@ -39,13 +40,16 @@ class IssuesModel extends Equatable with _$IssuesModel {
       }
     }
     return IssuesModel(
-        comment: defect.text,
-        images: images,
-        audios: audios,
-        date: defect.createDate.toString(),
-        isMutable: false,
-      );
+      comment: defect.text,
+      images: images,
+      audios: audios,
+      date: defect.createDate.toString(),
+      isMutable: false,
+    );
   }
+
+  String dateFormatted(String languageCode) =>
+      DateFormat.yMMMEd(languageCode).add_Hm().format(DateTime.parse(date));
 
   @override
   List<Object?> get props => [images, comment, date, isMutable, department];

@@ -7,6 +7,7 @@ import '../../../common/widgets/failure_widget.dart';
 import '../../../room/view/widget/issue_card.dart';
 import '../cubit/my_defects_cubit.dart';
 import '../data/repository/my_defects_rep.dart';
+import 'widgets/defects_card.dart';
 
 @RoutePage()
 class MyDefectListPage extends StatefulWidget {
@@ -56,9 +57,9 @@ class _MyDefectListPageState extends State<MyDefectListPage> {
               child: ListView.builder(
                 itemCount: state.myDefects.length,
                 itemBuilder: (_, index) {
-                  return IssueCard(
-                    index: 0,
-                    issuesState: state.myDefects[index],
+                  return DefectsCard(
+                    issuesModel: state.myDefects[index],
+                    index: index,
                   );
                 },
               ),

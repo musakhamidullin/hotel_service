@@ -73,7 +73,7 @@ class _IssueCardState extends State<IssueCard> {
                   Expanded(
                     // TODO нужно получать номер заявки
                     child: Text(
-                      '${DateFormat.yMMMEd(localizations.languageCode).add_Hm().format(DateTime.parse(widget.issuesState.date))}, №1337228',
+                      '${widget.issuesState.dateFormatted(localizations.languageCode)}, №1337228',
                     ),
                   ),
                   IconButton(
@@ -189,7 +189,8 @@ class _IssueCardState extends State<IssueCard> {
                         key: ObjectKey(e),
                         voiceValue: VoiceValue(base64: e),
                         index: widget.issuesState.audios.indexOf(e),
-                        playerKey: '${widget.index}${widget.issuesState.audios.indexOf(e)}',
+                        playerKey:
+                            '${widget.index}${widget.issuesState.audios.indexOf(e)}',
                         onRemove: (value) {
                           context.read<RoomCubit>().onAudioRemoved(
                               index: value, model: widget.issuesState);
