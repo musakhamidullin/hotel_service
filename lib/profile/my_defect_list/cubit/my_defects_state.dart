@@ -6,6 +6,7 @@ enum FetchStatus { init, loading, failure, success, paging }
 class MyDefectsState with _$MyDefectsState {
   const factory MyDefectsState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
+    @Default(<IssuesModel>[]) List<IssuesModel> myDefects,
   }) = _Initial;
 
   const MyDefectsState._();

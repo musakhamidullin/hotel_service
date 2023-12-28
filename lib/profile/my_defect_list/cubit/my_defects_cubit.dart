@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../auth/data/model/user.dart';
+import '../../../room/data/models/defect.dart';
+import '../../../room/data/models/issues.dart';
 import '../data/repository/my_defects_rep.dart';
 
 part 'my_defects_state.dart';
@@ -17,11 +19,49 @@ class MyDefectsCubit extends Cubit<MyDefectsState> {
   final MyDefectsRep myDefectsRep;
   final User user;
 
-  Future<void> fetchMyDefects() async {
+  var _currPage = 1;
+
+  Map<String, dynamic> _toPaginatingData() => {
+        "Page": _currPage,
+        "PageSize": 10,
+        "PersonId": user.personInfo.id,
+      };
+
+  Future<void> fetchFirstPageMyDefects() async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      await Future.delayed(Duration(seconds: 1));
-      emit(state.copyWith(fetchStatus: FetchStatus.success));
+
+      _currPage = 1;
+
+      final result = await myDefectsRep.fetchMyDefectList(_toPaginatingData());
+      emit(
+        state.copyWith(
+          fetchStatus: FetchStatus.success,
+          myDefects: result,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+    }
+  }
+
+  Future<void> fetchNewPage() async {
+    try {
+      emit(state.copyWith(fetchStatus: FetchStatus.loading));
+
+      _currPage++;
+
+      final result = await myDefectsRep.fetchMyDefectList(_toPaginatingData());
+
+      emit(
+        state.copyWith(
+          fetchStatus: FetchStatus.success,
+          myDefects: [
+            ...state.myDefects,
+            ...result,
+          ],
+        ),
+      );
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }

@@ -22,12 +22,10 @@ class IssueCard extends StatefulWidget {
   const IssueCard({
     super.key,
     required this.index,
-    required this.tabName,
     required this.issuesState,
   });
 
   final int index;
-  final String tabName;
   final IssuesModel issuesState;
 
   @override
@@ -36,7 +34,6 @@ class IssueCard extends StatefulWidget {
 
 class _IssueCardState extends State<IssueCard> {
   final TextEditingController _controller = TextEditingController();
-  late final _recordButtonId = '${widget.tabName}-${widget.index}';
   var _readOnlyInput = false;
 
   @override
@@ -268,7 +265,6 @@ class _IssueCardState extends State<IssueCard> {
                     width: 12,
                   ),
                   RecordButton(
-                    id: _recordButtonId,
                     onRecord: (value) {
                       setState(() => _readOnlyInput = value);
                     },

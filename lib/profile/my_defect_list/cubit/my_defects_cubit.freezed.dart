@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MyDefectsState {
   FetchStatus get fetchStatus => throw _privateConstructorUsedError;
+  List<IssuesModel> get myDefects => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MyDefectsStateCopyWith<MyDefectsState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $MyDefectsStateCopyWith<$Res> {
           MyDefectsState value, $Res Function(MyDefectsState) then) =
       _$MyDefectsStateCopyWithImpl<$Res, MyDefectsState>;
   @useResult
-  $Res call({FetchStatus fetchStatus});
+  $Res call({FetchStatus fetchStatus, List<IssuesModel> myDefects});
 }
 
 /// @nodoc
@@ -46,12 +47,17 @@ class _$MyDefectsStateCopyWithImpl<$Res, $Val extends MyDefectsState>
   @override
   $Res call({
     Object? fetchStatus = null,
+    Object? myDefects = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
               as FetchStatus,
+      myDefects: null == myDefects
+          ? _value.myDefects
+          : myDefects // ignore: cast_nullable_to_non_nullable
+              as List<IssuesModel>,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$InitialImplCopyWith<$Res>
       __$$InitialImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({FetchStatus fetchStatus});
+  $Res call({FetchStatus fetchStatus, List<IssuesModel> myDefects});
 }
 
 /// @nodoc
@@ -79,12 +85,17 @@ class __$$InitialImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fetchStatus = null,
+    Object? myDefects = null,
   }) {
     return _then(_$InitialImpl(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
               as FetchStatus,
+      myDefects: null == myDefects
+          ? _value._myDefects
+          : myDefects // ignore: cast_nullable_to_non_nullable
+              as List<IssuesModel>,
     ));
   }
 }
@@ -92,15 +103,27 @@ class __$$InitialImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$InitialImpl extends _Initial {
-  const _$InitialImpl({this.fetchStatus = FetchStatus.init}) : super._();
+  const _$InitialImpl(
+      {this.fetchStatus = FetchStatus.init,
+      final List<IssuesModel> myDefects = const <IssuesModel>[]})
+      : _myDefects = myDefects,
+        super._();
 
   @override
   @JsonKey()
   final FetchStatus fetchStatus;
+  final List<IssuesModel> _myDefects;
+  @override
+  @JsonKey()
+  List<IssuesModel> get myDefects {
+    if (_myDefects is EqualUnmodifiableListView) return _myDefects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_myDefects);
+  }
 
   @override
   String toString() {
-    return 'MyDefectsState(fetchStatus: $fetchStatus)';
+    return 'MyDefectsState(fetchStatus: $fetchStatus, myDefects: $myDefects)';
   }
 
   @override
@@ -109,11 +132,14 @@ class _$InitialImpl extends _Initial {
         (other.runtimeType == runtimeType &&
             other is _$InitialImpl &&
             (identical(other.fetchStatus, fetchStatus) ||
-                other.fetchStatus == fetchStatus));
+                other.fetchStatus == fetchStatus) &&
+            const DeepCollectionEquality()
+                .equals(other._myDefects, _myDefects));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fetchStatus);
+  int get hashCode => Object.hash(runtimeType, fetchStatus,
+      const DeepCollectionEquality().hash(_myDefects));
 
   @JsonKey(ignore: true)
   @override
@@ -123,11 +149,15 @@ class _$InitialImpl extends _Initial {
 }
 
 abstract class _Initial extends MyDefectsState {
-  const factory _Initial({final FetchStatus fetchStatus}) = _$InitialImpl;
+  const factory _Initial(
+      {final FetchStatus fetchStatus,
+      final List<IssuesModel> myDefects}) = _$InitialImpl;
   const _Initial._() : super._();
 
   @override
   FetchStatus get fetchStatus;
+  @override
+  List<IssuesModel> get myDefects;
   @override
   @JsonKey(ignore: true)
   _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/data/repositories/auth_rep.dart';
 import '../../../common/widgets/failure_widget.dart';
+import '../../../room/view/widget/issue_card.dart';
 import '../cubit/my_defects_cubit.dart';
 import '../data/repository/my_defects_rep.dart';
 
@@ -30,7 +31,7 @@ class _MyDefectListPageState extends State<MyDefectListPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _defectsCubit..fetchMyDefects(),
+      create: (context) => _defectsCubit..fetchFirstPageMyDefects(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Мои заявки'),
@@ -39,9 +40,29 @@ class _MyDefectListPageState extends State<MyDefectListPage> {
           builder: (context, state) {
             if (state.failure()) {
               return FailureWidget(
-                  onPressed: context.read<MyDefectsCubit>().fetchMyDefects);
+                  onPressed:
+                      context.read<MyDefectsCubit>().fetchFirstPageMyDefects);
+            } else if (state.loading()) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            return ListView();
+            return NotificationListener<ScrollNotification>(
+              onNotification: (value) {
+                if (value.metrics.pixels >= value.metrics.maxScrollExtent &&
+                    !value.metrics.outOfRange) {}
+                return true;
+              },
+              child: ListView.builder(
+                itemCount: state.myDefects.length,
+                itemBuilder: (_, index) {
+                  return IssueCard(
+                    index: 0,
+                    issuesState: state.myDefects[index],
+                  );
+                },
+              ),
+            );
           },
         ),
       ),

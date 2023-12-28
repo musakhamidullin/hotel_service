@@ -7,12 +7,10 @@ import 'record_timer.dart';
 class RecordButton extends StatefulWidget {
   const RecordButton({
     super.key,
-    required this.id,
     required this.onRecord,
     required this.onStop,
   });
 
-  final String id;
   final Function(bool) onRecord;
   final Function(String) onStop;
 
@@ -47,10 +45,9 @@ class _RecordButtonState extends State<RecordButton> {
                   if (_recording) {
                     context.read<VoiceManagerCubit>().record();
                   } else {
-                    final path = await context.read<VoiceManagerCubit>().stopRecord(
-                          buttonId: widget.id,
-                          duration: _duration,
-                        );
+                    final path = await context
+                        .read<VoiceManagerCubit>()
+                        .stopRecord(duration: _duration);
 
                     if (path.isNotEmpty) widget.onStop(path);
                   }

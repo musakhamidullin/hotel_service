@@ -21,7 +21,6 @@ class IssuesList extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, i) => IssueCard(
         index: i,
-        tabName: tabName,
         issuesState: issues[i],
       ),
     );

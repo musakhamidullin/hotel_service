@@ -45,7 +45,7 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
     await _recorder.start(const RecordConfig(), path: path);
   }
 
-  Future<String> stopRecord({String buttonId = '', String duration = ''}) async {
+  Future<String> stopRecord({String duration = ''}) async {
     final path = await _recorder.stop();
     if (path == null) return '';
 
