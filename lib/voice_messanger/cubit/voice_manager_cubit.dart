@@ -24,9 +24,9 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
 
   AudioPlayer get audioPlayer => _audioPlayer;
 
-  int _currentlyPlayingIndex = -1;
+  String _currentlyPlayerKey = '';
 
-  int get currentlyPlayingIndex => _currentlyPlayingIndex;
+  String get currentlyPlayerKey => _currentlyPlayerKey;
 
   Future<String> _getPath() async {
     final dir = await getApplicationDocumentsDirectory();
@@ -54,8 +54,8 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
     return base64Encode(bytes);
   }
 
-  Future<void> playMessageFromBytes({required String base64, required int index}) async {
-    _currentlyPlayingIndex = index;
+  Future<void> playMessageFromBytes({required String base64, required String playerKey}) async {
+    _currentlyPlayerKey = playerKey;
     await _audioPlayer.play(BytesSource(base64Decode(base64)));
   }
 

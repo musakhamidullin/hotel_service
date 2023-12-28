@@ -11,13 +11,15 @@ class MessageAudioPlayer extends StatefulWidget {
   const MessageAudioPlayer({
     super.key,
     required this.voiceValue,
-    required this.index,
+    required this.playerKey,
     required this.onRemove,
+    required this.index,
   });
 
   final VoiceValue voiceValue;
-  final int index;
+  final String playerKey;
   final Function(int) onRemove;
+  final int index;
 
   @override
   State<MessageAudioPlayer> createState() => _MessageAudioPlayerState();
@@ -42,7 +44,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
     final managerCubit = context.read<VoiceManagerCubit>();
     _onPlayerStateChanged =
         managerCubit.audioPlayer.onPlayerStateChanged.listen((event) {
-      if (managerCubit.currentlyPlayingIndex != widget.index) {
+      if (managerCubit.currentlyPlayerKey != widget.playerKey) {
         if (_playerState != PlayerState.stopped) {
           setState(() => _playerState = PlayerState.stopped);
         }
@@ -53,14 +55,14 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
     });
     _onDurationChanged =
         managerCubit.audioPlayer.onDurationChanged.listen((event) {
-      if (managerCubit.currentlyPlayingIndex != widget.index) {
+      if (managerCubit.currentlyPlayerKey != widget.playerKey) {
         return;
       }
       _duration = event;
     });
     _onPositionChanged =
         managerCubit.audioPlayer.onPositionChanged.listen((event) {
-      if (managerCubit.currentlyPlayingIndex != widget.index) {
+      if (managerCubit.currentlyPlayerKey != widget.playerKey) {
         if (_position.inMilliseconds != 0) {
           setState(() {
             _position = const Duration();
@@ -104,7 +106,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                         .read<VoiceManagerCubit>()
                         .playMessageFromBytes(
                           base64: widget.voiceValue.base64,
-                          index: widget.index,
+                          playerKey: widget.playerKey,
                         );
                   } else {
                     await context
