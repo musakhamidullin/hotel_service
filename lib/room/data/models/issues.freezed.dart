@@ -25,7 +25,7 @@ mixin _$IssuesModel {
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
   String get date => throw _privateConstructorUsedError;
-  dynamic get isMutable => throw _privateConstructorUsedError;
+  bool get isMutable => throw _privateConstructorUsedError;
   Department get department => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $IssuesModelCopyWith<$Res> {
       List<String> audios,
       String comment,
       @DateSerializer() String date,
-      dynamic isMutable,
+      bool isMutable,
       Department department});
 
   $DepartmentCopyWith<$Res> get department;
@@ -68,7 +68,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
     Object? audios = null,
     Object? comment = null,
     Object? date = null,
-    Object? isMutable = freezed,
+    Object? isMutable = null,
     Object? department = null,
   }) {
     return _then(_value.copyWith(
@@ -88,10 +88,10 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
-      isMutable: freezed == isMutable
+      isMutable: null == isMutable
           ? _value.isMutable
           : isMutable // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as bool,
       department: null == department
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
@@ -121,7 +121,7 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
       List<String> audios,
       String comment,
       @DateSerializer() String date,
-      dynamic isMutable,
+      bool isMutable,
       Department department});
 
   @override
@@ -143,7 +143,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
     Object? audios = null,
     Object? comment = null,
     Object? date = null,
-    Object? isMutable = freezed,
+    Object? isMutable = null,
     Object? department = null,
   }) {
     return _then(_$IssuesModelImpl(
@@ -163,7 +163,10 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
-      isMutable: freezed == isMutable ? _value.isMutable! : isMutable,
+      isMutable: null == isMutable
+          ? _value.isMutable
+          : isMutable // ignore: cast_nullable_to_non_nullable
+              as bool,
       department: null == department
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
@@ -216,7 +219,7 @@ class _$IssuesModelImpl extends _IssuesModel {
   final String date;
   @override
   @JsonKey()
-  final dynamic isMutable;
+  final bool isMutable;
   @override
   @JsonKey()
   final Department department;
@@ -241,7 +244,7 @@ abstract class _IssuesModel extends IssuesModel {
       final List<String> audios,
       final String comment,
       @DateSerializer() final String date,
-      final dynamic isMutable,
+      final bool isMutable,
       final Department department}) = _$IssuesModelImpl;
   const _IssuesModel._() : super._();
 
@@ -258,7 +261,7 @@ abstract class _IssuesModel extends IssuesModel {
   @DateSerializer()
   String get date;
   @override
-  dynamic get isMutable;
+  bool get isMutable;
   @override
   Department get department;
   @override

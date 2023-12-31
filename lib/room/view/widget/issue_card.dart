@@ -13,6 +13,7 @@ import '../../cubit/room_cubit.dart';
 
 import '../../data/models/issues.dart';
 import '../room_page.dart';
+import 'comments/commnents_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -73,18 +74,15 @@ class _IssueCardState extends State<IssueCard> {
                   Expanded(
                     // TODO нужно получать номер заявки
                     child: Text(
-                      '${widget.issuesState.dateFormatted(localizations.languageCode)}, №1337228',
+                      widget.issuesState
+                          .dateFormatted(localizations.languageCode),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      context
-                          .read<RoomCubit>()
-                          .onDeleteIssuePressed(widget.issuesState);
-                    },
-                    icon: const Icon(Icons.delete),
-                  )
+                  const Text('№1337228')
                 ],
+              ),
+              const SizedBox(
+                height: 8,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,19 +199,31 @@ class _IssueCardState extends State<IssueCard> {
               ),
               if (widget.issuesState.images.isNotEmpty)
                 const SizedBox(height: 8),
-              IssueTextField(
-                readOnly: _readOnlyInput,
-                textEditingController: _controller
-                  ..text = widget.issuesState.comment,
-                index: widget.index,
-                onTextChanged: (String text) => context
-                    .read<RoomCubit>()
-                    .onIssueModelChanged(
-                        widget.issuesState.copyWith(comment: text)),
-                onClearPressed: () => context
-                    .read<RoomCubit>()
-                    .onIssueModelChanged(
-                        widget.issuesState.copyWith(comment: '')),
+              Row(
+                children: [
+                  Flexible(
+                    child: IssueTextField(
+                      readOnly: _readOnlyInput,
+                      textEditingController: _controller
+                        ..text = widget.issuesState.comment,
+                      onTextChanged: (String text) => context
+                          .read<RoomCubit>()
+                          .onIssueModelChanged(
+                              widget.issuesState.copyWith(comment: text)),
+                      onClearPressed: () => context
+                          .read<RoomCubit>()
+                          .onIssueModelChanged(
+                              widget.issuesState.copyWith(comment: '')),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                      onPressed: () => Modals.showBottomSheet(
+                          context, const CommentsSheet()),
+                      icon: const Icon(Icons.message))
+                ],
               ),
               const SizedBox(
                 height: 12,
@@ -280,10 +290,13 @@ class _IssueCardState extends State<IssueCard> {
                   const SizedBox(
                     width: 12,
                   ),
-                  IconButton(
-                    onPressed: _controller.clear,
-                    icon: const Icon(Icons.close),
-                  ),
+                  if (widget.issuesState.isMutable)
+                    IconButton(
+                      onPressed: () => context
+                          .read<RoomCubit>()
+                          .onDeleteIssuePressed(widget.issuesState),
+                      icon: const Icon(Icons.delete),
+                    ),
                 ],
               )
             ],

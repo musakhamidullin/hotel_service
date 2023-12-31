@@ -16,7 +16,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
     @Default(<String>[]) List<String> audios,
     @Default('') String comment,
     @Default('') @DateSerializer() String date,
-    @Default(true) isMutable,
+    @Default(true) bool isMutable,
     @Default(Department()) Department department,
   }) = _IssuesModel;
 
