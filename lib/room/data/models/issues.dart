@@ -48,6 +48,9 @@ class IssuesModel extends Equatable with _$IssuesModel {
     );
   }
 
+  bool isExistsSomething() =>
+      images.isNotEmpty || audios.isNotEmpty || comment.isNotEmpty;
+
   String dateFormatted(String languageCode) =>
       DateFormat.yMMMEd(languageCode).add_Hm().format(DateTime.parse(date));
 

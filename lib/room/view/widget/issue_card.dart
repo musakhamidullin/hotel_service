@@ -292,9 +292,23 @@ class _IssueCardState extends State<IssueCard> {
                   ),
                   if (widget.issuesState.isMutable)
                     IconButton(
-                      onPressed: () => context
-                          .read<RoomCubit>()
-                          .onDeleteIssuePressed(widget.issuesState),
+                      onPressed: () async {
+                        final cubit = context.read<RoomCubit>();
+
+                        if (widget.issuesState.isExistsSomething()) {
+                          final isConfirm = await Modals.showConfirmationDialog(
+                                  context,
+                                  'Вы действительно желаете удалить заявку?') ??
+                              false;
+
+                          if (isConfirm) {
+                            cubit.onDeleteIssuePressed(widget.issuesState);
+                            return;
+                          }
+                        }
+
+                        cubit.onDeleteIssuePressed(widget.issuesState);
+                      },
                       icon: const Icon(Icons.delete),
                     ),
                 ],
