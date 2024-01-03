@@ -4,14 +4,13 @@ class IssueTextField extends StatelessWidget {
   const IssueTextField({
     super.key,
     required this.readOnly,
-    required this.index,
     required this.onTextChanged,
     required this.onClearPressed,
     required this.textEditingController,
   });
 
   final bool readOnly;
-  final int index;
+
   final void Function(String text) onTextChanged;
   final VoidCallback onClearPressed;
   final TextEditingController textEditingController;

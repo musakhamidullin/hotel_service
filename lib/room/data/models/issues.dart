@@ -16,7 +16,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
     @Default(<String>[]) List<String> audios,
     @Default('') String comment,
     @Default('') @DateSerializer() String date,
-    @Default(true) isMutable,
+    @Default(true) bool isMutable,
     @Default(Department()) Department department,
   }) = _IssuesModel;
 
@@ -47,6 +47,9 @@ class IssuesModel extends Equatable with _$IssuesModel {
       isMutable: false,
     );
   }
+
+  bool isExistsSomething() =>
+      images.isNotEmpty || audios.isNotEmpty || comment.isNotEmpty;
 
   String dateFormatted(String languageCode) =>
       DateFormat.yMMMEd(languageCode).add_Hm().format(DateTime.parse(date));

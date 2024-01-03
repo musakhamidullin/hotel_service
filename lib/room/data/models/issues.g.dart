@@ -20,7 +20,7 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
       date: json['date'] == null
           ? ''
           : const DateSerializer().fromJson(json['date']),
-      isMutable: json['isMutable'] ?? true,
+      isMutable: json['isMutable'] as bool? ?? true,
       department: json['department'] == null
           ? const Department()
           : Department.fromJson(json['department'] as Map<String, dynamic>),
