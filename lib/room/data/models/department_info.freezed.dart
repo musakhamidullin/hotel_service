@@ -20,7 +20,6 @@ DepartmentInfo _$DepartmentInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DepartmentInfo {
-// required dynamic errorCode,
   List<Department> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -106,9 +105,7 @@ class _$DepartmentInfoImpl implements _DepartmentInfo {
   factory _$DepartmentInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$DepartmentInfoImplFromJson(json);
 
-// required dynamic errorCode,
   final List<Department> _data;
-// required dynamic errorCode,
   @override
   @JsonKey()
   List<Department> get data {
@@ -157,7 +154,7 @@ abstract class _DepartmentInfo implements DepartmentInfo {
   factory _DepartmentInfo.fromJson(Map<String, dynamic> json) =
       _$DepartmentInfoImpl.fromJson;
 
-  @override // required dynamic errorCode,
+  @override
   List<Department> get data;
   @override
   @JsonKey(ignore: true)
