@@ -13,9 +13,7 @@ String departmentInfoToJson(DepartmentInfo data) => json.encode(data.toJson());
 class DepartmentInfo with _$DepartmentInfo {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory DepartmentInfo({
-    // required dynamic errorCode,
     @Default(<Department>[]) List<Department> data,
-    // required dynamic user,
   }) = _DepartmentInfo;
 
   factory DepartmentInfo.fromJson(Map<String, dynamic> json) =>

@@ -2,6 +2,8 @@ part of 'room_cubit.dart';
 
 enum FetchStatus { init, loading, refreshing, success, failure }
 
+enum DefectStatus { created, done, assigned }
+
 @freezed
 class RoomState with _$RoomState {
   const factory RoomState({
