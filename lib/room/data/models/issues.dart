@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
+import '../../cubit/room_cubit.dart';
 import 'defect.dart';
 import 'department_info.dart';
 
@@ -11,14 +12,15 @@ part 'issues.g.dart';
 
 @freezed
 class IssuesModel extends Equatable with _$IssuesModel {
-  const factory IssuesModel({
-    @Default(<String>[]) List<String> images,
-    @Default(<String>[]) List<String> audios,
-    @Default('') String comment,
-    @Default('') @DateSerializer() String date,
-    @Default(true) bool isMutable,
-    @Default(Department()) Department department,
-  }) = _IssuesModel;
+  const factory IssuesModel(
+          {@Default(<String>[]) List<String> images,
+          @Default(<String>[]) List<String> audios,
+          @Default('') String comment,
+          @Default('') @DateSerializer() String date,
+          @Default(true) bool isMutable,
+          @Default(Department()) Department department,
+          @Default(DefectStatuses.none) DefectStatuses defectStatus}) =
+      _IssuesModel;
 
   const IssuesModel._();
 

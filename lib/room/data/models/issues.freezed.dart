@@ -27,6 +27,7 @@ mixin _$IssuesModel {
   String get date => throw _privateConstructorUsedError;
   bool get isMutable => throw _privateConstructorUsedError;
   Department get department => throw _privateConstructorUsedError;
+  DefectStatuses get defectStatus => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +47,8 @@ abstract class $IssuesModelCopyWith<$Res> {
       String comment,
       @DateSerializer() String date,
       bool isMutable,
-      Department department});
+      Department department,
+      DefectStatuses defectStatus});
 
   $DepartmentCopyWith<$Res> get department;
 }
@@ -70,6 +72,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
     Object? date = null,
     Object? isMutable = null,
     Object? department = null,
+    Object? defectStatus = null,
   }) {
     return _then(_value.copyWith(
       images: null == images
@@ -96,6 +99,10 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
               as Department,
+      defectStatus: null == defectStatus
+          ? _value.defectStatus
+          : defectStatus // ignore: cast_nullable_to_non_nullable
+              as DefectStatuses,
     ) as $Val);
   }
 
@@ -122,7 +129,8 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
       String comment,
       @DateSerializer() String date,
       bool isMutable,
-      Department department});
+      Department department,
+      DefectStatuses defectStatus});
 
   @override
   $DepartmentCopyWith<$Res> get department;
@@ -145,6 +153,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
     Object? date = null,
     Object? isMutable = null,
     Object? department = null,
+    Object? defectStatus = null,
   }) {
     return _then(_$IssuesModelImpl(
       images: null == images
@@ -171,6 +180,10 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
           ? _value.department
           : department // ignore: cast_nullable_to_non_nullable
               as Department,
+      defectStatus: null == defectStatus
+          ? _value.defectStatus
+          : defectStatus // ignore: cast_nullable_to_non_nullable
+              as DefectStatuses,
     ));
   }
 }
@@ -184,7 +197,8 @@ class _$IssuesModelImpl extends _IssuesModel {
       this.comment = '',
       @DateSerializer() this.date = '',
       this.isMutable = true,
-      this.department = const Department()})
+      this.department = const Department(),
+      this.defectStatus = DefectStatuses.none})
       : _images = images,
         _audios = audios,
         super._();
@@ -223,6 +237,9 @@ class _$IssuesModelImpl extends _IssuesModel {
   @override
   @JsonKey()
   final Department department;
+  @override
+  @JsonKey()
+  final DefectStatuses defectStatus;
 
   @JsonKey(ignore: true)
   @override
@@ -245,7 +262,8 @@ abstract class _IssuesModel extends IssuesModel {
       final String comment,
       @DateSerializer() final String date,
       final bool isMutable,
-      final Department department}) = _$IssuesModelImpl;
+      final Department department,
+      final DefectStatuses defectStatus}) = _$IssuesModelImpl;
   const _IssuesModel._() : super._();
 
   factory _IssuesModel.fromJson(Map<String, dynamic> json) =
@@ -264,6 +282,8 @@ abstract class _IssuesModel extends IssuesModel {
   bool get isMutable;
   @override
   Department get department;
+  @override
+  DefectStatuses get defectStatus;
   @override
   @JsonKey(ignore: true)
   _$$IssuesModelImplCopyWith<_$IssuesModelImpl> get copyWith =>

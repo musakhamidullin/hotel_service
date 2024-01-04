@@ -2,6 +2,27 @@ part of 'room_cubit.dart';
 
 enum FetchStatus { init, loading, refreshing, success, failure }
 
+enum DefectStatuses {
+  none,
+  created,
+  assigned,
+  done;
+
+  static DefectStatuses matchById(int id) => switch (id) {
+        1 => DefectStatuses.created,
+        2 => DefectStatuses.assigned,
+        3 => DefectStatuses.done,
+        int() => DefectStatuses.none
+      };
+
+  static Color matchByStatus(DefectStatuses status) => switch (status) {
+        DefectStatuses.none => Colors.grey.withOpacity(0.5),
+        DefectStatuses.created => Colors.yellow.withOpacity(0.5),
+        DefectStatuses.assigned => Colors.orange.withOpacity(0.5),
+        DefectStatuses.done => Colors.green.withOpacity(0.5),
+      };
+}
+
 @freezed
 class RoomState with _$RoomState {
   const factory RoomState({

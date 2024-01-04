@@ -24,6 +24,9 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
       department: json['department'] == null
           ? const Department()
           : Department.fromJson(json['department'] as Map<String, dynamic>),
+      defectStatus:
+          $enumDecodeNullable(_$DefectStatusesEnumMap, json['defectStatus']) ??
+              DefectStatuses.none,
     );
 
 Map<String, dynamic> _$$IssuesModelImplToJson(_$IssuesModelImpl instance) =>
@@ -34,4 +37,12 @@ Map<String, dynamic> _$$IssuesModelImplToJson(_$IssuesModelImpl instance) =>
       'date': const DateSerializer().toJson(instance.date),
       'isMutable': instance.isMutable,
       'department': instance.department,
+      'defectStatus': _$DefectStatusesEnumMap[instance.defectStatus]!,
     };
+
+const _$DefectStatusesEnumMap = {
+  DefectStatuses.none: 'none',
+  DefectStatuses.created: 'created',
+  DefectStatuses.assigned: 'assigned',
+  DefectStatuses.done: 'done',
+};

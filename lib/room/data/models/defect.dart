@@ -15,6 +15,12 @@ class Defect with _$Defect {
     @Default([])
     @JsonKey(name: 'hotelDefectMedias')
     List<ProblemMedia> hotelDefectMedias,
+    @Default('') String lastComment,
+    @Default(0) int commentsCount,
+    @Default(0) int personId,
+    @Default('') String personName,
+    @Default(0) int statusId,
+    @Default(0) int departmentId,
   }) = _Defect;
 
   factory Defect.fromJson(Map<String, dynamic> json) => _$DefectFromJson(json);
