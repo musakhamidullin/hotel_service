@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
 
+import '../data/models/defect_status.dart';
 import '../data/models/department_info.dart';
 
 import '../data/models/issue_report.dart';
@@ -44,24 +45,39 @@ class RoomCubit extends Cubit<RoomState> {
       );
 
       await fetchDepartment();
+      await fetchDefectStatus();
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
   Future<void> fetchDepartment() async {
-    final ownerId = state.user.personInfo.ownerId;
+    try {
+      final ownerId = state.user.personInfo.ownerId;
 
-    final departments = await _roomRep.fetchDepartment(ownerId);
+      final departments = await _roomRep.fetchDepartment(ownerId);
 
-    emit(
-      state.copyWith(
-        departments: [
-          const Department(fullName: 'Не выбрано'),
-          ...departments,
-        ],
-      ),
-    );
+      emit(
+        state.copyWith(
+          departments: [
+            const Department(fullName: 'Не выбрано'),
+            ...departments,
+          ],
+        ),
+      );
+    } catch (_) {}
+  }
+
+  Future<void> fetchDefectStatus() async {
+    try {
+      final ownerId = state.user.personInfo.ownerId;
+
+      final defectStatuses = await _roomRep.fetchDefectStatus(ownerId);
+
+      emit(
+        state.copyWith(defectStatus: defectStatuses),
+      );
+    } catch (_) {}
   }
 
   void onIssueModelChanged(IssuesModel issuesState) {
@@ -75,7 +91,8 @@ class RoomCubit extends Cubit<RoomState> {
     emit(state.copyWith(fetchStatus: FetchStatus.success, issues: map));
   }
 
-  Future<void> onAudioRecorded({required String base64, required IssuesModel model}) async {
+  Future<void> onAudioRecorded(
+      {required String base64, required IssuesModel model}) async {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
 
     final updatedIssueModel = _updateIssueModel(
@@ -100,7 +117,8 @@ class RoomCubit extends Cubit<RoomState> {
     );
   }
 
-  Future<void> onAudioRemoved({required int index, required IssuesModel model}) async {
+  Future<void> onAudioRemoved(
+      {required int index, required IssuesModel model}) async {
     emit(state.copyWith(fetchStatus: FetchStatus.init));
 
     final updatedIssueModel = _updateIssueModel(

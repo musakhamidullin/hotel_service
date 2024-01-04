@@ -21,6 +21,7 @@ mixin _$RoomState {
       throw _privateConstructorUsedError; //todo int перевести в enum
   Map<int, List<IssuesModel>> get issues => throw _privateConstructorUsedError;
   List<Department> get departments => throw _privateConstructorUsedError;
+  List<DefectStatus> get defectStatus => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   int get tabIndex => throw _privateConstructorUsedError;
 
@@ -39,6 +40,7 @@ abstract class $RoomStateCopyWith<$Res> {
       Room room,
       Map<int, List<IssuesModel>> issues,
       List<Department> departments,
+      List<DefectStatus> defectStatus,
       User user,
       int tabIndex});
 
@@ -63,6 +65,7 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
     Object? room = null,
     Object? issues = null,
     Object? departments = null,
+    Object? defectStatus = null,
     Object? user = null,
     Object? tabIndex = null,
   }) {
@@ -83,6 +86,10 @@ class _$RoomStateCopyWithImpl<$Res, $Val extends RoomState>
           ? _value.departments
           : departments // ignore: cast_nullable_to_non_nullable
               as List<Department>,
+      defectStatus: null == defectStatus
+          ? _value.defectStatus
+          : defectStatus // ignore: cast_nullable_to_non_nullable
+              as List<DefectStatus>,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -124,6 +131,7 @@ abstract class _$$RoomStateImplCopyWith<$Res>
       Room room,
       Map<int, List<IssuesModel>> issues,
       List<Department> departments,
+      List<DefectStatus> defectStatus,
       User user,
       int tabIndex});
 
@@ -148,6 +156,7 @@ class __$$RoomStateImplCopyWithImpl<$Res>
     Object? room = null,
     Object? issues = null,
     Object? departments = null,
+    Object? defectStatus = null,
     Object? user = null,
     Object? tabIndex = null,
   }) {
@@ -168,6 +177,10 @@ class __$$RoomStateImplCopyWithImpl<$Res>
           ? _value._departments
           : departments // ignore: cast_nullable_to_non_nullable
               as List<Department>,
+      defectStatus: null == defectStatus
+          ? _value._defectStatus
+          : defectStatus // ignore: cast_nullable_to_non_nullable
+              as List<DefectStatus>,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -189,10 +202,12 @@ class _$RoomStateImpl extends _RoomState {
       final Map<int, List<IssuesModel>> issues =
           const <int, List<IssuesModel>>{},
       final List<Department> departments = const <Department>[],
+      final List<DefectStatus> defectStatus = const <DefectStatus>[],
       this.user = const User(userId: '', personInfo: Person(id: 0, ownerId: 0)),
       this.tabIndex = 0})
       : _issues = issues,
         _departments = departments,
+        _defectStatus = defectStatus,
         super._();
 
   @override
@@ -221,6 +236,15 @@ class _$RoomStateImpl extends _RoomState {
     return EqualUnmodifiableListView(_departments);
   }
 
+  final List<DefectStatus> _defectStatus;
+  @override
+  @JsonKey()
+  List<DefectStatus> get defectStatus {
+    if (_defectStatus is EqualUnmodifiableListView) return _defectStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_defectStatus);
+  }
+
   @override
   @JsonKey()
   final User user;
@@ -230,7 +254,7 @@ class _$RoomStateImpl extends _RoomState {
 
   @override
   String toString() {
-    return 'RoomState(fetchStatus: $fetchStatus, room: $room, issues: $issues, departments: $departments, user: $user, tabIndex: $tabIndex)';
+    return 'RoomState(fetchStatus: $fetchStatus, room: $room, issues: $issues, departments: $departments, defectStatus: $defectStatus, user: $user, tabIndex: $tabIndex)';
   }
 
   @override
@@ -244,6 +268,8 @@ class _$RoomStateImpl extends _RoomState {
             const DeepCollectionEquality().equals(other._issues, _issues) &&
             const DeepCollectionEquality()
                 .equals(other._departments, _departments) &&
+            const DeepCollectionEquality()
+                .equals(other._defectStatus, _defectStatus) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.tabIndex, tabIndex) ||
                 other.tabIndex == tabIndex));
@@ -256,6 +282,7 @@ class _$RoomStateImpl extends _RoomState {
       room,
       const DeepCollectionEquality().hash(_issues),
       const DeepCollectionEquality().hash(_departments),
+      const DeepCollectionEquality().hash(_defectStatus),
       user,
       tabIndex);
 
@@ -272,6 +299,7 @@ abstract class _RoomState extends RoomState {
       final Room room,
       final Map<int, List<IssuesModel>> issues,
       final List<Department> departments,
+      final List<DefectStatus> defectStatus,
       final User user,
       final int tabIndex}) = _$RoomStateImpl;
   const _RoomState._() : super._();
@@ -284,6 +312,8 @@ abstract class _RoomState extends RoomState {
   Map<int, List<IssuesModel>> get issues;
   @override
   List<Department> get departments;
+  @override
+  List<DefectStatus> get defectStatus;
   @override
   User get user;
   @override

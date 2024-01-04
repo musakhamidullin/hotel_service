@@ -1,5 +1,6 @@
 import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
+import '../models/defect_status.dart';
 import '../models/department_info.dart';
 import '../models/issue_report.dart';
 import '../models/reports.dart';
@@ -23,6 +24,18 @@ final class RoomRep {
         .toList();
 
     return deparments;
+  }
+
+  Future<List<DefectStatus>> fetchDefectStatus(int ownerId) async {
+    final result = await DioClient()
+        .post(path: 'HouseKeeping/DefectStatusesGet?ownerid=$ownerId');
+    if (result.data.isEmpty) throw Exception();
+
+    final statuses = (result.data as List<dynamic>)
+        .map((e) => DefectStatus.fromJson(e))
+        .toList();
+
+    return statuses;
   }
 
   Future<void> sendReport(IssueReport report) async {

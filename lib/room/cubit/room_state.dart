@@ -2,8 +2,6 @@ part of 'room_cubit.dart';
 
 enum FetchStatus { init, loading, refreshing, success, failure }
 
-enum DefectStatus { created, done, assigned }
-
 @freezed
 class RoomState with _$RoomState {
   const factory RoomState({
@@ -12,6 +10,7 @@ class RoomState with _$RoomState {
     //todo int перевести в enum
     @Default(<int, List<IssuesModel>>{}) Map<int, List<IssuesModel>> issues,
     @Default(<Department>[]) List<Department> departments,
+    @Default(<DefectStatus>[]) List<DefectStatus> defectStatus,
     @Default(
       User(
         userId: '',
