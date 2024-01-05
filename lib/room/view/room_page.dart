@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../auth/data/model/user.dart';
 import '../../common/widgets/failure_widget.dart';
 
+import '../../common/widgets/modals.dart';
 import '../../home/data/models/room.dart';
 import '../../voice_messanger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
@@ -85,7 +86,8 @@ class _RoomPageState extends State<RoomPage>
       child: BlocProvider(
         create: (_) => _roomCubit..fetchRoom(widget.room.id),
         child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
           floatingActionButton: BlocBuilder<RoomCubit, RoomState>(
             builder: (context, state) {
               if (state.fetchStatus != FetchStatus.success) {
@@ -99,7 +101,19 @@ class _RoomPageState extends State<RoomPage>
             title: Text('Номер ${widget.room.roomNumber}'),
             centerTitle: true,
           ),
-          body: BlocBuilder<RoomCubit, RoomState>(
+          body: BlocConsumer<RoomCubit, RoomState>(
+            listener: (_, state) {
+              if (state.sendError()) {
+                Modals.showInformationDialog(
+                    _,
+                    'Заявка не отправилась!\nПопробуйте еще раз.',
+                    Icons.error_outline_rounded);
+              }
+              if (state.sendSucces()) {
+                Modals.showInformationDialog(
+                    _, 'Заявка успешна отправлена!', Icons.check);
+              }
+            },
             builder: (context, state) {
               const loadingView = Center(child: CircularProgressIndicator());
               final mainView = Padding(
@@ -146,7 +160,10 @@ class _RoomPageState extends State<RoomPage>
                 return loadingView;
               }
 
-              if (state.success() || state.refreshing()) {
+              if (state.success() ||
+                  state.refreshing() ||
+                  state.sendError() ||
+                  state.sendSucces()) {
                 return Stack(
                   children: [
                     mainView,

@@ -1,6 +1,14 @@
 part of 'room_cubit.dart';
 
-enum FetchStatus { init, loading, refreshing, success, failure }
+enum FetchStatus {
+  init,
+  loading,
+  refreshing,
+  success,
+  failure,
+  sendError,
+  sendSuccess
+}
 
 @freezed
 class RoomState with _$RoomState {
@@ -29,4 +37,8 @@ class RoomState with _$RoomState {
   bool success() => fetchStatus == FetchStatus.success;
 
   bool failure() => fetchStatus == FetchStatus.failure;
+
+  bool sendError() => fetchStatus == FetchStatus.sendError;
+
+  bool sendSucces() => fetchStatus == FetchStatus.sendSuccess;
 }

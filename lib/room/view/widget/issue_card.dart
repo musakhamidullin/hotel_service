@@ -228,11 +228,12 @@ class _IssueCardState extends State<IssueCard> {
                   if (!_readOnlyInput)
                     Expanded(
                       child: FilledButton.tonal(
-                        onPressed: () =>
-                            context.read<RoomCubit>().onSendPressed(
+                        onPressed: widget.issue.isMutable
+                            ? () => context.read<RoomCubit>().onSendPressed(
                                   widget.issue,
                                   tabController: TabControllerScope.of(context),
-                                ),
+                                )
+                            : null,
                         child: const Text('Отправить'),
                       ),
                     ),

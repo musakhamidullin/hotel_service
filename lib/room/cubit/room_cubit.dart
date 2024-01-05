@@ -37,7 +37,8 @@ class RoomCubit extends Cubit<RoomState> {
       final defectStatuses = await _fetchDefectStatus();
 
       issues[0] = room.defects
-          .map((d) => IssuesModel.filledByDefect(d, departments, defectStatuses))
+          .map(
+              (d) => IssuesModel.filledByDefect(d, departments, defectStatuses))
           .toList();
 
       emit(
@@ -199,14 +200,13 @@ class RoomCubit extends Cubit<RoomState> {
       updatedIssues[1]!.removeWhere((i) => i == issuesModel);
 
       emit(state.copyWith(
-          fetchStatus: FetchStatus.success, issues: updatedIssues));
-
+          fetchStatus: FetchStatus.sendSuccess, issues: updatedIssues));
+          
       if (tabController?.index != 0) tabController?.animateTo(0);
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
-    } catch (e) {
-      //todo failure
-      // emit(state.copyWith(fetchStatus: FetchStatus.failure));
+    } catch (_) {
+      emit(state.copyWith(fetchStatus: FetchStatus.sendError));
     }
   }
 

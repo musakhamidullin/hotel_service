@@ -81,7 +81,7 @@ abstract class Modals {
             ),
             contentPadding: const EdgeInsets.all(24),
             title: Center(
-              child: Text(text),
+              child: Text(text, textAlign: TextAlign.center,),
             ),
             children: [
               Icon(
