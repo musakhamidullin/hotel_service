@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
 
@@ -20,7 +21,6 @@ class DepartmentInfo with _$DepartmentInfo {
       _$DepartmentInfoFromJson(json);
 }
 
-
 @freezed
 class Department with _$Department {
   @JsonSerializable(fieldRename: FieldRename.pascal)
@@ -30,6 +30,15 @@ class Department with _$Department {
     @Default('') String shortName,
   }) = _Department;
 
+  const Department._();
+
+  factory Department.defaultDepartment() =>
+      const Department(fullName: 'Не выбрано');
+
   factory Department.fromJson(Map<String, dynamic> json) =>
       _$DepartmentFromJson(json);
+
+  static Department matchById(int id, List<Department> departments) =>
+      departments.singleWhere((e) => e.id == id,
+          orElse: () => Department.defaultDepartment());
 }

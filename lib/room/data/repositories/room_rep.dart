@@ -19,11 +19,11 @@ final class RoomRep {
         .post(path: 'HouseKeeping/DepartmentListGet?ownerid=$ownerId');
     if (result.data.isEmpty) throw Exception();
 
-    final deparments = (result.data as List<dynamic>)
+    final departments = (result.data as List<dynamic>)
         .map((e) => Department.fromJson(e))
         .toList();
 
-    return deparments;
+    return departments;
   }
 
   Future<List<DefectStatus>> fetchDefectStatus(int ownerId) async {

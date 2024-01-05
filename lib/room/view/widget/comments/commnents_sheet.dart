@@ -44,13 +44,10 @@ class _CommentsSheetState extends State<CommentsSheet> {
                 )
               ],
             ),
-            Flexible(
-              child: ListView.builder(
-                  controller: scrollController,
-                  shrinkWrap: true,
-                  itemBuilder: (_, i) => Text(i.toString()),
-                  itemCount: 100),
-            ),
+            const Flexible(
+                child: Center(
+              child: Text('Здесь будут комментарии'),
+            )),
             Row(
               children: [
                 Flexible(

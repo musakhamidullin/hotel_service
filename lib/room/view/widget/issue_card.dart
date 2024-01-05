@@ -13,6 +13,7 @@ import '../../cubit/room_cubit.dart';
 
 import '../../data/models/issues.dart';
 import '../room_page.dart';
+import '../status_card.dart';
 import 'comments/commnents_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
@@ -23,11 +24,11 @@ class IssueCard extends StatefulWidget {
   const IssueCard({
     super.key,
     required this.index,
-    required this.issuesState,
+    required this.issue,
   });
 
   final int index;
-  final IssuesModel issuesState;
+  final IssuesModel issue;
 
   @override
   State<IssueCard> createState() => _IssueCardState();
@@ -48,8 +49,7 @@ class _IssueCardState extends State<IssueCard> {
         children: [
           SlidableAction(
             icon: Icons.delete,
-            onPressed: (_) =>
-                roomCubit.onDeleteIssuePressed(widget.issuesState),
+            onPressed: (_) => roomCubit.onDeleteIssuePressed(widget.issue),
             borderRadius: BorderRadius.circular(10),
             backgroundColor: Colors.red,
           )
@@ -72,17 +72,18 @@ class _IssueCardState extends State<IssueCard> {
               Row(
                 children: [
                   Expanded(
-                    // TODO нужно получать номер заявки
                     child: Text(
-                      widget.issuesState
-                          .dateFormatted(localizations.languageCode),
+                      widget.issue.dateFormatted(localizations.languageCode),
                     ),
                   ),
-                  const Text('№1337228')
+                  Text(
+                    widget.issue.personName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
               const SizedBox(
-                height: 8,
+                height: 12,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +108,7 @@ class _IssueCardState extends State<IssueCard> {
                                         departments: cubit.state.departments,
                                         onDepartmentChanged: (department) =>
                                             cubit.onIssueModelChanged(
-                                                widget.issuesState.copyWith(
+                                                widget.issue.copyWith(
                                                     department: department))),
                                   ),
                                   Padding(
@@ -128,9 +129,9 @@ class _IssueCardState extends State<IssueCard> {
                         children: [
                           Flexible(
                             child: Text(
-                              widget.issuesState.department.fullName.isEmpty
+                              widget.issue.department.fullName.isEmpty
                                   ? 'Выбрать отдел'
-                                  : widget.issuesState.department.fullName,
+                                  : widget.issue.department.fullName,
                               style: theme.textTheme.bodyMedium
                                   ?.copyWith(color: theme.primaryColor),
                               overflow: TextOverflow.ellipsis,
@@ -147,21 +148,15 @@ class _IssueCardState extends State<IssueCard> {
                       ),
                     ),
                   ),
-
-                  // TODO нужно получить статус заявки
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          color: Colors.green.withOpacity(0.5)),
-                      child: const Text('Создано')),
+                  StatusCard(
+                    status: widget.issue.defectStatus,
+                  ),
                 ],
               ),
               const SizedBox(
                 height: 8,
               ),
-              if (widget.issuesState.images.isNotEmpty)
+              if (widget.issue.images.isNotEmpty)
                 Column(
                   children: [
                     const SizedBox(
@@ -169,10 +164,10 @@ class _IssueCardState extends State<IssueCard> {
                     ),
                     MiniImagesIssueCard(
                       index: widget.index,
-                      images: widget.issuesState.images,
+                      images: widget.issue.images,
                       onChanged: (List<String> items) {
                         context.read<RoomCubit>().onIssueModelChanged(
-                            widget.issuesState.copyWith(images: items));
+                            widget.issue.copyWith(images: items));
                       },
                     ),
                     const SizedBox(
@@ -181,39 +176,38 @@ class _IssueCardState extends State<IssueCard> {
                   ],
                 ),
               Column(
-                children: widget.issuesState.audios
+                children: widget.issue.audios
                     .map(
                       (e) => MessageAudioPlayer(
                         key: ObjectKey(e),
                         voiceValue: VoiceValue(base64: e),
-                        index: widget.issuesState.audios.indexOf(e),
+                        index: widget.issue.audios.indexOf(e),
                         playerKey:
-                            '${widget.index}${widget.issuesState.audios.indexOf(e)}',
+                            '${widget.index}${widget.issue.audios.indexOf(e)}',
                         onRemove: (value) {
                           context.read<RoomCubit>().onAudioRemoved(
-                              index: value, model: widget.issuesState);
+                              index: value, model: widget.issue);
                         },
                       ),
                     )
                     .toList(),
               ),
-              if (widget.issuesState.images.isNotEmpty)
-                const SizedBox(height: 8),
+              if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
               Row(
                 children: [
                   Flexible(
                     child: IssueTextField(
                       readOnly: _readOnlyInput,
                       textEditingController: _controller
-                        ..text = widget.issuesState.comment,
+                        ..text = widget.issue.comment,
                       onTextChanged: (String text) => context
                           .read<RoomCubit>()
                           .onIssueModelChanged(
-                              widget.issuesState.copyWith(comment: text)),
+                              widget.issue.copyWith(comment: text)),
                       onClearPressed: () => context
                           .read<RoomCubit>()
                           .onIssueModelChanged(
-                              widget.issuesState.copyWith(comment: '')),
+                              widget.issue.copyWith(comment: '')),
                     ),
                   ),
                   const SizedBox(
@@ -236,7 +230,7 @@ class _IssueCardState extends State<IssueCard> {
                       child: FilledButton.tonal(
                         onPressed: () =>
                             context.read<RoomCubit>().onSendPressed(
-                                  widget.issuesState,
+                                  widget.issue,
                                   tabController: TabControllerScope.of(context),
                                 ),
                         child: const Text('Отправить'),
@@ -259,16 +253,16 @@ class _IssueCardState extends State<IssueCard> {
                         GalleryWidget(
                             onSavePressed: (List<String> items) =>
                                 cubit.onIssueModelChanged(
-                                    widget.issuesState.copyWith(images: items)),
+                                    widget.issue.copyWith(images: items)),
                             images: images,
                             onDeletePressed: (String item) =>
                                 cubit.onIssueModelChanged(
-                                  widget.issuesState.copyWith(
-                                      images: [...widget.issuesState.images]
+                                  widget.issue.copyWith(
+                                      images: [...widget.issue.images]
                                         ..removeWhere((e) => e == item)),
                                 ),
                             onClearPressed: () => cubit.onIssueModelChanged(
-                                widget.issuesState.copyWith(images: []))),
+                                widget.issue.copyWith(images: []))),
                       );
                     },
                     icon: const Icon(Icons.attach_file_rounded),
@@ -283,31 +277,31 @@ class _IssueCardState extends State<IssueCard> {
                     onStop: (value) {
                       context.read<RoomCubit>().onAudioRecorded(
                             base64: value,
-                            model: widget.issuesState,
+                            model: widget.issue,
                           );
                     },
                   ),
                   const SizedBox(
                     width: 12,
                   ),
-                  if (widget.issuesState.isMutable)
+                  if (widget.issue.isMutable)
                     IconButton(
                       onPressed: () async {
                         final cubit = context.read<RoomCubit>();
 
-                        if (widget.issuesState.isExistsSomething()) {
+                        if (widget.issue.isExistsSomething()) {
                           final isConfirm = await Modals.showConfirmationDialog(
                                   context,
                                   'Вы действительно желаете удалить заявку?') ??
                               false;
 
                           if (isConfirm) {
-                            cubit.onDeleteIssuePressed(widget.issuesState);
+                            cubit.onDeleteIssuePressed(widget.issue);
                             return;
                           }
                         }
 
-                        cubit.onDeleteIssuePressed(widget.issuesState);
+                        cubit.onDeleteIssuePressed(widget.issue);
                       },
                       icon: const Icon(Icons.delete),
                     ),

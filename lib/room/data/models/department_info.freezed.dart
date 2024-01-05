@@ -267,9 +267,9 @@ class __$$DepartmentImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.pascal)
-class _$DepartmentImpl implements _Department {
-  const _$DepartmentImpl(
-      {this.id = 0, this.fullName = '', this.shortName = ''});
+class _$DepartmentImpl extends _Department {
+  const _$DepartmentImpl({this.id = 0, this.fullName = '', this.shortName = ''})
+      : super._();
 
   factory _$DepartmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$DepartmentImplFromJson(json);
@@ -283,27 +283,6 @@ class _$DepartmentImpl implements _Department {
   @override
   @JsonKey()
   final String shortName;
-
-  @override
-  String toString() {
-    return 'Department(id: $id, fullName: $fullName, shortName: $shortName)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DepartmentImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.shortName, shortName) ||
-                other.shortName == shortName));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, fullName, shortName);
 
   @JsonKey(ignore: true)
   @override
@@ -319,11 +298,12 @@ class _$DepartmentImpl implements _Department {
   }
 }
 
-abstract class _Department implements Department {
+abstract class _Department extends Department {
   const factory _Department(
       {final int id,
       final String fullName,
       final String shortName}) = _$DepartmentImpl;
+  const _Department._() : super._();
 
   factory _Department.fromJson(Map<String, dynamic> json) =
       _$DepartmentImpl.fromJson;

@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../auth/data/model/user.dart';
-import '../../../room/data/models/defect.dart';
 import '../../../room/data/models/issues.dart';
 import '../data/repository/my_defects_rep.dart';
 
@@ -33,7 +32,8 @@ class MyDefectsCubit extends Cubit<MyDefectsState> {
 
       _currPage = 1;
 
-      final result = await myDefectsRep.fetchMyDefectList(_toPaginatingData());
+      final result = await myDefectsRep.fetchMyDefectList(
+          _toPaginatingData(), user.personInfo.ownerId);
       emit(
         state.copyWith(
           fetchStatus: FetchStatus.success,
@@ -51,7 +51,8 @@ class MyDefectsCubit extends Cubit<MyDefectsState> {
 
       _currPage++;
 
-      final result = await myDefectsRep.fetchMyDefectList(_toPaginatingData());
+      final result = await myDefectsRep.fetchMyDefectList(
+          _toPaginatingData(), user.personInfo.ownerId);
 
       emit(
         state.copyWith(

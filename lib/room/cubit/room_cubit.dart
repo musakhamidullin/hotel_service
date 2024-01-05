@@ -33,51 +33,49 @@ class RoomCubit extends Cubit<RoomState> {
 
       final issues = {...state.issues};
 
-      issues[0] =
-          room.defects.map((d) => IssuesModel.filledByDefect(d)).toList();
+      final departments = await _fetchDepartment();
+      final defectStatuses = await _fetchDefectStatus();
+
+      issues[0] = room.defects
+          .map((d) => IssuesModel.filledByDefect(d, departments, defectStatuses))
+          .toList();
 
       emit(
         state.copyWith(
+          departments: departments,
           fetchStatus: FetchStatus.success,
           issues: issues,
           room: room,
         ),
       );
-
-      await fetchDepartment();
-      await fetchDefectStatus();
     } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
-  Future<void> fetchDepartment() async {
+  Future<List<Department>> _fetchDepartment() async {
     try {
       final ownerId = state.user.personInfo.ownerId;
 
       final departments = await _roomRep.fetchDepartment(ownerId);
 
-      emit(
-        state.copyWith(
-          departments: [
-            const Department(fullName: 'Не выбрано'),
-            ...departments,
-          ],
-        ),
-      );
-    } catch (_) {}
+      return [
+        Department.defaultDepartment(),
+        ...departments,
+      ];
+    } catch (_) {
+      return [];
+    }
   }
 
-  Future<void> fetchDefectStatus() async {
+  Future<List<DefectStatus>> _fetchDefectStatus() async {
     try {
       final ownerId = state.user.personInfo.ownerId;
 
-      final defectStatuses = await _roomRep.fetchDefectStatus(ownerId);
-
-      emit(
-        state.copyWith(defectStatus: defectStatuses),
-      );
-    } catch (_) {}
+      return await _roomRep.fetchDefectStatus(ownerId);
+    } catch (_) {
+      return [];
+    }
   }
 
   void onIssueModelChanged(IssuesModel issuesState) {
@@ -161,7 +159,7 @@ class RoomCubit extends Cubit<RoomState> {
           ...state.issues,
           ...{
             1: [
-              IssuesModel.newIssue(),
+              IssuesModel.newIssue(state.user),
               ...?state.issues[1],
             ]
           }

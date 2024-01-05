@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'department_info.dart';
 import 'issue_report.dart';
 
 part 'defect.freezed.dart';
@@ -24,4 +25,8 @@ class Defect with _$Defect {
   }) = _Defect;
 
   factory Defect.fromJson(Map<String, dynamic> json) => _$DefectFromJson(json);
+
+  static Department matchById(int id, List<Department> departments) =>
+      departments.singleWhere((e) => e.id == id,
+          orElse: () => Department.defaultDepartment());
 }

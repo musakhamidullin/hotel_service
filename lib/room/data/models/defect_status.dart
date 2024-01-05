@@ -4,6 +4,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../cubit/room_cubit.dart';
+
 part 'defect_status.freezed.dart';
 part 'defect_status.g.dart';
 
@@ -28,4 +30,11 @@ class DefectStatus with _$DefectStatus {
 
   factory DefectStatus.fromJson(Map<String, dynamic> json) =>
       _$DefectStatusFromJson(json);
+
+  factory DefectStatus.defaultStatus() =>
+      const DefectStatus(name: 'Не определен');
+
+  static DefectStatus matchById(int id, List<DefectStatus> statuses) =>
+      statuses.singleWhere((e) => e.id == id,
+          orElse: () => DefectStatus.defaultStatus());
 }
