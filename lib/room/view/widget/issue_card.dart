@@ -192,6 +192,18 @@ class _IssueCardState extends State<IssueCard> {
                     .toList(),
               ),
               if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
+              if (widget.issue.lastComment.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Последний комментарий:',
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: Colors.grey),
+                    ),
+                    Text(widget.issue.lastComment),
+                  ],
+                ),
               Row(
                 children: [
                   Flexible(

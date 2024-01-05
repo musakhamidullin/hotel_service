@@ -23,6 +23,7 @@ mixin _$IssuesModel {
   int get id => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
   List<String> get audios => throw _privateConstructorUsedError;
+  String get lastComment => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
   String get date => throw _privateConstructorUsedError;
@@ -47,6 +48,7 @@ abstract class $IssuesModelCopyWith<$Res> {
       {int id,
       List<String> images,
       List<String> audios,
+      String lastComment,
       String comment,
       @DateSerializer() String date,
       bool isMutable,
@@ -74,6 +76,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
     Object? id = null,
     Object? images = null,
     Object? audios = null,
+    Object? lastComment = null,
     Object? comment = null,
     Object? date = null,
     Object? isMutable = null,
@@ -94,6 +97,10 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
           ? _value.audios
           : audios // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      lastComment: null == lastComment
+          ? _value.lastComment
+          : lastComment // ignore: cast_nullable_to_non_nullable
+              as String,
       comment: null == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
@@ -150,6 +157,7 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
       {int id,
       List<String> images,
       List<String> audios,
+      String lastComment,
       String comment,
       @DateSerializer() String date,
       bool isMutable,
@@ -177,6 +185,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? images = null,
     Object? audios = null,
+    Object? lastComment = null,
     Object? comment = null,
     Object? date = null,
     Object? isMutable = null,
@@ -197,6 +206,10 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
           ? _value._audios
           : audios // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      lastComment: null == lastComment
+          ? _value.lastComment
+          : lastComment // ignore: cast_nullable_to_non_nullable
+              as String,
       comment: null == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
@@ -232,6 +245,7 @@ class _$IssuesModelImpl extends _IssuesModel {
       {this.id = 0,
       final List<String> images = const <String>[],
       final List<String> audios = const <String>[],
+      this.lastComment = '',
       this.comment = '',
       @DateSerializer() this.date = '',
       this.isMutable = true,
@@ -266,6 +280,9 @@ class _$IssuesModelImpl extends _IssuesModel {
     return EqualUnmodifiableListView(_audios);
   }
 
+  @override
+  @JsonKey()
+  final String lastComment;
   @override
   @JsonKey()
   final String comment;
@@ -305,6 +322,7 @@ abstract class _IssuesModel extends IssuesModel {
       {final int id,
       final List<String> images,
       final List<String> audios,
+      final String lastComment,
       final String comment,
       @DateSerializer() final String date,
       final bool isMutable,
@@ -322,6 +340,8 @@ abstract class _IssuesModel extends IssuesModel {
   List<String> get images;
   @override
   List<String> get audios;
+  @override
+  String get lastComment;
   @override
   String get comment;
   @override
