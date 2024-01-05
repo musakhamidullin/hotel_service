@@ -13,7 +13,7 @@ import '../../cubit/room_cubit.dart';
 
 import '../../data/models/issues.dart';
 import '../room_page.dart';
-import '../status_card.dart';
+import 'status_card.dart';
 import 'comments/commnents_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';

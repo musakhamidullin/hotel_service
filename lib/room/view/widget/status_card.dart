@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/models/defect_status.dart';
+import '../../data/models/defect_status.dart';
 
 class StatusCard extends StatelessWidget {
   const StatusCard({super.key, required this.status});
