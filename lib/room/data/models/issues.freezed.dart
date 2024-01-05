@@ -20,6 +20,7 @@ IssuesModel _$IssuesModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$IssuesModel {
+  int get id => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
   List<String> get audios => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
@@ -43,7 +44,8 @@ abstract class $IssuesModelCopyWith<$Res> {
       _$IssuesModelCopyWithImpl<$Res, IssuesModel>;
   @useResult
   $Res call(
-      {List<String> images,
+      {int id,
+      List<String> images,
       List<String> audios,
       String comment,
       @DateSerializer() String date,
@@ -69,6 +71,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? images = null,
     Object? audios = null,
     Object? comment = null,
@@ -79,6 +82,10 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
     Object? defectStatus = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
@@ -140,7 +147,8 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<String> images,
+      {int id,
+      List<String> images,
       List<String> audios,
       String comment,
       @DateSerializer() String date,
@@ -166,6 +174,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? images = null,
     Object? audios = null,
     Object? comment = null,
@@ -176,6 +185,10 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
     Object? defectStatus = null,
   }) {
     return _then(_$IssuesModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
@@ -216,7 +229,8 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$IssuesModelImpl extends _IssuesModel {
   const _$IssuesModelImpl(
-      {final List<String> images = const <String>[],
+      {this.id = 0,
+      final List<String> images = const <String>[],
       final List<String> audios = const <String>[],
       this.comment = '',
       @DateSerializer() this.date = '',
@@ -231,6 +245,9 @@ class _$IssuesModelImpl extends _IssuesModel {
   factory _$IssuesModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$IssuesModelImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   final List<String> _images;
   @override
   @JsonKey()
@@ -285,7 +302,8 @@ class _$IssuesModelImpl extends _IssuesModel {
 
 abstract class _IssuesModel extends IssuesModel {
   const factory _IssuesModel(
-      {final List<String> images,
+      {final int id,
+      final List<String> images,
       final List<String> audios,
       final String comment,
       @DateSerializer() final String date,
@@ -298,6 +316,8 @@ abstract class _IssuesModel extends IssuesModel {
   factory _IssuesModel.fromJson(Map<String, dynamic> json) =
       _$IssuesModelImpl.fromJson;
 
+  @override
+  int get id;
   @override
   List<String> get images;
   @override

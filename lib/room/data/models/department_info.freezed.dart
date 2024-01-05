@@ -284,6 +284,27 @@ class _$DepartmentImpl extends _Department {
   @JsonKey()
   final String shortName;
 
+  @override
+  String toString() {
+    return 'Department(id: $id, fullName: $fullName, shortName: $shortName)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DepartmentImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.fullName, fullName) ||
+                other.fullName == fullName) &&
+            (identical(other.shortName, shortName) ||
+                other.shortName == shortName));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, fullName, shortName);
+
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

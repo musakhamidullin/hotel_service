@@ -8,6 +8,7 @@ part of 'issues.dart';
 
 _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
     _$IssuesModelImpl(
+      id: json['id'] as int? ?? 0,
       images: (json['images'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -32,6 +33,7 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$IssuesModelImplToJson(_$IssuesModelImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'images': instance.images,
       'audios': instance.audios,
       'comment': instance.comment,

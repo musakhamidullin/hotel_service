@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'package:intl/intl.dart';
-
 import '../../../common/widgets/modals.dart';
 
 import '../../../voice_messanger/data/models/voice_value.dart';
@@ -12,7 +10,6 @@ import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 
 import '../../data/models/issues.dart';
-import '../room_page.dart';
 import 'status_card.dart';
 import 'comments/commnents_sheet.dart';
 import 'gallery/gallery_widget.dart';
@@ -25,10 +22,12 @@ class IssueCard extends StatefulWidget {
     super.key,
     required this.index,
     required this.issue,
+    required this.onSendPressed,
   });
 
   final int index;
   final IssuesModel issue;
+  final VoidCallback onSendPressed;
 
   @override
   State<IssueCard> createState() => _IssueCardState();
@@ -228,12 +227,7 @@ class _IssueCardState extends State<IssueCard> {
                   if (!_readOnlyInput)
                     Expanded(
                       child: FilledButton.tonal(
-                        onPressed: widget.issue.isMutable
-                            ? () => context.read<RoomCubit>().onSendPressed(
-                                  widget.issue,
-                                  tabController: TabControllerScope.of(context),
-                                )
-                            : null,
+                        onPressed: widget.onSendPressed,
                         child: const Text('Отправить'),
                       ),
                     ),

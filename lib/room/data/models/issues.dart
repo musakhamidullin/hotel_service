@@ -14,7 +14,8 @@ part 'issues.g.dart';
 @freezed
 class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel(
-      {@Default(<String>[]) List<String> images,
+      {@Default(0) int id,
+      @Default(<String>[]) List<String> images,
       @Default(<String>[]) List<String> audios,
       @Default('') String comment,
       @Default('') @DateSerializer() String date,
@@ -49,6 +50,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
       }
     }
     return IssuesModel(
+      id: defect.id,
       personName: defect.personName,
       department: Department.matchById(defect.departmentId, departments),
       defectStatus: DefectStatus.matchById(defect.statusId, defectStatuses),
