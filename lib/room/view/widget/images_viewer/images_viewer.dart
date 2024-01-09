@@ -12,12 +12,12 @@ class ImagesViewer extends StatefulWidget {
     super.key,
     required this.images,
     required this.initImageIndex,
-    required this.onChanged,
+    this.onChanged,
   });
 
   final List<String> images;
   final int initImageIndex;
-  final void Function(List<String>) onChanged;
+  final void Function(List<String>)? onChanged;
 
   @override
   State<ImagesViewer> createState() => _ImagesViewerState();
@@ -40,28 +40,29 @@ class _ImagesViewerState extends State<ImagesViewer> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         actions: [
-          IconButton(
-            onPressed: () {
-              Modals.showBottomSheet(
-                context,
-                MenuActions(
-                  onRemoved: () {
-                    _currImage = indexAfterDeletedOperation;
-                    setState(() {
-                      _images.removeAt(_currImage);
-                    });
-                    if (_images.length > 1) _controller.nextPage();
+          if (widget.onChanged != null)
+            IconButton(
+              onPressed: () {
+                Modals.showBottomSheet(
+                  context,
+                  MenuActions(
+                    onRemoved: () {
+                      _currImage = indexAfterDeletedOperation;
+                      setState(() {
+                        _images.removeAt(_currImage);
+                      });
+                      if (_images.length > 1) _controller.nextPage();
 
-                    widget.onChanged(_images);
+                      widget.onChanged!(_images);
 
-                    if (_images.isEmpty) Navigator.pop(context);
-                  },
-                ),
-                showDragHandle: true,
-              );
-            },
-            icon: const Icon(Icons.more_vert),
-          )
+                      if (_images.isEmpty) Navigator.pop(context);
+                    },
+                  ),
+                  showDragHandle: true,
+                );
+              },
+              icon: const Icon(Icons.more_vert),
+            )
         ],
       ),
       body: Column(

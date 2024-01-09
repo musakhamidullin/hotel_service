@@ -7,18 +7,18 @@ import '../../../../room/data/models/issues.dart';
 class MyDefectsRep {
   Future<List<IssuesModel>> fetchMyDefectList(
       Map<String, dynamic> data, int ownerId) async {
-    final result = await DioClient().post<List<dynamic>>(
+    final result = await DioClient().post<List<dynamic>?>(
         path: 'HouseKeeping/GetMyCreateDefectsList', data: data);
 
     final departments = await _fetchDepartment(ownerId);
     final defectStatuses = await _fetchDefectStatus(ownerId);
 
     return result.data
-        .map((e) => IssuesModel.filledByDefect(
+        ?.map((e) => IssuesModel.filledByDefect(
             Defect.fromJson(e as Map<String, dynamic>),
             departments,
             defectStatuses))
-        .toList();
+        .toList() ?? [];
   }
 
   Future<List<Department>> _fetchDepartment(int ownerId) async {

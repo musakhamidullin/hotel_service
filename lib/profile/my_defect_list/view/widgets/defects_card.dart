@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../room/data/models/issues.dart';
 import '../../../../room/view/widget/mini_images.dart';
@@ -18,57 +17,57 @@ class DefectsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final localizations = Localizations.localeOf(context);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  // TODO нужно получать номер заявки
-                  child: Text(
-                    '${issuesModel.dateFormatted(localizations.languageCode)}, №1337228',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            if (issuesModel.images.isNotEmpty)
-              Column(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  MiniImagesIssueCard(
-                    index: index,
-                    images: issuesModel.images,
-                    onChanged: (List<String> items) {},
-                  ),
-                  const SizedBox(
-                    height: 12,
+                  Expanded(
+                    child: Text(
+                        issuesModel.dateFormatted(localizations.languageCode)),
                   ),
                 ],
               ),
-            Column(
-              children: issuesModel.audios
-                  .map(
-                    (e) => MessageAudioPlayer(
-                      key: ObjectKey(e),
-                      voiceValue: VoiceValue(base64: e),
-                      index: issuesModel.audios.indexOf(e),
-                      playerKey: '$index${issuesModel.audios.indexOf(e)}',
-                      onRemove: (value) {},
+              const SizedBox(
+                height: 8,
+              ),
+              if (issuesModel.images.isNotEmpty)
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 12,
                     ),
-                  )
-                  .toList(),
-            ),
-          ],
+                    MiniImagesIssueCard(
+                      index: index,
+                      images: issuesModel.images,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                  ],
+                ),
+              Column(
+                children: issuesModel.audios
+                    .map(
+                      (e) => MessageAudioPlayer(
+                        key: ObjectKey(e),
+                        voiceValue: VoiceValue(base64: e),
+                        index: issuesModel.audios.indexOf(e),
+                        playerKey: '$index${issuesModel.audios.indexOf(e)}',
+                        onRemove: (value) {},
+                      ),
+                    )
+                    .toList(),
+              ),
+              if (issuesModel.lastComment.isNotEmpty) Text(issuesModel.lastComment),
+            ],
+          ),
         ),
       ),
     );

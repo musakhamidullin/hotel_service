@@ -10,12 +10,12 @@ class MiniImagesIssueCard extends StatelessWidget {
     super.key,
     required this.index,
     required this.images,
-    required this.onChanged,
+    this.onChanged,
   });
 
   final int index;
   final List<String> images;
-  final void Function(List<String> images) onChanged;
+  final void Function(List<String> images)? onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -30,10 +30,14 @@ class ImagesWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Прикрепленные фото',
-                  style: theme.textTheme.titleLarge,
+                Expanded(
+                  child: Text(
+                    'Прикрепленные фото',
+                    style: theme.textTheme.titleLarge,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
+                const SizedBox(width: 8,),
                 FilledButton.tonal(
                   onPressed: onClearPressed,
                   child: const Text('Очистить'),

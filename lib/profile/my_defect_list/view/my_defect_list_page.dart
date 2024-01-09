@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../auth/data/repositories/auth_rep.dart';
 import '../../../common/widgets/failure_widget.dart';
-import '../../../room/view/widget/issue_card.dart';
 import '../cubit/my_defects_cubit.dart';
 import '../data/repository/my_defects_rep.dart';
 import 'widgets/defects_card.dart';
@@ -48,6 +47,12 @@ class _MyDefectListPageState extends State<MyDefectListPage> {
                 child: CircularProgressIndicator(),
               );
             }
+
+            if (state.myDefects.isEmpty) {
+              return const Center(
+                child: Text('Список пуст'),
+              );
+            }
             return NotificationListener<ScrollNotification>(
               onNotification: (value) {
                 if (value.metrics.pixels >= value.metrics.maxScrollExtent &&
@@ -55,6 +60,7 @@ class _MyDefectListPageState extends State<MyDefectListPage> {
                 return true;
               },
               child: ListView.builder(
+                padding: const EdgeInsets.all(12),
                 itemCount: state.myDefects.length,
                 itemBuilder: (_, index) {
                   return DefectsCard(

@@ -8,22 +8,16 @@ class MyScheduleRep {
     await Future.delayed(Duration(seconds: 2));
     return [
       ScheduleValue(
-        startDay: DateTime(2024, 1, 3, 8),
-        endDay: DateTime(2024, 1, 3, 20),
-        startBreak: DateTime(2024, 1, 3, 12),
-        endBreak: DateTime(2024, 1, 3, 13),
+        startDay: DateTime(2024, DateTime.now().month, DateTime.now().day, 8),
+        endDay: DateTime(2024, DateTime.now().month, DateTime.now().day, 20),
+        startBreak: DateTime(2024, DateTime.now().month, DateTime.now().day, 12),
+        endBreak: DateTime(2024, DateTime.now().month, DateTime.now().day, 13),
       ),
       ScheduleValue(
-        startDay: DateTime(2024, 1, 4, 8),
-        endDay: DateTime(2024, 1, 4, 20),
-        startBreak: DateTime(2024, 1, 4, 12),
-        endBreak: DateTime(2024, 1, 4, 13),
-      ),
-      ScheduleValue(
-        startDay: DateTime(2024, 1, 5, 8),
-        endDay: DateTime(2024, 1, 5, 20),
-        startBreak: DateTime(2024, 1, 5, 12),
-        endBreak: DateTime(2024, 1, 5, 13),
+        startDay: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 8),
+        endDay: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 20),
+        startBreak: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 12),
+        endBreak: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 13),
       ),
     ];
   }
