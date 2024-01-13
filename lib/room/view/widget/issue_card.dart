@@ -191,45 +191,45 @@ class _IssueCardState extends State<IssueCard> {
                     )
                     .toList(),
               ),
-              if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
-              if (widget.issue.lastComment.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Последний комментарий:',
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: Colors.grey),
-                    ),
-                    Text(widget.issue.lastComment),
-                  ],
-                ),
-              Row(
-                children: [
-                  Flexible(
-                    child: IssueTextField(
-                      readOnly: _readOnlyInput,
-                      textEditingController: _controller
-                        ..text = widget.issue.comment,
-                      onTextChanged: (String text) => context
-                          .read<RoomCubit>()
-                          .onIssueModelChanged(
-                              widget.issue.copyWith(comment: text)),
-                      onClearPressed: () => context
-                          .read<RoomCubit>()
-                          .onIssueModelChanged(
-                              widget.issue.copyWith(comment: '')),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  IconButton(
-                      onPressed: () => Modals.showBottomSheet(
-                          context, const CommentsSheet()),
-                      icon: const Icon(Icons.message))
-                ],
-              ),
+              // if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
+              // if (widget.issue.lastComment.isNotEmpty)
+              //   Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Последний комментарий:',
+              //         style: theme.textTheme.bodyMedium
+              //             ?.copyWith(color: Colors.grey),
+              //       ),
+              //       Text(widget.issue.lastComment),
+              //     ],
+              //   ),
+              // Row(
+              //   children: [
+              //     Flexible(
+              //       child: IssueTextField(
+              //         readOnly: _readOnlyInput,
+              //         textEditingController: _controller
+              //           ..text = widget.issue.comment,
+              //         onTextChanged: (String text) => context
+              //             .read<RoomCubit>()
+              //             .onIssueModelChanged(
+              //                 widget.issue.copyWith(comment: text)),
+              //         onClearPressed: () => context
+              //             .read<RoomCubit>()
+              //             .onIssueModelChanged(
+              //                 widget.issue.copyWith(comment: '')),
+              //       ),
+              //     ),
+              //     const SizedBox(
+              //       width: 8,
+              //     ),
+              //     IconButton(
+              //         onPressed: () => Modals.showBottomSheet(
+              //             context, const CommentsSheet()),
+              //         icon: const Icon(Icons.message))
+              //   ],
+              // ),
               const SizedBox(
                 height: 12,
               ),
@@ -274,20 +274,32 @@ class _IssueCardState extends State<IssueCard> {
                     },
                     icon: const Icon(Icons.attach_file_rounded),
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  RecordButton(
-                    onRecord: (value) {
-                      setState(() => _readOnlyInput = value);
-                    },
-                    onStop: (value) {
-                      context.read<RoomCubit>().onAudioRecorded(
-                            base64: value,
-                            model: widget.issue,
-                          );
-                    },
-                  ),
+                  // const SizedBox(
+                  //   width: 12,
+                  // ),
+                  // RecordButton(
+                  //   onRecord: (value) {
+                  //     setState(() => _readOnlyInput = value);
+                  //   },
+                  //   onStop: (value) {
+                  //     context.read<RoomCubit>().onAudioRecorded(
+                  //           base64: value,
+                  //           model: widget.issue,
+                  //         );
+                  //   },
+                  // ),
+                  IconButton(
+                      onPressed: () {
+                        final cubit = context.read<RoomCubit>();
+                        Modals.showBottomSheet(
+                            context,
+                            CommentsSheet(
+                              issue: widget.issue,
+                              index: widget.index,
+                              cubit: cubit,
+                            ));
+                      },
+                      icon: const Icon(Icons.message)),
                   const SizedBox(
                     width: 12,
                   ),
