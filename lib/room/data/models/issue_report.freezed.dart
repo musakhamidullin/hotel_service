@@ -191,7 +191,7 @@ class _$IssueReportImpl implements _IssueReport {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$IssueReportImpl &&
@@ -392,7 +392,7 @@ class _$ProblemMediaImpl implements _ProblemMedia {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProblemMediaImpl &&

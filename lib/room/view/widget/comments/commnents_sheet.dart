@@ -92,30 +92,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                     icon: const Icon(Icons.photo_camera_outlined)),
                 IconButton(
                     onPressed: () {
-                      final cubit = widget.cubit;
-                      final images = cubit
-                              .state
-                              .issues[cubit.state.tabIndex]?[widget.index]
-                              .images ??
-                          [];
-
-                      Modals.showBottomSheet(
-                        context,
-                        const CommentGallery()
-                        // GalleryWidget(
-                        //     onSavePressed: (List<String> items) =>
-                        //         cubit.onIssueModelChanged(
-                        //             widget.issue.copyWith(images: items)),
-                        //     images: images,
-                        //     onDeletePressed: (String item) =>
-                        //         cubit.onIssueModelChanged(
-                        //           widget.issue.copyWith(
-                        //               images: [...widget.issue.images]
-                        //                 ..removeWhere((e) => e == item)),
-                        //         ),
-                        //     onClearPressed: () => cubit.onIssueModelChanged(
-                        //         widget.issue.copyWith(images: []))),
-                      );
+                      Modals.showBottomSheet(context, const CommentGallery());
                     },
                     icon: const Icon(Icons.attach_file)),
                 IconButton(onPressed: () {}, icon: const Icon(Icons.mic))

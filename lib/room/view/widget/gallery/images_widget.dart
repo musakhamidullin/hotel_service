@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -6,18 +7,19 @@ import '../../../../common/widgets/cash_memory_image_provider.dart';
 import 'add_photos.dart';
 
 class ImagesWidget extends StatelessWidget {
-  const ImagesWidget({
-    super.key,
-    required this.images,
-    required this.onClearPressed,
-    required this.onDeleteItemPressed,
-    required this.scrollController,
-  });
+  const ImagesWidget(
+      {super.key,
+      required this.images,
+      required this.onClearPressed,
+      required this.onDeleteItemPressed,
+      required this.scrollController,
+      this.isFromFiles = false});
 
   final List<String> images;
   final VoidCallback onClearPressed;
   final void Function(int i) onDeleteItemPressed;
   final ScrollController scrollController;
+  final bool isFromFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,9 @@ class ImagesWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 8,),
+                const SizedBox(
+                  width: 8,
+                ),
                 FilledButton.tonal(
                   onPressed: onClearPressed,
                   child: const Text('Очистить'),
@@ -45,7 +49,7 @@ class ImagesWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (images.isEmpty) const AddPhotos(),
+          if (images.isEmpty) AddPhotos(isFromFiles: isFromFiles),
           if (images.isNotEmpty)
             Flexible(
               child: GridView.builder(
@@ -61,13 +65,18 @@ class ImagesWidget extends StatelessWidget {
                 itemBuilder: (_, i) => Stack(
                   children: [
                     Positioned.fill(
-                      child: Image(
-                        image: CacheMemoryImageProvider(
-                          tag: images[i],
-                          img: const Base64Decoder().convert(images[i]),
-                        ),
-                        fit: BoxFit.cover,
-                      ),
+                      child: isFromFiles
+                          ? Image.file(
+                              File(images[i]),
+                              fit: BoxFit.cover,
+                            )
+                          : Image(
+                              image: CacheMemoryImageProvider(
+                                tag: images[i],
+                                img: const Base64Decoder().convert(images[i]),
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned.fill(
                       top: 6,

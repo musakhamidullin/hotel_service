@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/data/repositories/auth_rep.dart';
 import '../home/data/repositories/catalog_rep.dart';
@@ -23,17 +21,6 @@ class _MyAppState extends State<MyApp> {
   final _authRep = AuthRep();
   final _catalogRep = CatalogRep();
   late final _authCubit = AuthCubit(authRep: _authRep);
-
-  @override
-  void initState() {
-    super.initState();
-    getPermissions();
-  }
-
-  Future<void> getPermissions() async {
-    await Permission.storage.request();
-    await Permission.manageExternalStorage.request();
-  }
 
   @override
   Widget build(BuildContext context) {
