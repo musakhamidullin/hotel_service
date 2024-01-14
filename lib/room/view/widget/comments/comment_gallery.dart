@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get_photos/get_photos.dart';
 
-import '../gallery/gallery_external_store.dart';
+import '../gallery/images_widget.dart';
 
 class CommentGallery extends StatefulWidget {
   const CommentGallery({super.key});
@@ -25,10 +24,20 @@ class _CommentGalleryState extends State<CommentGallery> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ExternalStoreGallery(
-              images: (List<File> images) {},
-              scrollController: scrollController,
-            )
+            FutureBuilder(
+                future: GetPhotos.getAllPhotos(),
+                builder: (_, snapshot) {
+                  if (snapshot.hasData) {
+                    return ImagesWidget(
+                      images: snapshot.requireData,
+                      onClearPressed: () {},
+                      onDeleteItemPressed: (int i) {},
+                      scrollController: scrollController,
+                      isFromFiles: true,
+                    );
+                  }
+                  return const SizedBox.shrink();
+                })
           ],
         );
       },

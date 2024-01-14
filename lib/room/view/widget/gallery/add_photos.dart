@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddPhotos extends StatefulWidget {
-  const AddPhotos({super.key, this.isFromFiles = false, this.photos});
+  const AddPhotos({super.key, this.isFromFiles = false});
 
   final bool isFromFiles;
-  final void Function(List<String> photos)? photos;
 
   @override
   State<AddPhotos> createState() => _AddPhotosState();
@@ -63,7 +62,7 @@ class _AddPhotosState extends State<AddPhotos> {
                       onPressed: () {
                         _onSelectedCameraPressed();
 
-                        widget.photos?.call(_images);
+                        // widget.onPhotosAdd?.call(_images);
 
                         Navigator.pop(context);
                       },

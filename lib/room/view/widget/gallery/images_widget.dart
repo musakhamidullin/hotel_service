@@ -27,29 +27,33 @@ class ImagesWidget extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 12, left: 16, right: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    'Прикрепленные фото',
-                    style: theme.textTheme.titleLarge,
-                    overflow: TextOverflow.ellipsis,
+          if (!isFromFiles)
+            Padding(
+              padding: const EdgeInsets.only(top: 12, left: 16, right: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Прикрепленные фото',
+                      style: theme.textTheme.titleLarge,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                FilledButton.tonal(
-                  onPressed: onClearPressed,
-                  child: const Text('Очистить'),
-                )
-              ],
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  FilledButton.tonal(
+                    onPressed: onClearPressed,
+                    child: const Text('Очистить'),
+                  )
+                ],
+              ),
             ),
-          ),
-          if (images.isEmpty) AddPhotos(isFromFiles: isFromFiles),
+          if (images.isEmpty)
+            AddPhotos(
+              isFromFiles: isFromFiles,
+            ),
           if (images.isNotEmpty)
             Flexible(
               child: GridView.builder(
