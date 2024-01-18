@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../../../common/widgets/cash_memory_image_provider.dart';
+import '../../../data/models/image.dart';
 import 'add_photos.dart';
 
 class ImagesWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class ImagesWidget extends StatelessWidget {
       required this.scrollController,
       this.isFromFiles = false});
 
-  final List<String> images;
+  final List<ImageModel> images;
   final VoidCallback onClearPressed;
   final void Function(int i) onDeleteItemPressed;
   final ScrollController scrollController;
@@ -71,13 +72,13 @@ class ImagesWidget extends StatelessWidget {
                     Positioned.fill(
                       child: isFromFiles
                           ? Image.file(
-                              File(images[i]),
+                              File(images[i].image),
                               fit: BoxFit.cover,
                             )
                           : Image(
                               image: CacheMemoryImageProvider(
-                                tag: images[i],
-                                img: const Base64Decoder().convert(images[i]),
+                                tag: images[i].image,
+                                img: const Base64Decoder().convert(images[i].image),
                               ),
                               fit: BoxFit.cover,
                             ),

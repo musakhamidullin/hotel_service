@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_photos/get_photos.dart';
-
+import '../../../data/models/image.dart';
 import '../gallery/images_widget.dart';
 
 class CommentGallery extends StatefulWidget {
@@ -27,13 +27,16 @@ class _CommentGalleryState extends State<CommentGallery> {
             FutureBuilder(
                 future: GetPhotos.getAllPhotos(),
                 builder: (_, snapshot) {
+                  
                   if (snapshot.hasData) {
                     return ImagesWidget(
-                      images: snapshot.requireData,
+                      images: snapshot.requireData.$1
+                          .map((e) => ImageModel.fromDevice(e))
+                          .toList(),
                       onClearPressed: () {},
                       onDeleteItemPressed: (int i) {},
                       scrollController: scrollController,
-                      isFromFiles: true,
+                      isFromFiles: snapshot.requireData.$2,
                     );
                   }
                   return const SizedBox.shrink();

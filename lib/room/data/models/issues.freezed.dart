@@ -21,13 +21,13 @@ IssuesModel _$IssuesModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$IssuesModel {
   int get id => throw _privateConstructorUsedError;
-  List<String> get images => throw _privateConstructorUsedError;
+  List<ImageModel> get images => throw _privateConstructorUsedError;
   List<String> get audios => throw _privateConstructorUsedError;
   String get lastComment => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
   String get date => throw _privateConstructorUsedError;
-  bool get isMutable => throw _privateConstructorUsedError;
+  bool get isFromApi => throw _privateConstructorUsedError;
   Department get department => throw _privateConstructorUsedError;
   String get personName => throw _privateConstructorUsedError;
   DefectStatus get defectStatus => throw _privateConstructorUsedError;
@@ -46,12 +46,12 @@ abstract class $IssuesModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      List<String> images,
+      List<ImageModel> images,
       List<String> audios,
       String lastComment,
       String comment,
       @DateSerializer() String date,
-      bool isMutable,
+      bool isFromApi,
       Department department,
       String personName,
       DefectStatus defectStatus});
@@ -79,7 +79,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
     Object? lastComment = null,
     Object? comment = null,
     Object? date = null,
-    Object? isMutable = null,
+    Object? isFromApi = null,
     Object? department = null,
     Object? personName = null,
     Object? defectStatus = null,
@@ -92,7 +92,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<ImageModel>,
       audios: null == audios
           ? _value.audios
           : audios // ignore: cast_nullable_to_non_nullable
@@ -109,9 +109,9 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
-      isMutable: null == isMutable
-          ? _value.isMutable
-          : isMutable // ignore: cast_nullable_to_non_nullable
+      isFromApi: null == isFromApi
+          ? _value.isFromApi
+          : isFromApi // ignore: cast_nullable_to_non_nullable
               as bool,
       department: null == department
           ? _value.department
@@ -155,12 +155,12 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      List<String> images,
+      List<ImageModel> images,
       List<String> audios,
       String lastComment,
       String comment,
       @DateSerializer() String date,
-      bool isMutable,
+      bool isFromApi,
       Department department,
       String personName,
       DefectStatus defectStatus});
@@ -188,7 +188,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
     Object? lastComment = null,
     Object? comment = null,
     Object? date = null,
-    Object? isMutable = null,
+    Object? isFromApi = null,
     Object? department = null,
     Object? personName = null,
     Object? defectStatus = null,
@@ -201,7 +201,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<ImageModel>,
       audios: null == audios
           ? _value._audios
           : audios // ignore: cast_nullable_to_non_nullable
@@ -218,9 +218,9 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as String,
-      isMutable: null == isMutable
-          ? _value.isMutable
-          : isMutable // ignore: cast_nullable_to_non_nullable
+      isFromApi: null == isFromApi
+          ? _value.isFromApi
+          : isFromApi // ignore: cast_nullable_to_non_nullable
               as bool,
       department: null == department
           ? _value.department
@@ -243,12 +243,12 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
 class _$IssuesModelImpl extends _IssuesModel {
   const _$IssuesModelImpl(
       {this.id = 0,
-      final List<String> images = const <String>[],
+      final List<ImageModel> images = const <ImageModel>[],
       final List<String> audios = const <String>[],
       this.lastComment = '',
       this.comment = '',
       @DateSerializer() this.date = '',
-      this.isMutable = true,
+      this.isFromApi = true,
       this.department = const Department(),
       this.personName = '',
       this.defectStatus = const DefectStatus()})
@@ -262,10 +262,10 @@ class _$IssuesModelImpl extends _IssuesModel {
   @override
   @JsonKey()
   final int id;
-  final List<String> _images;
+  final List<ImageModel> _images;
   @override
   @JsonKey()
-  List<String> get images {
+  List<ImageModel> get images {
     if (_images is EqualUnmodifiableListView) return _images;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_images);
@@ -292,7 +292,7 @@ class _$IssuesModelImpl extends _IssuesModel {
   final String date;
   @override
   @JsonKey()
-  final bool isMutable;
+  final bool isFromApi;
   @override
   @JsonKey()
   final Department department;
@@ -320,12 +320,12 @@ class _$IssuesModelImpl extends _IssuesModel {
 abstract class _IssuesModel extends IssuesModel {
   const factory _IssuesModel(
       {final int id,
-      final List<String> images,
+      final List<ImageModel> images,
       final List<String> audios,
       final String lastComment,
       final String comment,
       @DateSerializer() final String date,
-      final bool isMutable,
+      final bool isFromApi,
       final Department department,
       final String personName,
       final DefectStatus defectStatus}) = _$IssuesModelImpl;
@@ -337,7 +337,7 @@ abstract class _IssuesModel extends IssuesModel {
   @override
   int get id;
   @override
-  List<String> get images;
+  List<ImageModel> get images;
   @override
   List<String> get audios;
   @override
@@ -348,7 +348,7 @@ abstract class _IssuesModel extends IssuesModel {
   @DateSerializer()
   String get date;
   @override
-  bool get isMutable;
+  bool get isFromApi;
   @override
   Department get department;
   @override

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../common/widgets/cash_memory_image_provider.dart';
+import '../../data/models/image.dart';
 import 'images_viewer/images_viewer.dart';
 
 class MiniImagesIssueCard extends StatelessWidget {
@@ -14,8 +15,8 @@ class MiniImagesIssueCard extends StatelessWidget {
   });
 
   final int index;
-  final List<String> images;
-  final void Function(List<String> images)? onChanged;
+  final List<ImageModel> images;
+  final void Function(List<ImageModel> images)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,9 @@ class MiniImagesIssueCard extends StatelessWidget {
                   );
                 },
                 child: _ImageItem(
-                  image: e,
+                  image: e.image,
                   index: index,
-                  width: imageWidth,
+                  width: imageWidth, isFromApi: e.isFromApi,
                 ),
               ),
             )
@@ -107,25 +108,34 @@ class _ImageItem extends StatelessWidget {
     required this.image,
     required this.index,
     required this.width,
+    required this.isFromApi,
   });
 
   final int index;
   final String image;
   final double width;
+  final bool isFromApi;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
-      child: Image(
-        image: CacheMemoryImageProvider(
-          tag: image,
-          img: const Base64Decoder().convert(image),
-        ),
-        fit: BoxFit.cover,
-        height: 150,
-        width: width,
-      ),
+      child: isFromApi
+          ? Image.network(
+              image,
+              fit: BoxFit.cover,
+              height: 150,
+              width: width,
+            )
+          : Image(
+              image: CacheMemoryImageProvider(
+                tag: image,
+                img: const Base64Decoder().convert(image),
+              ),
+              fit: BoxFit.cover,
+              height: 150,
+              width: width,
+            ),
     );
   }
 }

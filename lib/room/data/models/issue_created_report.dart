@@ -16,6 +16,7 @@ class IssueCreatedReport with _$IssueCreatedReport {
   const factory IssueCreatedReport({
     @Default(0) int personId,
     @Default(0) int defectId,
+    @Default(0) int departmentId,
     @Default('') String comment,
     @Default([]) List<ProblemMedia> problemMedia,
   }) = _IssueCreatedReport;
@@ -25,8 +26,8 @@ class IssueCreatedReport with _$IssueCreatedReport {
 
   static IssueCreatedReport fill(RoomState roomState, IssuesModel issue) {
     final images = issue.images.map((e) {
-      final bytes = const Base64Decoder().convert(e);
-      return ProblemMedia.fromFile(e, _getExtension(bytes));
+      final bytes = const Base64Decoder().convert(e.image);
+      return ProblemMedia.fromFile(e.image, _getExtension(bytes));
     }).toList();
 
     //харкод типа аудио записи
@@ -34,6 +35,7 @@ class IssueCreatedReport with _$IssueCreatedReport {
         .map((e) => ProblemMedia.fromFile(e, MediaType.m4a))
         .toList();
     return IssueCreatedReport(
+      departmentId: issue.department.id,
         comment: issue.comment,
         personId: roomState.user.personInfo.id,
         problemMedia: [...images, ...audio],

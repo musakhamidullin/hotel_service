@@ -1,5 +1,7 @@
 package com.example.get_photos;
 
+import static androidx.core.app.ActivityCompat.requestPermissions;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -17,93 +19,126 @@ import androidx.core.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
 
-/** GetPhotosPlugin */
-public class GetPhotosPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
-  private MethodChannel channel;
-  private static final String CHANNEL_NAME = "get_photo";
-  private static final String METHOD_GET_ALL_PHOTOS = "getAllPhotos";
-  private Activity activity;
-  private Context context;
+public class GetPhotosPlugin implements FlutterPlugin, ActivityAware {
+    public GetPhotosMethodCallHandler getPhotosMethodCallHandler;
+    private static final String CHECK_PERMISSION_NAME_CHANNEL = "get_permission";
+    private static final String GET_PHOTOS_NAME_CHANNEL = "get_photo";
+    private static final String METHOD_GET_ALL_PHOTOS = "getAllPhotos";
+    private static final String METHOD_CHECK_PERMISSION = "checkReadMedia";
 
-  @Override
-  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), CHANNEL_NAME);
-    channel.setMethodCallHandler(this);
-  }
+    public Context context;
+    private Activity activity;
 
-  @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-  @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals(METHOD_GET_ALL_PHOTOS)) {
+    public Context getContext() {
+        return context;
+    }
 
-      context = activity.getApplicationContext();
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        if (ContextCompat.checkSelfPermission(context,
-            Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED) {
-          // Разрешение уже предоставлено, можно получать фотографии
-          List<String> photos = getAllPhotos();
-          result.success(photos);
-        } else {
-          // Разрешение не предоставлено, запросить у пользователя
-          ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.READ_MEDIA_IMAGES }, 123);
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    private Activity getActivity() {
+        return activity;
+    }
+
+    private void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public GetPhotosMethodCallHandler getPhotosMethodCallHandler() {
+        return getPhotosMethodCallHandler;
+    }
+
+
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        CheckPermissionMethodCallHandler checkPermissionMethodCallHandler = new CheckPermissionMethodCallHandler();
+        MethodChannel checkPermissionChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), CHECK_PERMISSION_NAME_CHANNEL);
+        checkPermissionChannel.setMethodCallHandler(checkPermissionMethodCallHandler);
+
+        getPhotosMethodCallHandler = new GetPhotosMethodCallHandler();
+        MethodChannel getPhotosFromDeviceChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), GET_PHOTOS_NAME_CHANNEL);
+        getPhotosFromDeviceChannel.setMethodCallHandler(getPhotosMethodCallHandler);
+    }
+
+    @Override
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        setActivity(binding.getActivity());
+        setContext(getActivity().getApplicationContext());
+    }
+
+    private class CheckPermissionMethodCallHandler implements MethodChannel.MethodCallHandler {
+        @Override
+        public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+            if (call.method.equals(METHOD_CHECK_PERMISSION)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    isNewBuildCode(result);
+                }
+
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                    result.success(true);
+                }
+            } else {
+                result.notImplemented();
+            }
         }
-      } else {
-        // Для версий Android ниже 6.0 разрешение предоставлено автоматически
-        List<String> photos = getAllPhotos();
-        result.success(photos);
-      }
-
-      List<String> photos = getAllPhotos();
-      result.success(photos);
-    } else {
-      result.notImplemented();
     }
-  }
 
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    channel.setMethodCallHandler(null);
-  }
+    public class GetPhotosMethodCallHandler implements MethodChannel.MethodCallHandler {
 
-  private List<String> getAllPhotos() {
-    List<String> photos = new ArrayList<>();
-    Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-    String[] projection = { MediaStore.Images.Media.DATA };
-    Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-
-    if (cursor != null) {
-      while (cursor.moveToNext()) {
-        String imagePath = cursor.getString(0);
-        photos.add(imagePath);
-      }
-      cursor.close();
+        @Override
+        public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+            if (call.method.equals(METHOD_GET_ALL_PHOTOS)) {
+                List<String> photos = getAllPhotos(context);
+                result.success(photos);
+            } else {
+                result.notImplemented();
+            }
+        }
     }
-    return photos;
-  }
 
-  @Override
-  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
-    activity = binding.getActivity();
-    context = activity.getApplicationContext();
-  }
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    private void isNewBuildCode(MethodChannel.Result result) {
+        int permissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_MEDIA_IMAGES);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            result.success(true);
+        } else {
+            requestPermissions(getActivity(), new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 1);
+        }
+    }
 
-  @Override
-  public void onDetachedFromActivityForConfigChanges() {
-  }
+    public List<String> getAllPhotos(Context context) {
+        List<String> photos = new ArrayList<>();
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
 
-  @Override
-  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-  }
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String imagePath = cursor.getString(0);
+                photos.add(imagePath);
+            }
+            cursor.close();
+        }
+        return photos;
+    }
 
-  @Override
-  public void onDetachedFromActivity() {
-  }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+    }
 }
+

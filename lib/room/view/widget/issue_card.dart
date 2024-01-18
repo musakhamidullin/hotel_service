@@ -6,16 +6,16 @@ import '../../../common/widgets/modals.dart';
 
 import '../../../voice_messanger/data/models/voice_value.dart';
 import '../../../voice_messanger/view/message_audio_player.dart';
-import '../../../voice_messanger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 
+import '../../data/models/image.dart';
 import '../../data/models/issues.dart';
 import 'status_card.dart';
 import 'comments/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
-import 'issue_field.dart';
+
 
 class IssueCard extends StatefulWidget {
   const IssueCard({
@@ -164,7 +164,7 @@ class _IssueCardState extends State<IssueCard> {
                     MiniImagesIssueCard(
                       index: widget.index,
                       images: widget.issue.images,
-                      onChanged: (List<String> items) {
+                      onChanged: (List<ImageModel> items) {
                         context.read<RoomCubit>().onIssueModelChanged(
                             widget.issue.copyWith(images: items));
                       },
@@ -258,7 +258,7 @@ class _IssueCardState extends State<IssueCard> {
                       Modals.showBottomSheet(
                         context,
                         GalleryWidget(
-                            onSavePressed: (List<String> items) =>
+                            onSavePressed: (List<ImageModel> items) =>
                                 cubit.onIssueModelChanged(
                                     widget.issue.copyWith(images: items)),
                             images: images,
@@ -303,7 +303,7 @@ class _IssueCardState extends State<IssueCard> {
                   // const SizedBox(
                   //   width: 12,
                   // ),
-                  if (widget.issue.isMutable)
+                  if (widget.issue.isFromApi)
                     IconButton(
                       onPressed: () async {
                         final cubit = context.read<RoomCubit>();

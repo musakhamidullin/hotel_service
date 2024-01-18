@@ -31,8 +31,8 @@ class IssueReport with _$IssueReport {
 
   static IssueReport fill(RoomState roomState, IssuesModel issue) {
     final images = issue.images.map((e) {
-      final bytes = const Base64Decoder().convert(e);
-      return ProblemMedia.fromFile(e, _getExtension(bytes));
+      final bytes = const Base64Decoder().convert(e.image);
+      return ProblemMedia.fromFile(e.image, _getExtension(bytes));
     }).toList();
 
     //харкод типа аудио записи
@@ -114,11 +114,11 @@ class ProblemMedia with _$ProblemMedia {
   const factory ProblemMedia({
     @Default('') String mediaBase64,
     @Default(MediaType.jpg) @MediaTypeConverter() MediaType mediaType,
-    @JsonSerializable(includeIfNull: false) @Default('') String mediaInBase64,
+    @JsonSerializable(includeIfNull: false) @Default('') String media,
   }) = _ProblemMedia;
 
   factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
-      ProblemMedia(mediaType: extension, mediaInBase64: '', mediaBase64: bytes);
+      ProblemMedia(mediaType: extension, media: '', mediaBase64: bytes);
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
       _$ProblemMediaFromJson(json);

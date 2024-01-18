@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_photos/get_photos.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../common/widgets/modals.dart';
 import '../../../cubit/room_cubit.dart';
 import '../../../data/models/issues.dart';
 import '../issue_field.dart';
-import 'comment_gallery.dart';
 
 class CommentsSheet extends StatefulWidget {
   const CommentsSheet(
@@ -88,8 +87,13 @@ class _CommentsSheetState extends State<CommentsSheet> {
                     onPressed: () async => await _onSelectedCameraPressed(),
                     icon: const Icon(Icons.photo_camera_outlined)),
                 IconButton(
-                    onPressed: () {
-                      Modals.showBottomSheet(context, const CommentGallery());
+                    onPressed: () async {
+                      final result = await GetPhotos.isCheckPermission();
+                      await Future.sync(() => ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(
+                              content: Text('Permission is: $result'))));
+
+                      // Modals.showBottomSheet(context, const CommentGallery());
                     },
                     icon: const Icon(Icons.attach_file)),
                 IconButton(onPressed: () {}, icon: const Icon(Icons.mic))

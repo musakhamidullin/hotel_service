@@ -6,6 +6,7 @@ import '../../../auth/data/model/user.dart';
 import 'defect.dart';
 import 'defect_status.dart';
 import 'department_info.dart';
+import 'image.dart';
 
 part 'issues.freezed.dart';
 
@@ -15,12 +16,12 @@ part 'issues.g.dart';
 class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel(
       {@Default(0) int id,
-      @Default(<String>[]) List<String> images,
+      @Default(<ImageModel>[]) List<ImageModel> images,
       @Default(<String>[]) List<String> audios,
       @Default('') String lastComment,
       @Default('') String comment,
       @Default('') @DateSerializer() String date,
-      @Default(true) bool isMutable,
+      @Default(true) bool isFromApi,
       @Default(Department()) Department department,
       @Default('') String personName,
       @Default(DefectStatus()) DefectStatus defectStatus}) = _IssuesModel;
@@ -41,15 +42,18 @@ class IssuesModel extends Equatable with _$IssuesModel {
     List<Department> departments,
     List<DefectStatus> defectStatuses,
   ) {
-    final images = <String>[];
+    final images = <ImageModel>[];
     final audios = <String>[];
+
     for (final e in defect.hotelDefectMedias) {
+
       if (e.mediaType.isAudio()) {
-        audios.add(e.mediaInBase64);
+        audios.add(e.media);
       } else {
-        images.add(e.mediaInBase64);
+        images.add(ImageModel.fromApi(e.media));
       }
     }
+
     return IssuesModel(
       id: defect.id,
       personName: defect.personName,
@@ -59,7 +63,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
       images: images,
       audios: audios,
       date: defect.createDate.toString(),
-      isMutable: false,
+      isFromApi: false,
     );
   }
 
@@ -70,7 +74,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
       DateFormat.yMMMEd(languageCode).add_Hm().format(DateTime.parse(date));
 
   @override
-  List<Object?> get props => [images, comment, date, isMutable, department];
+  List<Object?> get props => [images, comment, date, isFromApi, department];
 }
 
 class DateSerializer implements JsonConverter<String, dynamic> {

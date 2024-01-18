@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../data/models/image.dart';
 import 'images_widget.dart';
 
 class GalleryWidget extends StatefulWidget {
@@ -15,9 +16,9 @@ class GalleryWidget extends StatefulWidget {
     required this.onClearPressed,
   });
 
-  final List<String> images;
+  final List<ImageModel> images;
 
-  final void Function(List<String> items) onSavePressed;
+  final void Function(List<ImageModel> items) onSavePressed;
   final void Function(String item) onDeletePressed;
   final VoidCallback onClearPressed;
 
@@ -30,7 +31,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     final pickedImages = await ImagePicker().pickMultiImage();
 
     final bytes = pickedImages
-        .map((e) => base64Encode(File(e.path).readAsBytesSync()))
+        .map((e) =>
+            ImageModel.fromDevice(base64Encode(File(e.path).readAsBytesSync())))
         .toList();
 
     setState(() {
@@ -43,7 +45,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
+        _images.add(ImageModel.fromDevice(
+            base64Encode(File(pickedImage.path).readAsBytesSync())));
       });
     }
   }
@@ -55,7 +58,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     _images.addAll(widget.images);
   }
 
-  final List<String> _images = [];
+  final List<ImageModel> _images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                 _images.clear();
               }),
               onDeleteItemPressed: (i) => setState(() {
-                widget.onDeletePressed(_images[i]);
+                widget.onDeletePressed(_images[i].image);
 
                 _images.removeAt(i);
               }),

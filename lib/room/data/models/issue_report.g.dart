@@ -33,12 +33,12 @@ _$ProblemMediaImpl _$$ProblemMediaImplFromJson(Map<String, dynamic> json) =>
       mediaType: json['MediaType'] == null
           ? MediaType.jpg
           : const MediaTypeConverter().fromJson(json['MediaType'] as String),
-      mediaInBase64: json['MediaInBase64'] as String? ?? '',
+      media: json['Media'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$ProblemMediaImplToJson(_$ProblemMediaImpl instance) =>
     <String, dynamic>{
       'MediaBase64': instance.mediaBase64,
       'MediaType': const MediaTypeConverter().toJson(instance.mediaType),
-      'MediaInBase64': instance.mediaInBase64,
+      'Media': instance.media,
     };

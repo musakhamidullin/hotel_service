@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../../../common/widgets/modals.dart';
+import '../../../data/models/image.dart';
 import 'menu_actions.dart';
 
 class ImagesViewer extends StatefulWidget {
@@ -15,9 +16,9 @@ class ImagesViewer extends StatefulWidget {
     this.onChanged,
   });
 
-  final List<String> images;
+  final List<ImageModel> images;
   final int initImageIndex;
-  final void Function(List<String>)? onChanged;
+  final void Function(List<ImageModel>)? onChanged;
 
   @override
   State<ImagesViewer> createState() => _ImagesViewerState();
@@ -74,14 +75,17 @@ class _ImagesViewerState extends State<ImagesViewer> {
             itemBuilder:
                 (BuildContext context, int itemIndex, int pageViewIndex) {
               indexAfterDeletedOperation = itemIndex;
-              return InteractiveViewer(
-                child: Image(
-                  image: CacheMemoryImageProvider(
-                    tag: _images[itemIndex],
-                    img: const Base64Decoder().convert(_images[itemIndex]),
-                  ),
-                ),
-              );
+              return _images[itemIndex].isFromApi
+                  ? Image.network(_images[itemIndex].image)
+                  : InteractiveViewer(
+                      child: Image(
+                        image: CacheMemoryImageProvider(
+                          tag: _images[itemIndex].image,
+                          img: const Base64Decoder()
+                              .convert(_images[itemIndex].image),
+                        ),
+                      ),
+                    );
             },
             options: CarouselOptions(
               initialPage: widget.initImageIndex,
@@ -119,15 +123,17 @@ class _ImagesViewerState extends State<ImagesViewer> {
                               ),
                             )
                           : null,
-                      child: Image(
-                        image: CacheMemoryImageProvider(
-                          tag: e,
-                          img: const Base64Decoder().convert(e),
-                        ),
-                        height: imageIndex == _currImage
-                            ? sliderIndicatorHeight
-                            : sliderIndicatorHeight + 4,
-                      ),
+                      child: e.isFromApi
+                          ? Image.network(e.image)
+                          : Image(
+                              image: CacheMemoryImageProvider(
+                                tag: e.image,
+                                img: const Base64Decoder().convert(e.image),
+                              ),
+                              height: imageIndex == _currImage
+                                  ? sliderIndicatorHeight
+                                  : sliderIndicatorHeight + 4,
+                            ),
                     ),
                   );
                 },
