@@ -1,24 +1,16 @@
-import '../models/schedule_value.dart';
+import '../../../../app/dio_client.dart';
+import '../models/schedule_info.dart';
 
 class MyScheduleRep {
-  Future<List<ScheduleValue>> fetchMySchedule({
-    required DateTime date,
+  Future<ScheduleInfo> fetchMySchedule({
+    required DateTime dateStart,
+    required DateTime dateEnd,
     required int ownerId,
   }) async {
-    await Future.delayed(Duration(seconds: 2));
-    return [
-      ScheduleValue(
-        startDay: DateTime(2024, DateTime.now().month, DateTime.now().day, 8),
-        endDay: DateTime(2024, DateTime.now().month, DateTime.now().day, 20),
-        startBreak: DateTime(2024, DateTime.now().month, DateTime.now().day, 12),
-        endBreak: DateTime(2024, DateTime.now().month, DateTime.now().day, 13),
-      ),
-      ScheduleValue(
-        startDay: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 8),
-        endDay: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 20),
-        startBreak: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 12),
-        endBreak: DateTime(2024, DateTime.now().month, DateTime.now().day + 1, 13),
-      ),
-    ];
+    final result = await DioClient().post<Map<String, dynamic>>(
+        path:
+            'HouseKeeping/GetWorkBreaksByPersonId?ticketPersonId=$ownerId&dateStart=${dateStart.toIso8601String()}&DateFinish=${dateEnd.toIso8601String()}');
+
+    return ScheduleInfo.fromJson(result.data);
   }
 }

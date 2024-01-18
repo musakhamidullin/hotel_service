@@ -22,25 +22,28 @@ class MyScheduleCubit extends Cubit<MyScheduleState> {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
       final result = await myScheduleRep.fetchMySchedule(
-        date: DateTime.now(),
+        dateStart: DateTime.now(),
+        dateEnd: DateTime.now().add(const Duration(days: 7)),
         ownerId: user.personInfo.ownerId,
       );
 
-      final schedule = <TimeRegion>[];
-
-      for (final e in result) {
-        schedule.addAll([
-          TimeRegion(
-            startTime: e.startDay,
-            endTime: e.endDay,
-          ),
-          TimeRegion(
-            startTime: e.startBreak,
-            endTime: e.endBreak,
+      final schedule = [
+        ...?result.breaks?.map((e) {
+          if (e.timeStart == null || e.timeEnd == null) return null;
+          return TimeRegion(
+            startTime: e.timeStart!,
+            endTime: e.timeEnd!,
             text: 'обед',
-          ),
-        ]);
-      }
+          );
+        }).whereType<TimeRegion>(),
+        ...?result.workIntervals?.map((e) {
+          if (e.timeStart == null || e.timeEnd == null) return null;
+          return TimeRegion(
+            startTime: e.timeStart!,
+            endTime: e.timeEnd!,
+          );
+        }).whereType<TimeRegion>()
+      ];
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
