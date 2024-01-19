@@ -368,7 +368,7 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
 class _$ProblemMediaImpl implements _ProblemMedia {
   const _$ProblemMediaImpl(
       {this.mediaBase64 = '',
-      @MediaTypeConverter() this.mediaType = MediaType.jpg,
+      @MediaTypeConverter() this.mediaType = MediaType.unknown,
       @JsonSerializable(includeIfNull: false) this.media = ''});
 
   factory _$ProblemMediaImpl.fromJson(Map<String, dynamic> json) =>

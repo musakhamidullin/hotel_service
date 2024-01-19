@@ -102,12 +102,19 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                 iconSize: 40,
                 onPressed: () async {
                   if (_playerState != PlayerState.playing) {
-                    await context
-                        .read<VoiceManagerCubit>()
-                        .playMessageFromBytes(
-                          base64: widget.voiceValue.base64,
-                          playerKey: widget.playerKey,
-                        );
+                    widget.voiceValue.audio.isFromApi
+                        ? await context
+                            .read<VoiceManagerCubit>()
+                            .playMessageFromApi(
+                              url: widget.voiceValue.audio.audio,
+                              playerKey: widget.playerKey,
+                            )
+                        : await context
+                            .read<VoiceManagerCubit>()
+                            .playMessageFromBytes(
+                              base64: widget.voiceValue.audio.audio,
+                              playerKey: widget.playerKey,
+                            );
                   } else {
                     await context
                         .read<VoiceManagerCubit>()

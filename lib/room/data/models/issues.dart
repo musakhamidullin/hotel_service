@@ -3,13 +3,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
 import '../../../auth/data/model/user.dart';
+import 'audio.dart';
 import 'defect.dart';
 import 'defect_status.dart';
 import 'department_info.dart';
 import 'image.dart';
 
 part 'issues.freezed.dart';
-
 part 'issues.g.dart';
 
 @freezed
@@ -17,7 +17,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel(
       {@Default(0) int id,
       @Default(<ImageModel>[]) List<ImageModel> images,
-      @Default(<String>[]) List<String> audios,
+      @Default(<AudioModel>[]) List<AudioModel> audios,
       @Default('') String lastComment,
       @Default('') String comment,
       @Default('') @DateSerializer() String date,
@@ -43,17 +43,17 @@ class IssuesModel extends Equatable with _$IssuesModel {
     List<DefectStatus> defectStatuses,
   ) {
     final images = <ImageModel>[];
-    final audios = <String>[];
+    final audios = <AudioModel>[];
 
     for (final e in defect.hotelDefectMedias) {
 
       if (e.mediaType.isAudio()) {
-        audios.add(e.media);
+        audios.add(AudioModel.fromApi(e.media));
       } else {
         images.add(ImageModel.fromApi(e.media));
       }
-    }
-
+    } 
+    
     return IssuesModel(
       id: defect.id,
       personName: defect.personName,

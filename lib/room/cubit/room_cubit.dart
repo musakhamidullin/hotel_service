@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../auth/data/model/user.dart';
 import '../../home/data/models/room.dart';
 
+import '../data/models/audio.dart';
 import '../data/models/defect_status.dart';
 import '../data/models/department_info.dart';
 
@@ -98,7 +99,7 @@ class RoomCubit extends Cubit<RoomState> {
     final updatedIssueModel = _updateIssueModel(
       model.copyWith(
         audios: [
-          base64,
+          AudioModel.fromDevice(base64),
           ...model.audios,
         ],
       ),
@@ -227,10 +228,11 @@ class RoomCubit extends Cubit<RoomState> {
       //todo тут мы должны получать обновленную заявку
       await _roomRep.sendCreatedReport(report);
 
-      emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
+      // emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
-    } catch (_) {
+    } catch (e) {
+      print(e);
       emit(state.copyWith(fetchStatus: FetchStatus.sendError));
     }
   }

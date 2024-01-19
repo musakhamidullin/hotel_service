@@ -14,9 +14,9 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <ImageModel>[],
       audios: (json['audios'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => AudioModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <String>[],
+          const <AudioModel>[],
       lastComment: json['lastComment'] as String? ?? '',
       comment: json['comment'] as String? ?? '',
       date: json['date'] == null

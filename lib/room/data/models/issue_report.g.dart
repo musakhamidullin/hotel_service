@@ -31,7 +31,7 @@ _$ProblemMediaImpl _$$ProblemMediaImplFromJson(Map<String, dynamic> json) =>
     _$ProblemMediaImpl(
       mediaBase64: json['MediaBase64'] as String? ?? '',
       mediaType: json['MediaType'] == null
-          ? MediaType.jpg
+          ? MediaType.unknown
           : const MediaTypeConverter().fromJson(json['MediaType'] as String),
       media: json['Media'] as String? ?? '',
     );

@@ -5,7 +5,7 @@ part 'audio.g.dart';
 
 @freezed
 class AudioModel with _$AudioModel {
-  factory AudioModel(
+  const factory AudioModel(
       {@Default(false) bool isFromApi,
       @Default('') String audio}) = _AudioModel;
 

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$VoiceValue {
-  String get base64 => throw _privateConstructorUsedError;
+  AudioModel get audio => throw _privateConstructorUsedError;
   String get buttonId => throw _privateConstructorUsedError;
   String get duration => throw _privateConstructorUsedError;
 
@@ -31,7 +31,9 @@ abstract class $VoiceValueCopyWith<$Res> {
           VoiceValue value, $Res Function(VoiceValue) then) =
       _$VoiceValueCopyWithImpl<$Res, VoiceValue>;
   @useResult
-  $Res call({String base64, String buttonId, String duration});
+  $Res call({AudioModel audio, String buttonId, String duration});
+
+  $AudioModelCopyWith<$Res> get audio;
 }
 
 /// @nodoc
@@ -47,15 +49,15 @@ class _$VoiceValueCopyWithImpl<$Res, $Val extends VoiceValue>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? base64 = null,
+    Object? audio = null,
     Object? buttonId = null,
     Object? duration = null,
   }) {
     return _then(_value.copyWith(
-      base64: null == base64
-          ? _value.base64
-          : base64 // ignore: cast_nullable_to_non_nullable
-              as String,
+      audio: null == audio
+          ? _value.audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as AudioModel,
       buttonId: null == buttonId
           ? _value.buttonId
           : buttonId // ignore: cast_nullable_to_non_nullable
@@ -65,6 +67,14 @@ class _$VoiceValueCopyWithImpl<$Res, $Val extends VoiceValue>
           : duration // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AudioModelCopyWith<$Res> get audio {
+    return $AudioModelCopyWith<$Res>(_value.audio, (value) {
+      return _then(_value.copyWith(audio: value) as $Val);
+    });
   }
 }
 
@@ -76,7 +86,10 @@ abstract class _$$VoiceValueImplCopyWith<$Res>
       __$$VoiceValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String base64, String buttonId, String duration});
+  $Res call({AudioModel audio, String buttonId, String duration});
+
+  @override
+  $AudioModelCopyWith<$Res> get audio;
 }
 
 /// @nodoc
@@ -90,15 +103,15 @@ class __$$VoiceValueImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? base64 = null,
+    Object? audio = null,
     Object? buttonId = null,
     Object? duration = null,
   }) {
     return _then(_$VoiceValueImpl(
-      base64: null == base64
-          ? _value.base64
-          : base64 // ignore: cast_nullable_to_non_nullable
-              as String,
+      audio: null == audio
+          ? _value.audio
+          : audio // ignore: cast_nullable_to_non_nullable
+              as AudioModel,
       buttonId: null == buttonId
           ? _value.buttonId
           : buttonId // ignore: cast_nullable_to_non_nullable
@@ -115,11 +128,13 @@ class __$$VoiceValueImplCopyWithImpl<$Res>
 
 class _$VoiceValueImpl implements _VoiceValue {
   const _$VoiceValueImpl(
-      {this.base64 = '', this.buttonId = '', this.duration = ''});
+      {this.audio = const AudioModel(),
+      this.buttonId = '',
+      this.duration = ''});
 
   @override
   @JsonKey()
-  final String base64;
+  final AudioModel audio;
   @override
   @JsonKey()
   final String buttonId;
@@ -129,7 +144,7 @@ class _$VoiceValueImpl implements _VoiceValue {
 
   @override
   String toString() {
-    return 'VoiceValue(base64: $base64, buttonId: $buttonId, duration: $duration)';
+    return 'VoiceValue(audio: $audio, buttonId: $buttonId, duration: $duration)';
   }
 
   @override
@@ -137,7 +152,7 @@ class _$VoiceValueImpl implements _VoiceValue {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VoiceValueImpl &&
-            (identical(other.base64, base64) || other.base64 == base64) &&
+            (identical(other.audio, audio) || other.audio == audio) &&
             (identical(other.buttonId, buttonId) ||
                 other.buttonId == buttonId) &&
             (identical(other.duration, duration) ||
@@ -145,7 +160,7 @@ class _$VoiceValueImpl implements _VoiceValue {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, base64, buttonId, duration);
+  int get hashCode => Object.hash(runtimeType, audio, buttonId, duration);
 
   @JsonKey(ignore: true)
   @override
@@ -156,12 +171,12 @@ class _$VoiceValueImpl implements _VoiceValue {
 
 abstract class _VoiceValue implements VoiceValue {
   const factory _VoiceValue(
-      {final String base64,
+      {final AudioModel audio,
       final String buttonId,
       final String duration}) = _$VoiceValueImpl;
 
   @override
-  String get base64;
+  AudioModel get audio;
   @override
   String get buttonId;
   @override

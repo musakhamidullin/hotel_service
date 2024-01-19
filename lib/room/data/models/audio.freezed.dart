@@ -108,7 +108,7 @@ class __$$AudioModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AudioModelImpl implements _AudioModel {
-  _$AudioModelImpl({this.isFromApi = false, this.audio = ''});
+  const _$AudioModelImpl({this.isFromApi = false, this.audio = ''});
 
   factory _$AudioModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AudioModelImplFromJson(json);
@@ -154,7 +154,7 @@ class _$AudioModelImpl implements _AudioModel {
 }
 
 abstract class _AudioModel implements AudioModel {
-  factory _AudioModel({final bool isFromApi, final String audio}) =
+  const factory _AudioModel({final bool isFromApi, final String audio}) =
       _$AudioModelImpl;
 
   factory _AudioModel.fromJson(Map<String, dynamic> json) =

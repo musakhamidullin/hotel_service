@@ -59,6 +59,11 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
     await _audioPlayer.play(BytesSource(base64Decode(base64)));
   }
 
+  Future<void> playMessageFromApi({required String url, required String playerKey}) async {
+    _currentlyPlayerKey = playerKey;
+    await _audioPlayer.play(UrlSource(url));
+  }
+
   Future<void> stopPlayingMessage() async {
     await _audioPlayer.pause();
   }

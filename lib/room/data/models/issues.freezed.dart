@@ -22,7 +22,7 @@ IssuesModel _$IssuesModelFromJson(Map<String, dynamic> json) {
 mixin _$IssuesModel {
   int get id => throw _privateConstructorUsedError;
   List<ImageModel> get images => throw _privateConstructorUsedError;
-  List<String> get audios => throw _privateConstructorUsedError;
+  List<AudioModel> get audios => throw _privateConstructorUsedError;
   String get lastComment => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   @DateSerializer()
@@ -47,7 +47,7 @@ abstract class $IssuesModelCopyWith<$Res> {
   $Res call(
       {int id,
       List<ImageModel> images,
-      List<String> audios,
+      List<AudioModel> audios,
       String lastComment,
       String comment,
       @DateSerializer() String date,
@@ -96,7 +96,7 @@ class _$IssuesModelCopyWithImpl<$Res, $Val extends IssuesModel>
       audios: null == audios
           ? _value.audios
           : audios // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<AudioModel>,
       lastComment: null == lastComment
           ? _value.lastComment
           : lastComment // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ abstract class _$$IssuesModelImplCopyWith<$Res>
   $Res call(
       {int id,
       List<ImageModel> images,
-      List<String> audios,
+      List<AudioModel> audios,
       String lastComment,
       String comment,
       @DateSerializer() String date,
@@ -205,7 +205,7 @@ class __$$IssuesModelImplCopyWithImpl<$Res>
       audios: null == audios
           ? _value._audios
           : audios // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<AudioModel>,
       lastComment: null == lastComment
           ? _value.lastComment
           : lastComment // ignore: cast_nullable_to_non_nullable
@@ -244,7 +244,7 @@ class _$IssuesModelImpl extends _IssuesModel {
   const _$IssuesModelImpl(
       {this.id = 0,
       final List<ImageModel> images = const <ImageModel>[],
-      final List<String> audios = const <String>[],
+      final List<AudioModel> audios = const <AudioModel>[],
       this.lastComment = '',
       this.comment = '',
       @DateSerializer() this.date = '',
@@ -271,10 +271,10 @@ class _$IssuesModelImpl extends _IssuesModel {
     return EqualUnmodifiableListView(_images);
   }
 
-  final List<String> _audios;
+  final List<AudioModel> _audios;
   @override
   @JsonKey()
-  List<String> get audios {
+  List<AudioModel> get audios {
     if (_audios is EqualUnmodifiableListView) return _audios;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_audios);
@@ -321,7 +321,7 @@ abstract class _IssuesModel extends IssuesModel {
   const factory _IssuesModel(
       {final int id,
       final List<ImageModel> images,
-      final List<String> audios,
+      final List<AudioModel> audios,
       final String lastComment,
       final String comment,
       @DateSerializer() final String date,
@@ -339,7 +339,7 @@ abstract class _IssuesModel extends IssuesModel {
   @override
   List<ImageModel> get images;
   @override
-  List<String> get audios;
+  List<AudioModel> get audios;
   @override
   String get lastComment;
   @override

@@ -6,6 +6,7 @@ import '../../../common/widgets/modals.dart';
 
 import '../../../voice_messenger/data/models/voice_value.dart';
 import '../../../voice_messenger/view/message_audio_player.dart';
+import '../../../voice_messenger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 
 import '../../data/models/image.dart';
@@ -15,7 +16,6 @@ import 'comments/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
-
 
 class IssueCard extends StatefulWidget {
   const IssueCard({
@@ -179,7 +179,7 @@ class _IssueCardState extends State<IssueCard> {
                     .map(
                       (e) => MessageAudioPlayer(
                         key: ObjectKey(e),
-                        voiceValue: VoiceValue(base64: e),
+                        voiceValue: VoiceValue(audio: e),
                         index: widget.issue.audios.indexOf(e),
                         playerKey:
                             '${widget.index}${widget.issue.audios.indexOf(e)}',
@@ -239,7 +239,9 @@ class _IssueCardState extends State<IssueCard> {
                   if (!_readOnlyInput)
                     Expanded(
                       child: FilledButton.tonal(
-                        onPressed: widget.onSendPressed,
+                        onPressed: !widget.issue.isFromApi
+                            ? null
+                            : widget.onSendPressed,
                         child: const Text('Отправить'),
                       ),
                     ),
@@ -277,17 +279,17 @@ class _IssueCardState extends State<IssueCard> {
                   // const SizedBox(
                   //   width: 12,
                   // ),
-                  // RecordButton(
-                  //   onRecord: (value) {
-                  //     setState(() => _readOnlyInput = value);
-                  //   },
-                  //   onStop: (value) {
-                  //     context.read<RoomCubit>().onAudioRecorded(
-                  //           base64: value,
-                  //           model: widget.issue,
-                  //         );
-                  //   },
-                  // ),
+                  RecordButton(
+                    onRecord: (value) {
+                      setState(() => _readOnlyInput = value);
+                    },
+                    onStop: (value) {
+                      context.read<RoomCubit>().onAudioRecorded(
+                            base64: value,
+                            model: widget.issue,
+                          );
+                    },
+                  ),
                   IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
