@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../room/data/models/issues.dart';
 import '../../../../room/view/widget/mini_images.dart';
-import '../../../../voice_messanger/data/models/voice_value.dart';
-import '../../../../voice_messanger/view/message_audio_player.dart';
+import '../../../../voice_messenger/data/models/voice_value.dart';
+import '../../../../voice_messenger/view/message_audio_player.dart';
 
 class DefectsCard extends StatelessWidget {
   const DefectsCard({
