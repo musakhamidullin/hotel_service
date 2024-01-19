@@ -4,8 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../common/widgets/modals.dart';
 
-import '../../../voice_messanger/data/models/voice_value.dart';
-import '../../../voice_messanger/view/message_audio_player.dart';
+import '../../../voice_messenger/data/models/voice_value.dart';
+import '../../../voice_messenger/view/message_audio_player.dart';
 import '../../cubit/room_cubit.dart';
 
 import '../../data/models/image.dart';

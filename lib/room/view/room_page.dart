@@ -7,7 +7,7 @@ import '../../common/widgets/failure_widget.dart';
 
 import '../../common/widgets/modals.dart';
 import '../../home/data/models/room.dart';
-import '../../voice_messanger/cubit/voice_manager_cubit.dart';
+import '../../voice_messenger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
 
 import '../data/repositories/room_rep.dart';
