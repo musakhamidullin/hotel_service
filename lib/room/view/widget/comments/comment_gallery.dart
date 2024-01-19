@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_photos/get_photos.dart';
+
 import '../../../data/models/image.dart';
 import '../gallery/images_widget.dart';
 
@@ -24,23 +24,23 @@ class _CommentGalleryState extends State<CommentGallery> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            FutureBuilder(
-                future: GetPhotos.getAllPhotos(),
-                builder: (_, snapshot) {
+            // FutureBuilder(
+            //     future: GetPhotos.getAllPhotos(),
+            //     builder: (_, snapshot) {
                   
-                  if (snapshot.hasData) {
-                    return ImagesWidget(
-                      images: snapshot.requireData.$1
-                          .map((e) => ImageModel.fromDevice(e))
-                          .toList(),
-                      onClearPressed: () {},
-                      onDeleteItemPressed: (int i) {},
-                      scrollController: scrollController,
-                      isFromFiles: snapshot.requireData.$2,
-                    );
-                  }
-                  return const SizedBox.shrink();
-                })
+            //       if (snapshot.hasData) {
+            //         return ImagesWidget(
+            //           images: snapshot.requireData.$1
+            //               .map((e) => ImageModel.fromDevice(e))
+            //               .toList(),
+            //           onClearPressed: () {},
+            //           onDeleteItemPressed: (int i) {},
+            //           scrollController: scrollController,
+            //           isFromFiles: snapshot.requireData.$2,
+            //         );
+            //       }
+            //       return const SizedBox.shrink();
+            //     })
           ],
         );
       },

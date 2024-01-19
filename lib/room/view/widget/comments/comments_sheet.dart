@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get_photos/get_photos.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 import '../../../cubit/room_cubit.dart';
@@ -88,10 +88,10 @@ class _CommentsSheetState extends State<CommentsSheet> {
                     icon: const Icon(Icons.photo_camera_outlined)),
                 IconButton(
                     onPressed: () async {
-                      final result = await GetPhotos.isCheckPermission();
-                      await Future.sync(() => ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(
-                              content: Text('Permission is: $result'))));
+                      // final result = await GetPhotos.isCheckPermission();
+                      // await Future.sync(() => ScaffoldMessenger.of(context)
+                      //     .showSnackBar(SnackBar(
+                      //         content: Text('Permission is: $result'))));
 
                       // Modals.showBottomSheet(context, const CommentGallery());
                     },

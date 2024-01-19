@@ -39,8 +39,8 @@ dependencies:
   equatable: ^2.0.5
   syncfusion_flutter_calendar: ^24.1.43
 
-  get_photos:
-    path: get_photos
+  get_photos_from_device:
+    path: get_photos_from_device
 
 
 dev_dependencies:
