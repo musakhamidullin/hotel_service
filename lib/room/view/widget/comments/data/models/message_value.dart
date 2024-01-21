@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'message_value.freezed.dart';
@@ -6,6 +8,6 @@ part 'message_value.freezed.dart';
 class MessageValue with _$MessageValue {
   const factory MessageValue({
     String? text,
-    List<Object>? images,
+    List<Uint8List>? buffImages,
 }) = _MessageValue;
 }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../cubit/comments_cubit.dart';
 import '../../data/models/message_value.dart';
 
@@ -48,8 +50,29 @@ class _InputCardState extends State<InputCard> {
             _textController.clear();
           },
         ),
+        if (_messageValue.buffImages?.isNotEmpty ?? false)
+          Row(
+            children: _messageValue.buffImages!
+                .map((e) => // Image(
+                    Image(
+                      image: CacheMemoryImageProvider(
+                        tag: _messageValue.buffImages!.indexOf(e).toString(),
+                        img: e,
+                      ),
+                      fit: BoxFit.cover,
+                      height: 100,
+                      width: 100,
+                    ))
+                .toList(),
+          ),
         InputButtons(
           textEditingController: _textController,
+          onPhotographed: (value) {
+            setState(() {
+              _messageValue = _messageValue
+                  .copyWith(buffImages: [...?_messageValue.buffImages, value]);
+            });
+          },
           onSend: () {
             context.read<CommentsCubit>().sendMessage(_messageValue);
             FocusManager.instance.primaryFocus?.unfocus();
@@ -66,10 +89,12 @@ class InputButtons extends StatefulWidget {
   const InputButtons({
     super.key,
     required this.onSend,
+    required this.onPhotographed,
     required this.textEditingController,
   });
 
   final Function() onSend;
+  final Function(Uint8List) onPhotographed;
   final TextEditingController textEditingController;
 
   @override
@@ -77,17 +102,13 @@ class InputButtons extends StatefulWidget {
 }
 
 class _InputButtonsState extends State<InputButtons> {
-  final List<String> _images = [];
   var _hasText = false;
 
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage != null) {
-      setState(() {
-        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
-      });
-    }
+    if (pickedImage?.path == null) return;
+    widget.onPhotographed(File(pickedImage!.path).readAsBytesSync());
   }
 
   @override
@@ -138,7 +159,7 @@ class _InputButtonsState extends State<InputButtons> {
         IconButton(
           onPressed: _hasText
               ? () {
-            //todo clear all images
+                  //todo clear all images
                   widget.textEditingController.clear();
                   FocusManager.instance.primaryFocus?.unfocus();
                 }
