@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddPhotos extends StatefulWidget {
-  const AddPhotos({super.key, this.isFromFiles = false});
-
-  final bool isFromFiles;
+  const AddPhotos({super.key});
 
   @override
   State<AddPhotos> createState() => _AddPhotosState();
@@ -47,29 +45,6 @@ class _AddPhotosState extends State<AddPhotos> {
                 'Добавьте фотографии',
                 style: theme.textTheme.titleLarge,
               ),
-              if (widget.isFromFiles) const SizedBox(height: 16),
-              if (widget.isFromFiles)
-                Column(
-                  children: [
-                    Text(
-                      textAlign: TextAlign.center,
-                      'На Вашем устройстве отсутствуют фотографии',
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 12),
-                    FilledButton.tonal(
-                      onPressed: () {
-                        _onSelectedCameraPressed();
-
-                        // widget.onPhotosAdd?.call(_images);
-
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Сделать фото'),
-                    ),
-                  ],
-                )
             ],
           ),
         ),

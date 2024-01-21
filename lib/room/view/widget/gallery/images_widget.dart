@@ -13,14 +13,12 @@ class ImagesWidget extends StatelessWidget {
       required this.images,
       required this.onClearPressed,
       required this.onDeleteItemPressed,
-      required this.scrollController,
-      this.isFromFiles = false});
+      required this.scrollController});
 
   final List<ImageModel> images;
   final VoidCallback onClearPressed;
   final void Function(int i) onDeleteItemPressed;
   final ScrollController scrollController;
-  final bool isFromFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -28,33 +26,29 @@ class ImagesWidget extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          if (!isFromFiles)
-            Padding(
-              padding: const EdgeInsets.only(top: 12, left: 16, right: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Прикрепленные фото',
-                      style: theme.textTheme.titleLarge,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12, left: 16, right: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    'Прикрепленные фото',
+                    style: theme.textTheme.titleLarge,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  FilledButton.tonal(
-                    onPressed: onClearPressed,
-                    child: const Text('Очистить'),
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                FilledButton.tonal(
+                  onPressed: onClearPressed,
+                  child: const Text('Очистить'),
+                )
+              ],
             ),
-          if (images.isEmpty)
-            AddPhotos(
-              isFromFiles: isFromFiles,
-            ),
+          ),
+          if (images.isEmpty) const AddPhotos(),
           if (images.isNotEmpty)
             Flexible(
               child: GridView.builder(
@@ -70,18 +64,13 @@ class ImagesWidget extends StatelessWidget {
                 itemBuilder: (_, i) => Stack(
                   children: [
                     Positioned.fill(
-                      child: isFromFiles
-                          ? Image.file(
-                              File(images[i].image),
-                              fit: BoxFit.cover,
-                            )
-                          : Image(
-                              image: CacheMemoryImageProvider(
-                                tag: images[i].image,
-                                img: const Base64Decoder().convert(images[i].image),
-                              ),
-                              fit: BoxFit.cover,
-                            ),
+                      child: Image(
+                        image: CacheMemoryImageProvider(
+                          tag: images[i].image,
+                          img: const Base64Decoder().convert(images[i].image),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned.fill(
                       top: 6,

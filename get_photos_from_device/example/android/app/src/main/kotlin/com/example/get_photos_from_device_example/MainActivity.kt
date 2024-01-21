@@ -10,7 +10,7 @@ class MainActivity : FlutterActivity() {
 
     // Обработка результатов разрешения
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == 1) {
+        if (requestCode == GetPhotosFromDevicePlugin.REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Добавьте проверку на одобрение разрешения
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES)

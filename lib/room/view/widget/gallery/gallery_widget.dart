@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../common/widgets/modals.dart';
 import '../../../data/models/image.dart';
+import 'gallery_native.dart';
 import 'images_widget.dart';
 
 class GalleryWidget extends StatefulWidget {
@@ -91,7 +93,15 @@ class _GalleryWidgetState extends State<GalleryWidget> {
             ),
             ListTile(
               leading: const Icon(Icons.add_photo_alternate_outlined),
-              onTap: () async => await _onSelectedFromGalleryPressed(),
+              // onTap: () async => await _onSelectedFromGalleryPressed(),
+              onTap: () {
+                Modals.showBottomSheet(
+                    context,
+                    NativePhotoParserWidget(
+                      callImagePicker: () => _onSelectedFromGalleryPressed(),
+                      callCamera: () => _onSelectedCameraPressed(),
+                    ));
+              },
               title: const Text('Выбрать из галереи'),
             ),
             const Divider(

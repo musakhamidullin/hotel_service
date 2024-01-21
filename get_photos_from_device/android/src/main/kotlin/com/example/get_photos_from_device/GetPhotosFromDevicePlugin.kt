@@ -35,14 +35,13 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     checkReadMediaPermission(result)
                 }
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
                     result.success(true)
                 }
             } else {
                 result.notImplemented()
             }
         }
-
         @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
         private fun checkReadMediaPermission(result: MethodChannel.Result) {
             resultPermissionHandler = result
@@ -51,7 +50,7 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
                 result.success(true)
             } else {
                 if (!shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_MEDIA_IMAGES)) {
-                    requestPermissions(activity, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), 1)
+                    requestPermissions(activity, arrayOf(Manifest.permission.READ_MEDIA_IMAGES), REQUEST_CODE)
                     return;
                 }
                 result.success(false)
@@ -64,7 +63,7 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
             if (call.method == METHOD_GET_ALL_PHOTOS) {
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    if (isDeniededPermission()) {
+                    if (isDeniedPermission()) {
                         result.error("", "READ_MEDIA_IMAGES - DENIED", "")
                         return
                     }
@@ -78,7 +77,7 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
         }
 
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        private fun isDeniededPermission(): Boolean {
+        private fun isDeniedPermission(): Boolean {
             return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_DENIED
         }
     }
@@ -106,6 +105,8 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
         private const val GET_PHOTOS_NAME_CHANNEL = "get_photo"
         private const val GET_PERMISSION_CHANNEL = "get_permission"
         private const val METHOD_GET_ALL_PHOTOS = "getAllPhotos"
+
+        const val REQUEST_CODE = 1;
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {

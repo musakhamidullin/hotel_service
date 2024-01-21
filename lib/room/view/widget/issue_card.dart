@@ -291,16 +291,17 @@ class _IssueCardState extends State<IssueCard> {
                     },
                   ),
                   IconButton(
-                      onPressed: () {
-                        final cubit = context.read<RoomCubit>();
-                        Modals.showBottomSheet(
-                            context,
-                            CommentsSheet(
-                              issue: widget.issue,
-                              index: widget.index,
-                              cubit: cubit,
-                            ));
-                      },
+                      onPressed: null,
+                      // () {
+                      //   final cubit = context.read<RoomCubit>();
+                      //   Modals.showBottomSheet(
+                      //       context,
+                      //       CommentsSheet(
+                      //         issue: widget.issue,
+                      //         index: widget.index,
+                      //         cubit: cubit,
+                      //       ));
+                      // },
                       icon: const Icon(Icons.message)),
                   // const SizedBox(
                   //   width: 12,
