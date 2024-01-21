@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -32,8 +33,9 @@ class IssueReport with _$IssueReport {
 
   static IssueReport fill(RoomState roomState, IssuesModel issue) {
     final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
-      final bytes = const Base64Decoder().convert(e.image);
-      return ProblemMedia.fromFile(e.image, _getExtension(bytes));
+      final bytesFromFile = base64Encode(File(e.image).readAsBytesSync());
+      final bytes = const Base64Decoder().convert(bytesFromFile);
+      return ProblemMedia.fromFile(bytesFromFile, _getExtension(bytes));
     }).toList();
 
     //харкод типа аудио записи
@@ -136,11 +138,6 @@ class ProblemMedia with _$ProblemMedia {
 
   factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
       ProblemMedia(mediaType: extension, media: '', mediaBase64: bytes);
-
-  // factory ProblemMedia.fromJson(Map<String, dynamic> json) {
-  //   // json['MediaType'] = json['Media'] as String;
-  //   return _$ProblemMediaFromJson(json);
-  // }
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
       _$ProblemMediaFromJson(json);
