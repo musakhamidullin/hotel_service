@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -44,7 +45,8 @@ class MiniImagesIssueCard extends StatelessWidget {
                 child: _ImageItem(
                   image: e.image,
                   index: index,
-                  width: imageWidth, isFromApi: e.isFromApi,
+                  width: imageWidth,
+                  isFromApi: e.isFromApi,
                 ),
               ),
             )
@@ -127,11 +129,8 @@ class _ImageItem extends StatelessWidget {
               height: 150,
               width: width,
             )
-          : Image(
-              image: CacheMemoryImageProvider(
-                tag: image,
-                img: const Base64Decoder().convert(image),
-              ),
+          : Image.file(
+              File(image),
               fit: BoxFit.cover,
               height: 150,
               width: width,
