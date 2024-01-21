@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -78,13 +79,7 @@ class _ImagesViewerState extends State<ImagesViewer> {
               return _images[itemIndex].isFromApi
                   ? Image.network(_images[itemIndex].image)
                   : InteractiveViewer(
-                      child: Image(
-                        image: CacheMemoryImageProvider(
-                          tag: _images[itemIndex].image,
-                          img: const Base64Decoder()
-                              .convert(_images[itemIndex].image),
-                        ),
-                      ),
+                      child: Image.file(File(_images[itemIndex].image)),
                     );
             },
             options: CarouselOptions(
@@ -125,11 +120,8 @@ class _ImagesViewerState extends State<ImagesViewer> {
                           : null,
                       child: e.isFromApi
                           ? Image.network(e.image)
-                          : Image(
-                              image: CacheMemoryImageProvider(
-                                tag: e.image,
-                                img: const Base64Decoder().convert(e.image),
-                              ),
+                          : Image.file(
+                              File(e.image),
                               height: imageIndex == _currImage
                                   ? sliderIndicatorHeight
                                   : sliderIndicatorHeight + 4,
