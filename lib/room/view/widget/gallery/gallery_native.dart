@@ -20,7 +20,7 @@ class NativePhotoParserWidget extends StatefulWidget {
 }
 
 class _NativePhotoParserWidgetState extends State<NativePhotoParserWidget> {
-  Future<List<String>> getPhotos() async {
+  Future<List<String>> _getPhotos() async {
     final (data, isGranted) = await GetPhotosFromDevicePlugin.getPhotos();
 
     if (!isGranted) {
@@ -73,7 +73,7 @@ class _NativePhotoParserWidgetState extends State<NativePhotoParserWidget> {
       minChildSize: 0.4,
       initialChildSize: 1,
       builder: (context, scrollController) => FutureBuilder(
-        future: getPhotos(),
+        future: _getPhotos(),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.requireData.isNotEmpty) {
             return Scaffold(
