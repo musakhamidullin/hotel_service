@@ -268,7 +268,7 @@ class _IssueCardState extends State<IssueCard> {
                                 cubit.onIssueModelChanged(
                                   widget.issue.copyWith(
                                       images: [...widget.issue.images]
-                                        ..removeWhere((e) => e == item)),
+                                        ..removeWhere((e) => e.image == item)),
                                 ),
                             onClearPressed: () => cubit.onIssueModelChanged(
                                 widget.issue.copyWith(images: []))),
