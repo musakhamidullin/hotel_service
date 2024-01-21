@@ -9,5 +9,10 @@ class MessageValue with _$MessageValue {
   const factory MessageValue({
     String? text,
     List<Uint8List>? buffImages,
-}) = _MessageValue;
+  }) = _MessageValue;
+
+  const MessageValue._();
+
+  bool canSend() =>
+      (buffImages?.isNotEmpty ?? false) || (text?.isNotEmpty ?? false);
 }

@@ -20,6 +20,8 @@ class _InputCardState extends State<InputCard> {
   final _textController = TextEditingController();
   var _messageValue = const MessageValue();
 
+  final ValueNotifier<bool> _canSend = ValueNotifier(false);
+
   @override
   void dispose() {
     _textController.dispose();
@@ -40,6 +42,7 @@ class _InputCardState extends State<InputCard> {
           ),
           onChanged: (value) {
             _messageValue = _messageValue.copyWith(text: value);
+            _canSend.value = _messageValue.canSend();
           },
           onSubmitted: (value) {
             _messageValue = _messageValue.copyWith(text: value);
@@ -47,36 +50,63 @@ class _InputCardState extends State<InputCard> {
             FocusManager.instance.primaryFocus?.unfocus();
             //todo clear after success send
             _textController.clear();
+            _messageValue = _messageValue.copyWith(text: '');
+            _canSend.value = _messageValue.canSend();
           },
         ),
         if (_messageValue.buffImages?.isNotEmpty ?? false)
-          Row(
-            children: _messageValue.buffImages!
-                .map((e) => // Image(
-                    Image(
-                      image: CacheMemoryImageProvider(
-                        tag: _messageValue.buffImages!.indexOf(e).toString(),
-                        img: e,
-                      ),
-                      fit: BoxFit.cover,
-                      height: 100,
-                      width: 100,
-                    ))
-                .toList(),
+          SizedBox(
+            height: 100,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: _messageValue.buffImages!
+                  .map((e) => // Image(
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: Image(
+                          image: CacheMemoryImageProvider(
+                            tag:
+                                _messageValue.buffImages!.indexOf(e).toString(),
+                            img: e,
+                          ),
+                          fit: BoxFit.cover,
+                          width: 90,
+                        ),
+                      ))
+                  .toList(),
+            ),
           ),
-        InputButtons(
-          textEditingController: _textController,
-          onPhotographed: (value) {
-            setState(() {
-              _messageValue = _messageValue
-                  .copyWith(buffImages: [...?_messageValue.buffImages, value]);
-            });
-          },
-          onSend: () {
-            context.read<CommentsCubit>().sendMessage(_messageValue);
-            FocusManager.instance.primaryFocus?.unfocus();
-            //todo clear after success send
-            _textController.clear();
+        ValueListenableBuilder(
+          valueListenable: _canSend,
+          builder: (context, value, child) {
+            return InputButtons(
+              canSend: value,
+              onPhotographed: (value) {
+                setState(() {
+                  _messageValue = _messageValue.copyWith(
+                      buffImages: [...?_messageValue.buffImages, value]);
+                });
+                _canSend.value = _messageValue.canSend();
+              },
+              onSend: () {
+                context.read<CommentsCubit>().sendMessage(_messageValue);
+                FocusManager.instance.primaryFocus?.unfocus();
+                //todo clear after success send
+                _textController.clear();
+                setState(() {
+                  _messageValue = const MessageValue();
+                });
+                _canSend.value = _messageValue.canSend();
+              },
+              onClear: () {
+                _textController.clear();
+                setState(() {
+                  _messageValue = const MessageValue();
+                });
+                _canSend.value = _messageValue.canSend();
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+            );
           },
         )
       ],
@@ -88,44 +118,26 @@ class InputButtons extends StatefulWidget {
   const InputButtons({
     super.key,
     required this.onSend,
+    required this.onClear,
     required this.onPhotographed,
-    required this.textEditingController,
+    required this.canSend,
   });
 
   final Function() onSend;
+  final Function() onClear;
   final Function(Uint8List) onPhotographed;
-  final TextEditingController textEditingController;
+  final bool canSend;
 
   @override
   State<InputButtons> createState() => _InputButtonsState();
 }
 
 class _InputButtonsState extends State<InputButtons> {
-  var _hasText = false;
-
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage?.path == null) return;
     widget.onPhotographed(File(pickedImage!.path).readAsBytesSync());
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    widget.textEditingController.addListener(_textListener);
-  }
-
-  @override
-  void dispose() {
-    widget.textEditingController.removeListener(_textListener);
-    super.dispose();
-  }
-
-  void _textListener() {
-    setState(() {
-      _hasText = widget.textEditingController.text.isNotEmpty;
-    });
   }
 
   @override
@@ -152,17 +164,11 @@ class _InputButtonsState extends State<InputButtons> {
           icon: const Icon(Icons.mic),
         ),
         IconButton(
-          onPressed: _hasText ? widget.onSend : null,
+          onPressed: widget.canSend ? widget.onSend : null,
           icon: const Icon(Icons.send),
         ),
         IconButton(
-          onPressed: _hasText
-              ? () {
-                  //todo clear all images
-                  widget.textEditingController.clear();
-                  FocusManager.instance.primaryFocus?.unfocus();
-                }
-              : null,
+          onPressed: widget.canSend ? widget.onClear : null,
           icon: const Icon(Icons.clear),
         ),
       ],

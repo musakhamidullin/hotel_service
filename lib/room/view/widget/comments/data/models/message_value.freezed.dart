@@ -102,9 +102,10 @@ class __$$MessageValueImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MessageValueImpl implements _MessageValue {
+class _$MessageValueImpl extends _MessageValue {
   const _$MessageValueImpl({this.text, final List<Uint8List>? buffImages})
-      : _buffImages = buffImages;
+      : _buffImages = buffImages,
+        super._();
 
   @override
   final String? text;
@@ -144,10 +145,11 @@ class _$MessageValueImpl implements _MessageValue {
       __$$MessageValueImplCopyWithImpl<_$MessageValueImpl>(this, _$identity);
 }
 
-abstract class _MessageValue implements MessageValue {
+abstract class _MessageValue extends MessageValue {
   const factory _MessageValue(
       {final String? text,
       final List<Uint8List>? buffImages}) = _$MessageValueImpl;
+  const _MessageValue._() : super._();
 
   @override
   String? get text;
