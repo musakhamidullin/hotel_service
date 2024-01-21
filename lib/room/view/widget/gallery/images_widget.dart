@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../../data/models/image.dart';
 import 'add_photos.dart';
 
@@ -75,12 +74,8 @@ class ImagesWidget extends StatelessWidget {
                               filterQuality: FilterQuality.none,
                               key: ValueKey(i),
                             )
-                          : Image(
-                              image: CacheMemoryImageProvider(
-                                tag: images[i].image,
-                                img: const Base64Decoder()
-                                    .convert(images[i].image),
-                              ),
+                          : Image.file(
+                              File(images[i].image),
                               fit: BoxFit.cover,
                             ),
                     ),
