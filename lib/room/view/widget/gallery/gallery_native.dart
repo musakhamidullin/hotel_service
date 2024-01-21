@@ -17,14 +17,14 @@ class NativePhotoParserWidget extends StatefulWidget {
 
 class _NativePhotoParserWidgetState extends State<NativePhotoParserWidget> {
   Future<List<String>> getPhotos() async {
-    final data = await GetPhotosFromDevicePlugin.getPhotos();
+    final (data, isGranted) = await GetPhotosFromDevicePlugin.getPhotos();
 
-    if (!data.$2) {
+    if (!isGranted) {
       widget.callImagePicker();
       throw StateError('function cannot return a value');
     }
 
-    return data.$1;
+    return data;
   }
 
   @override
