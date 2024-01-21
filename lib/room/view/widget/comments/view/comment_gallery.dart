@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/models/image.dart';
-import '../gallery/images_widget.dart';
-
 class CommentGallery extends StatefulWidget {
   const CommentGallery({super.key});
 

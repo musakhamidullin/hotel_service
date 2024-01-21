@@ -12,7 +12,7 @@ import '../../cubit/room_cubit.dart';
 import '../../data/models/image.dart';
 import '../../data/models/issues.dart';
 import 'status_card.dart';
-import 'comments/comments_sheet.dart';
+import 'comments/view/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -291,17 +291,17 @@ class _IssueCardState extends State<IssueCard> {
                     },
                   ),
                   IconButton(
-                      onPressed: null,
-                      // () {
-                      //   final cubit = context.read<RoomCubit>();
-                      //   Modals.showBottomSheet(
-                      //       context,
-                      //       CommentsSheet(
-                      //         issue: widget.issue,
-                      //         index: widget.index,
-                      //         cubit: cubit,
-                      //       ));
-                      // },
+                      onPressed: () {
+                        final cubit = context.read<RoomCubit>();
+                        Modals.showBottomSheet(
+                          context,
+                          CommentsSheet(
+                            issue: widget.issue,
+                            index: widget.index,
+                            cubit: cubit,
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.message)),
                   // const SizedBox(
                   //   width: 12,
