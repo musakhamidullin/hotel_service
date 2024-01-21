@@ -24,6 +24,7 @@ class _InputCardState extends State<InputCard> {
     _textController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -48,6 +49,7 @@ class _InputCardState extends State<InputCard> {
           },
         ),
         InputButtons(
+          textEditingController: _textController,
           onSend: () {
             context.read<CommentsCubit>().sendMessage(_messageValue);
             FocusManager.instance.primaryFocus?.unfocus();
@@ -64,9 +66,11 @@ class InputButtons extends StatefulWidget {
   const InputButtons({
     super.key,
     required this.onSend,
+    required this.textEditingController,
   });
 
   final Function() onSend;
+  final TextEditingController textEditingController;
 
   @override
   State<InputButtons> createState() => _InputButtonsState();
@@ -74,6 +78,7 @@ class InputButtons extends StatefulWidget {
 
 class _InputButtonsState extends State<InputButtons> {
   final List<String> _images = [];
+  var _hasText = false;
 
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
@@ -83,6 +88,24 @@ class _InputButtonsState extends State<InputButtons> {
         _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.textEditingController.addListener(_textListener);
+  }
+
+  @override
+  void dispose() {
+    widget.textEditingController.removeListener(_textListener);
+    super.dispose();
+  }
+
+  void _textListener() {
+    setState(() {
+      _hasText = widget.textEditingController.text.isNotEmpty;
+    });
   }
 
   @override
@@ -109,8 +132,18 @@ class _InputButtonsState extends State<InputButtons> {
           icon: const Icon(Icons.mic),
         ),
         IconButton(
-          onPressed: widget.onSend,
+          onPressed: _hasText ? widget.onSend : null,
           icon: const Icon(Icons.send),
+        ),
+        IconButton(
+          onPressed: _hasText
+              ? () {
+            //todo clear all images
+                  widget.textEditingController.clear();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              : null,
+          icon: const Icon(Icons.clear),
         ),
       ],
     );
