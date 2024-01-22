@@ -1,13 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../common/widgets/modals.dart';
 import '../../../data/models/image.dart';
-import 'gallery_native.dart';
+
 import 'images_widget.dart';
+import 'view/widget/get_photos_button.dart';
 
 class GalleryWidget extends StatefulWidget {
   const GalleryWidget({
@@ -29,18 +26,7 @@ class GalleryWidget extends StatefulWidget {
 }
 
 class _GalleryWidgetState extends State<GalleryWidget> {
-  Future<void> _onSelectedFromGalleryPressed() async {
-    final pickedImages = await ImagePicker().pickMultiImage();
-
-    final bytes = pickedImages
-        .map((e) =>
-            ImageModel.fromDevice(base64Encode(File(e.path).readAsBytesSync())))
-        .toList();
-
-    setState(() {
-      _images.addAll(bytes);
-    });
-  }
+  final List<ImageModel> _images = [];
 
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
@@ -59,10 +45,23 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     _images.addAll(widget.images);
   }
 
-  final List<ImageModel> _images = [];
-
   @override
   Widget build(BuildContext context) {
+    final getPhotosButton = GetPhotosButton(
+      onSelectedFromNativeGalleryPressed: (List<ImageModel> photos) =>
+          setState(() {
+        _images.addAll(photos);
+      }),
+      onSelectedFromImagePickerPressed: (List<ImageModel> photos) =>
+          setState(() {
+        _images.addAll(photos);
+      }),
+      onSelectedCameraPressed: (ImageModel photo) => setState(() {
+        _images.add(photo);
+      }),
+      iconData: Icons.attach_file_rounded,
+    );
+
     return DraggableScrollableSheet(
       expand: false,
       maxChildSize: 1,
@@ -91,20 +90,9 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               height: 8,
             ),
             ListTile(
-              leading: const Icon(Icons.add_photo_alternate_outlined),
-              // onTap: () async => await _onSelectedFromGalleryPressed(),
+              leading: getPhotosButton,
               onTap: () {
-                Modals.showBottomSheet(
-                    context,
-                    NativePhotoParserWidget(
-                      callImagePicker: () => _onSelectedFromGalleryPressed(),
-                      callCamera: () => _onSelectedCameraPressed(),
-                      onAddPhotosPressed: (List<String> images) {
-                        final photos = ImageModel.getImageModels(images);
-                        _images.addAll(photos);
-                        setState(() {});
-                      },
-                    ));
+                getPhotosButton.onTap(context);
               },
               title: const Text('Выбрать из галереи'),
             ),
