@@ -11,6 +11,7 @@ _$IssueCreatedReportImpl _$$IssueCreatedReportImplFromJson(
     _$IssueCreatedReportImpl(
       personId: json['PersonId'] as int? ?? 0,
       defectId: json['DefectId'] as int? ?? 0,
+      departmentId: json['DepartmentId'] as int? ?? 0,
       comment: json['Comment'] as String? ?? '',
       problemMedia: (json['ProblemMedia'] as List<dynamic>?)
               ?.map((e) => ProblemMedia.fromJson(e as Map<String, dynamic>))
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$IssueCreatedReportImplToJson(
     <String, dynamic>{
       'PersonId': instance.personId,
       'DefectId': instance.defectId,
+      'DepartmentId': instance.departmentId,
       'Comment': instance.comment,
       'ProblemMedia': instance.problemMedia,
     };

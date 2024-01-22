@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
 
 import '../../cubit/room_cubit.dart';
+import 'issue_created_report.dart';
 import 'issues.dart';
 
 part 'issue_report.freezed.dart';
@@ -30,13 +32,17 @@ class IssueReport with _$IssueReport {
       _$IssueReportFromJson(json);
 
   static IssueReport fill(RoomState roomState, IssuesModel issue) {
-    final images = issue.images.map((e) {
-      final bytes = const Base64Decoder().convert(e);
-      return ProblemMedia.fromFile(e, _getExtension(bytes));
+    final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
+      final bytesFromFile = base64Encode(File(e.image).readAsBytesSync());
+      final bytes = const Base64Decoder().convert(bytesFromFile);
+      return ProblemMedia.fromFile(bytesFromFile, _getExtension(bytes));
     }).toList();
 
     //харкод типа аудио записи
-    final audio = issue.audios.map((e) => ProblemMedia.fromFile(e, MediaType.m4a)).toList();
+    final audio = issue.audios
+        .mapWhere((e) => !e.isFromApi,
+            (e) => ProblemMedia.fromFile(e.audio, MediaType.m4a))
+        .toList();
     return IssueReport(
       departmentId: issue.department.id,
       personId: roomState.user.personInfo.id,
@@ -90,20 +96,33 @@ enum MediaType {
   bool isPic() => this == MediaType.jpg || this == MediaType.png;
 
   bool isAudio() => this == MediaType.mp3 || this == MediaType.m4a;
+
+  static _getFileExtension(String url) {
+    List<String> parts = url.split("/");
+    String fileName = parts.last;
+    List<String> fileNameParts = fileName.split(".");
+    String fileExtension = fileNameParts.last;
+    return fileExtension;
+  }
+
+  static MediaType getMediaType(String url) {
+    final data = _getFileExtension(url);
+
+    for (final e in MediaType.values) {
+      if (data.contains(e.name)) {
+        return e;
+      }
+    }
+
+    return MediaType.unknown;
+  }
 }
 
 class MediaTypeConverter implements JsonConverter<MediaType, String> {
   const MediaTypeConverter();
 
   @override
-  MediaType fromJson(String value) {
-    try {
-      return MediaType.values.byName(value);
-    } catch (_) {
-      return MediaType.unknown;
-    }
-  }
-
+  MediaType fromJson(String value) => MediaType.getMediaType(value);
   @override
   String toJson(MediaType value) => '.${value.name}';
 }
@@ -113,12 +132,12 @@ class ProblemMedia with _$ProblemMedia {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory ProblemMedia({
     @Default('') String mediaBase64,
-    @Default(MediaType.jpg) @MediaTypeConverter() MediaType mediaType,
-    @JsonSerializable(includeIfNull: false) @Default('') String mediaInBase64,
+    @Default(MediaType.unknown) @MediaTypeConverter() MediaType mediaType,
+    @JsonSerializable(includeIfNull: false) @Default('') String media,
   }) = _ProblemMedia;
 
   factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
-      ProblemMedia(mediaType: extension, mediaInBase64: '', mediaBase64: bytes);
+      ProblemMedia(mediaType: extension, media: '', mediaBase64: bytes);
 
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
       _$ProblemMediaFromJson(json);

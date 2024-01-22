@@ -10,19 +10,19 @@ _$IssuesModelImpl _$$IssuesModelImplFromJson(Map<String, dynamic> json) =>
     _$IssuesModelImpl(
       id: json['id'] as int? ?? 0,
       images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => ImageModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <String>[],
+          const <ImageModel>[],
       audios: (json['audios'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => AudioModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <String>[],
+          const <AudioModel>[],
       lastComment: json['lastComment'] as String? ?? '',
       comment: json['comment'] as String? ?? '',
       date: json['date'] == null
           ? ''
           : const DateSerializer().fromJson(json['date']),
-      isMutable: json['isMutable'] as bool? ?? true,
+      isFromApi: json['isFromApi'] as bool? ?? true,
       department: json['department'] == null
           ? const Department()
           : Department.fromJson(json['department'] as Map<String, dynamic>),
@@ -40,7 +40,7 @@ Map<String, dynamic> _$$IssuesModelImplToJson(_$IssuesModelImpl instance) =>
       'lastComment': instance.lastComment,
       'comment': instance.comment,
       'date': const DateSerializer().toJson(instance.date),
-      'isMutable': instance.isMutable,
+      'isFromApi': instance.isFromApi,
       'department': instance.department,
       'personName': instance.personName,
       'defectStatus': instance.defectStatus,

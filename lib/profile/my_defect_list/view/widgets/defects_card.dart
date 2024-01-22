@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../room/data/models/issues.dart';
 import '../../../../room/view/widget/mini_images.dart';
-import '../../../../voice_messanger/data/models/voice_value.dart';
-import '../../../../voice_messanger/view/message_audio_player.dart';
+import '../../../../voice_messenger/data/models/voice_value.dart';
+import '../../../../voice_messenger/view/message_audio_player.dart';
 
 class DefectsCard extends StatelessWidget {
   const DefectsCard({
@@ -57,7 +57,7 @@ class DefectsCard extends StatelessWidget {
                     .map(
                       (e) => MessageAudioPlayer(
                         key: ObjectKey(e),
-                        voiceValue: VoiceValue(base64: e),
+                        voiceValue: VoiceValue(audio: e),
                         index: issuesModel.audios.indexOf(e),
                         playerKey: '$index${issuesModel.audios.indexOf(e)}',
                         onRemove: (value) {},
@@ -65,7 +65,8 @@ class DefectsCard extends StatelessWidget {
                     )
                     .toList(),
               ),
-              if (issuesModel.lastComment.isNotEmpty) Text(issuesModel.lastComment),
+              if (issuesModel.lastComment.isNotEmpty)
+                Text(issuesModel.lastComment),
             ],
           ),
         ),

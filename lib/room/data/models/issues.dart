@@ -3,24 +3,25 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
 import '../../../auth/data/model/user.dart';
+import 'audio.dart';
 import 'defect.dart';
 import 'defect_status.dart';
 import 'department_info.dart';
+import 'image.dart';
 
 part 'issues.freezed.dart';
-
 part 'issues.g.dart';
 
 @freezed
 class IssuesModel extends Equatable with _$IssuesModel {
   const factory IssuesModel(
       {@Default(0) int id,
-      @Default(<String>[]) List<String> images,
-      @Default(<String>[]) List<String> audios,
+      @Default(<ImageModel>[]) List<ImageModel> images,
+      @Default(<AudioModel>[]) List<AudioModel> audios,
       @Default('') String lastComment,
       @Default('') String comment,
       @Default('') @DateSerializer() String date,
-      @Default(true) bool isMutable,
+      @Default(true) bool isFromApi,
       @Default(Department()) Department department,
       @Default('') String personName,
       @Default(DefectStatus()) DefectStatus defectStatus}) = _IssuesModel;
@@ -41,15 +42,18 @@ class IssuesModel extends Equatable with _$IssuesModel {
     List<Department> departments,
     List<DefectStatus> defectStatuses,
   ) {
-    final images = <String>[];
-    final audios = <String>[];
+    final images = <ImageModel>[];
+    final audios = <AudioModel>[];
+
     for (final e in defect.hotelDefectMedias) {
+
       if (e.mediaType.isAudio()) {
-        audios.add(e.mediaInBase64);
+        audios.add(AudioModel.fromApi(e.media));
       } else {
-        images.add(e.mediaInBase64);
+        images.add(ImageModel.fromApi(e.media));
       }
-    }
+    } 
+    
     return IssuesModel(
       id: defect.id,
       personName: defect.personName,
@@ -59,7 +63,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
       images: images,
       audios: audios,
       date: defect.createDate.toString(),
-      isMutable: false,
+      isFromApi: false,
     );
   }
 
@@ -70,7 +74,7 @@ class IssuesModel extends Equatable with _$IssuesModel {
       DateFormat.yMMMEd(languageCode).add_Hm().format(DateTime.parse(date));
 
   @override
-  List<Object?> get props => [images, comment, date, isMutable, department];
+  List<Object?> get props => [images, comment, date, isFromApi, department];
 }
 
 class DateSerializer implements JsonConverter<String, dynamic> {

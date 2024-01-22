@@ -191,7 +191,7 @@ class _$IssueReportImpl implements _IssueReport {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$IssueReportImpl &&
@@ -262,7 +262,7 @@ mixin _$ProblemMedia {
   @MediaTypeConverter()
   MediaType get mediaType => throw _privateConstructorUsedError;
   @JsonSerializable(includeIfNull: false)
-  String get mediaInBase64 => throw _privateConstructorUsedError;
+  String get media => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -279,7 +279,7 @@ abstract class $ProblemMediaCopyWith<$Res> {
   $Res call(
       {String mediaBase64,
       @MediaTypeConverter() MediaType mediaType,
-      @JsonSerializable(includeIfNull: false) String mediaInBase64});
+      @JsonSerializable(includeIfNull: false) String media});
 }
 
 /// @nodoc
@@ -297,7 +297,7 @@ class _$ProblemMediaCopyWithImpl<$Res, $Val extends ProblemMedia>
   $Res call({
     Object? mediaBase64 = null,
     Object? mediaType = null,
-    Object? mediaInBase64 = null,
+    Object? media = null,
   }) {
     return _then(_value.copyWith(
       mediaBase64: null == mediaBase64
@@ -308,9 +308,9 @@ class _$ProblemMediaCopyWithImpl<$Res, $Val extends ProblemMedia>
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
               as MediaType,
-      mediaInBase64: null == mediaInBase64
-          ? _value.mediaInBase64
-          : mediaInBase64 // ignore: cast_nullable_to_non_nullable
+      media: null == media
+          ? _value.media
+          : media // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -327,7 +327,7 @@ abstract class _$$ProblemMediaImplCopyWith<$Res>
   $Res call(
       {String mediaBase64,
       @MediaTypeConverter() MediaType mediaType,
-      @JsonSerializable(includeIfNull: false) String mediaInBase64});
+      @JsonSerializable(includeIfNull: false) String media});
 }
 
 /// @nodoc
@@ -343,7 +343,7 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
   $Res call({
     Object? mediaBase64 = null,
     Object? mediaType = null,
-    Object? mediaInBase64 = null,
+    Object? media = null,
   }) {
     return _then(_$ProblemMediaImpl(
       mediaBase64: null == mediaBase64
@@ -354,9 +354,9 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
           ? _value.mediaType
           : mediaType // ignore: cast_nullable_to_non_nullable
               as MediaType,
-      mediaInBase64: null == mediaInBase64
-          ? _value.mediaInBase64
-          : mediaInBase64 // ignore: cast_nullable_to_non_nullable
+      media: null == media
+          ? _value.media
+          : media // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -368,8 +368,8 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
 class _$ProblemMediaImpl implements _ProblemMedia {
   const _$ProblemMediaImpl(
       {this.mediaBase64 = '',
-      @MediaTypeConverter() this.mediaType = MediaType.jpg,
-      @JsonSerializable(includeIfNull: false) this.mediaInBase64 = ''});
+      @MediaTypeConverter() this.mediaType = MediaType.unknown,
+      @JsonSerializable(includeIfNull: false) this.media = ''});
 
   factory _$ProblemMediaImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProblemMediaImplFromJson(json);
@@ -384,15 +384,15 @@ class _$ProblemMediaImpl implements _ProblemMedia {
   @override
   @JsonKey()
   @JsonSerializable(includeIfNull: false)
-  final String mediaInBase64;
+  final String media;
 
   @override
   String toString() {
-    return 'ProblemMedia(mediaBase64: $mediaBase64, mediaType: $mediaType, mediaInBase64: $mediaInBase64)';
+    return 'ProblemMedia(mediaBase64: $mediaBase64, mediaType: $mediaType, media: $media)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProblemMediaImpl &&
@@ -400,14 +400,12 @@ class _$ProblemMediaImpl implements _ProblemMedia {
                 other.mediaBase64 == mediaBase64) &&
             (identical(other.mediaType, mediaType) ||
                 other.mediaType == mediaType) &&
-            (identical(other.mediaInBase64, mediaInBase64) ||
-                other.mediaInBase64 == mediaInBase64));
+            (identical(other.media, media) || other.media == media));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, mediaBase64, mediaType, mediaInBase64);
+  int get hashCode => Object.hash(runtimeType, mediaBase64, mediaType, media);
 
   @JsonKey(ignore: true)
   @override
@@ -427,7 +425,7 @@ abstract class _ProblemMedia implements ProblemMedia {
   const factory _ProblemMedia(
           {final String mediaBase64,
           @MediaTypeConverter() final MediaType mediaType,
-          @JsonSerializable(includeIfNull: false) final String mediaInBase64}) =
+          @JsonSerializable(includeIfNull: false) final String media}) =
       _$ProblemMediaImpl;
 
   factory _ProblemMedia.fromJson(Map<String, dynamic> json) =
@@ -440,7 +438,7 @@ abstract class _ProblemMedia implements ProblemMedia {
   MediaType get mediaType;
   @override
   @JsonSerializable(includeIfNull: false)
-  String get mediaInBase64;
+  String get media;
   @override
   @JsonKey(ignore: true)
   _$$ProblemMediaImplCopyWith<_$ProblemMediaImpl> get copyWith =>

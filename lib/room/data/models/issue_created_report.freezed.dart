@@ -22,6 +22,7 @@ IssueCreatedReport _$IssueCreatedReportFromJson(Map<String, dynamic> json) {
 mixin _$IssueCreatedReport {
   int get personId => throw _privateConstructorUsedError;
   int get defectId => throw _privateConstructorUsedError;
+  int get departmentId => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
   List<ProblemMedia> get problemMedia => throw _privateConstructorUsedError;
 
@@ -40,6 +41,7 @@ abstract class $IssueCreatedReportCopyWith<$Res> {
   $Res call(
       {int personId,
       int defectId,
+      int departmentId,
       String comment,
       List<ProblemMedia> problemMedia});
 }
@@ -59,6 +61,7 @@ class _$IssueCreatedReportCopyWithImpl<$Res, $Val extends IssueCreatedReport>
   $Res call({
     Object? personId = null,
     Object? defectId = null,
+    Object? departmentId = null,
     Object? comment = null,
     Object? problemMedia = null,
   }) {
@@ -70,6 +73,10 @@ class _$IssueCreatedReportCopyWithImpl<$Res, $Val extends IssueCreatedReport>
       defectId: null == defectId
           ? _value.defectId
           : defectId // ignore: cast_nullable_to_non_nullable
+              as int,
+      departmentId: null == departmentId
+          ? _value.departmentId
+          : departmentId // ignore: cast_nullable_to_non_nullable
               as int,
       comment: null == comment
           ? _value.comment
@@ -94,6 +101,7 @@ abstract class _$$IssueCreatedReportImplCopyWith<$Res>
   $Res call(
       {int personId,
       int defectId,
+      int departmentId,
       String comment,
       List<ProblemMedia> problemMedia});
 }
@@ -111,6 +119,7 @@ class __$$IssueCreatedReportImplCopyWithImpl<$Res>
   $Res call({
     Object? personId = null,
     Object? defectId = null,
+    Object? departmentId = null,
     Object? comment = null,
     Object? problemMedia = null,
   }) {
@@ -122,6 +131,10 @@ class __$$IssueCreatedReportImplCopyWithImpl<$Res>
       defectId: null == defectId
           ? _value.defectId
           : defectId // ignore: cast_nullable_to_non_nullable
+              as int,
+      departmentId: null == departmentId
+          ? _value.departmentId
+          : departmentId // ignore: cast_nullable_to_non_nullable
               as int,
       comment: null == comment
           ? _value.comment
@@ -142,6 +155,7 @@ class _$IssueCreatedReportImpl implements _IssueCreatedReport {
   const _$IssueCreatedReportImpl(
       {this.personId = 0,
       this.defectId = 0,
+      this.departmentId = 0,
       this.comment = '',
       final List<ProblemMedia> problemMedia = const []})
       : _problemMedia = problemMedia;
@@ -157,6 +171,9 @@ class _$IssueCreatedReportImpl implements _IssueCreatedReport {
   final int defectId;
   @override
   @JsonKey()
+  final int departmentId;
+  @override
+  @JsonKey()
   final String comment;
   final List<ProblemMedia> _problemMedia;
   @override
@@ -169,11 +186,11 @@ class _$IssueCreatedReportImpl implements _IssueCreatedReport {
 
   @override
   String toString() {
-    return 'IssueCreatedReport(personId: $personId, defectId: $defectId, comment: $comment, problemMedia: $problemMedia)';
+    return 'IssueCreatedReport(personId: $personId, defectId: $defectId, departmentId: $departmentId, comment: $comment, problemMedia: $problemMedia)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$IssueCreatedReportImpl &&
@@ -181,6 +198,8 @@ class _$IssueCreatedReportImpl implements _IssueCreatedReport {
                 other.personId == personId) &&
             (identical(other.defectId, defectId) ||
                 other.defectId == defectId) &&
+            (identical(other.departmentId, departmentId) ||
+                other.departmentId == departmentId) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             const DeepCollectionEquality()
                 .equals(other._problemMedia, _problemMedia));
@@ -188,8 +207,8 @@ class _$IssueCreatedReportImpl implements _IssueCreatedReport {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, personId, defectId, comment,
-      const DeepCollectionEquality().hash(_problemMedia));
+  int get hashCode => Object.hash(runtimeType, personId, defectId, departmentId,
+      comment, const DeepCollectionEquality().hash(_problemMedia));
 
   @JsonKey(ignore: true)
   @override
@@ -210,6 +229,7 @@ abstract class _IssueCreatedReport implements IssueCreatedReport {
   const factory _IssueCreatedReport(
       {final int personId,
       final int defectId,
+      final int departmentId,
       final String comment,
       final List<ProblemMedia> problemMedia}) = _$IssueCreatedReportImpl;
 
@@ -220,6 +240,8 @@ abstract class _IssueCreatedReport implements IssueCreatedReport {
   int get personId;
   @override
   int get defectId;
+  @override
+  int get departmentId;
   @override
   String get comment;
   @override

@@ -120,7 +120,7 @@ class _$DefectStatusInfoImpl implements _DefectStatusInfo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DefectStatusInfoImpl &&
@@ -275,7 +275,7 @@ class _$DefectStatusImpl implements _DefectStatus {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DefectStatusImpl &&

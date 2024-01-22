@@ -39,6 +39,10 @@ dependencies:
   equatable: ^2.0.5
   syncfusion_flutter_calendar: ^24.1.43
 
+  get_photos_from_device:
+    path: get_photos_from_device
+
+
 dev_dependencies:
   auto_route_generator: ^7.3.1
   bloc_test: ^9.1.4

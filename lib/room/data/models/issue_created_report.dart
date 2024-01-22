@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,12 +11,19 @@ import 'issues.dart';
 part 'issue_created_report.freezed.dart';
 part 'issue_created_report.g.dart';
 
+extension MapWhere<T> on Iterable<T> {
+  Iterable<R> mapWhere<R>(bool Function(T) filter, R Function(T) transform) {
+    return where(filter).map(transform);
+  }
+}
+
 @freezed
 class IssueCreatedReport with _$IssueCreatedReport {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory IssueCreatedReport({
     @Default(0) int personId,
     @Default(0) int defectId,
+    @Default(0) int departmentId,
     @Default('') String comment,
     @Default([]) List<ProblemMedia> problemMedia,
   }) = _IssueCreatedReport;
@@ -24,16 +32,19 @@ class IssueCreatedReport with _$IssueCreatedReport {
       _$IssueCreatedReportFromJson(json);
 
   static IssueCreatedReport fill(RoomState roomState, IssuesModel issue) {
-    final images = issue.images.map((e) {
-      final bytes = const Base64Decoder().convert(e);
-      return ProblemMedia.fromFile(e, _getExtension(bytes));
+    final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
+      final bytesFromFile = base64Encode(File(e.image).readAsBytesSync());
+      final bytes = const Base64Decoder().convert(bytesFromFile);
+      return ProblemMedia.fromFile(bytesFromFile, _getExtension(bytes));
     }).toList();
 
     //харкод типа аудио записи
     final audio = issue.audios
-        .map((e) => ProblemMedia.fromFile(e, MediaType.m4a))
+        .mapWhere((e) => !e.isFromApi,
+            (e) => ProblemMedia.fromFile(e.audio, MediaType.m4a))
         .toList();
     return IssueCreatedReport(
+        departmentId: issue.department.id,
         comment: issue.comment,
         personId: roomState.user.personInfo.id,
         problemMedia: [...images, ...audio],

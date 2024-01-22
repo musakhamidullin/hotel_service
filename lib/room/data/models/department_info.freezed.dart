@@ -120,7 +120,7 @@ class _$DepartmentInfoImpl implements _DepartmentInfo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DepartmentInfoImpl &&
@@ -290,7 +290,7 @@ class _$DepartmentImpl extends _Department {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DepartmentImpl &&

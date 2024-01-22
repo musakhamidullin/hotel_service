@@ -4,18 +4,18 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../common/widgets/modals.dart';
 
-import '../../../voice_messanger/data/models/voice_value.dart';
-import '../../../voice_messanger/view/message_audio_player.dart';
-import '../../../voice_messanger/view/record_button.dart';
+import '../../../voice_messenger/data/models/voice_value.dart';
+import '../../../voice_messenger/view/message_audio_player.dart';
+import '../../../voice_messenger/view/record_button.dart';
 import '../../cubit/room_cubit.dart';
 
+import '../../data/models/image.dart';
 import '../../data/models/issues.dart';
 import 'status_card.dart';
-import 'comments/commnents_sheet.dart';
+import 'comments/view/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
-import 'issue_field.dart';
 
 class IssueCard extends StatefulWidget {
   const IssueCard({
@@ -164,7 +164,7 @@ class _IssueCardState extends State<IssueCard> {
                     MiniImagesIssueCard(
                       index: widget.index,
                       images: widget.issue.images,
-                      onChanged: (List<String> items) {
+                      onChanged: (List<ImageModel> items) {
                         context.read<RoomCubit>().onIssueModelChanged(
                             widget.issue.copyWith(images: items));
                       },
@@ -179,7 +179,7 @@ class _IssueCardState extends State<IssueCard> {
                     .map(
                       (e) => MessageAudioPlayer(
                         key: ObjectKey(e),
-                        voiceValue: VoiceValue(base64: e),
+                        voiceValue: VoiceValue(audio: e),
                         index: widget.issue.audios.indexOf(e),
                         playerKey:
                             '${widget.index}${widget.issue.audios.indexOf(e)}',
@@ -191,45 +191,45 @@ class _IssueCardState extends State<IssueCard> {
                     )
                     .toList(),
               ),
-              if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
-              if (widget.issue.lastComment.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Последний комментарий:',
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: Colors.grey),
-                    ),
-                    Text(widget.issue.lastComment),
-                  ],
-                ),
-              Row(
-                children: [
-                  Flexible(
-                    child: IssueTextField(
-                      readOnly: _readOnlyInput,
-                      textEditingController: _controller
-                        ..text = widget.issue.comment,
-                      onTextChanged: (String text) => context
-                          .read<RoomCubit>()
-                          .onIssueModelChanged(
-                              widget.issue.copyWith(comment: text)),
-                      onClearPressed: () => context
-                          .read<RoomCubit>()
-                          .onIssueModelChanged(
-                              widget.issue.copyWith(comment: '')),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  IconButton(
-                      onPressed: () => Modals.showBottomSheet(
-                          context, const CommentsSheet()),
-                      icon: const Icon(Icons.message))
-                ],
-              ),
+              // if (widget.issue.images.isNotEmpty) const SizedBox(height: 8),
+              // if (widget.issue.lastComment.isNotEmpty)
+              //   Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Последний комментарий:',
+              //         style: theme.textTheme.bodyMedium
+              //             ?.copyWith(color: Colors.grey),
+              //       ),
+              //       Text(widget.issue.lastComment),
+              //     ],
+              //   ),
+              // Row(
+              //   children: [
+              //     Flexible(
+              //       child: IssueTextField(
+              //         readOnly: _readOnlyInput,
+              //         textEditingController: _controller
+              //           ..text = widget.issue.comment,
+              //         onTextChanged: (String text) => context
+              //             .read<RoomCubit>()
+              //             .onIssueModelChanged(
+              //                 widget.issue.copyWith(comment: text)),
+              //         onClearPressed: () => context
+              //             .read<RoomCubit>()
+              //             .onIssueModelChanged(
+              //                 widget.issue.copyWith(comment: '')),
+              //       ),
+              //     ),
+              //     const SizedBox(
+              //       width: 8,
+              //     ),
+              //     IconButton(
+              //         onPressed: () => Modals.showBottomSheet(
+              //             context, const CommentsSheet()),
+              //         icon: const Icon(Icons.message))
+              //   ],
+              // ),
               const SizedBox(
                 height: 12,
               ),
@@ -239,7 +239,9 @@ class _IssueCardState extends State<IssueCard> {
                   if (!_readOnlyInput)
                     Expanded(
                       child: FilledButton.tonal(
-                        onPressed: widget.onSendPressed,
+                        onPressed: !widget.issue.isFromApi
+                            ? null
+                            : widget.onSendPressed,
                         child: const Text('Отправить'),
                       ),
                     ),
@@ -258,7 +260,7 @@ class _IssueCardState extends State<IssueCard> {
                       Modals.showBottomSheet(
                         context,
                         GalleryWidget(
-                            onSavePressed: (List<String> items) =>
+                            onSavePressed: (List<ImageModel> items) =>
                                 cubit.onIssueModelChanged(
                                     widget.issue.copyWith(images: items)),
                             images: images,
@@ -266,7 +268,7 @@ class _IssueCardState extends State<IssueCard> {
                                 cubit.onIssueModelChanged(
                                   widget.issue.copyWith(
                                       images: [...widget.issue.images]
-                                        ..removeWhere((e) => e == item)),
+                                        ..removeWhere((e) => e.image == item)),
                                 ),
                             onClearPressed: () => cubit.onIssueModelChanged(
                                 widget.issue.copyWith(images: []))),
@@ -274,9 +276,9 @@ class _IssueCardState extends State<IssueCard> {
                     },
                     icon: const Icon(Icons.attach_file_rounded),
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
+                  // const SizedBox(
+                  //   width: 12,
+                  // ),
                   RecordButton(
                     onRecord: (value) {
                       setState(() => _readOnlyInput = value);
@@ -288,10 +290,23 @@ class _IssueCardState extends State<IssueCard> {
                           );
                     },
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  if (widget.issue.isMutable)
+                  IconButton(
+                      onPressed: () {
+                        final cubit = context.read<RoomCubit>();
+                        Modals.showBottomSheet(
+                          context,
+                          CommentsSheet(
+                            issue: widget.issue,
+                            index: widget.index,
+                            cubit: cubit,
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.message)),
+                  // const SizedBox(
+                  //   width: 12,
+                  // ),
+                  if (widget.issue.isFromApi)
                     IconButton(
                       onPressed: () async {
                         final cubit = context.read<RoomCubit>();

@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../common/widgets/modals.dart';
+import '../../../data/models/image.dart';
+import 'gallery_native.dart';
 import 'images_widget.dart';
 
 class GalleryWidget extends StatefulWidget {
@@ -15,9 +18,9 @@ class GalleryWidget extends StatefulWidget {
     required this.onClearPressed,
   });
 
-  final List<String> images;
+  final List<ImageModel> images;
 
-  final void Function(List<String> items) onSavePressed;
+  final void Function(List<ImageModel> items) onSavePressed;
   final void Function(String item) onDeletePressed;
   final VoidCallback onClearPressed;
 
@@ -30,7 +33,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     final pickedImages = await ImagePicker().pickMultiImage();
 
     final bytes = pickedImages
-        .map((e) => base64Encode(File(e.path).readAsBytesSync()))
+        .map((e) =>
+            ImageModel.fromDevice(base64Encode(File(e.path).readAsBytesSync())))
         .toList();
 
     setState(() {
@@ -43,7 +47,8 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
+        _images.add(ImageModel.fromDevice(
+            base64Encode(File(pickedImage.path).readAsBytesSync())));
       });
     }
   }
@@ -55,7 +60,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     _images.addAll(widget.images);
   }
 
-  final List<String> _images = [];
+  final List<ImageModel> _images = [];
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +76,14 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ImagesWidget(
+              isPhotoFromDevice: true,
               images: _images,
               onClearPressed: () => setState(() {
                 widget.onClearPressed();
                 _images.clear();
               }),
               onDeleteItemPressed: (i) => setState(() {
-                widget.onDeletePressed(_images[i]);
+                widget.onDeletePressed(_images[i].image);
 
                 _images.removeAt(i);
               }),
@@ -88,7 +94,20 @@ class _GalleryWidgetState extends State<GalleryWidget> {
             ),
             ListTile(
               leading: const Icon(Icons.add_photo_alternate_outlined),
-              onTap: () async => await _onSelectedFromGalleryPressed(),
+              // onTap: () async => await _onSelectedFromGalleryPressed(),
+              onTap: () {
+                Modals.showBottomSheet(
+                    context,
+                    NativePhotoParserWidget(
+                      callImagePicker: () => _onSelectedFromGalleryPressed(),
+                      callCamera: () => _onSelectedCameraPressed(),
+                      onAddPhotosPressed: (List<String> images) {
+                        final photos = ImageModel.getImageModels(images);
+                        _images.addAll(photos);
+                        setState(() {});
+                      },
+                    ));
+              },
               title: const Text('Выбрать из галереи'),
             ),
             const Divider(

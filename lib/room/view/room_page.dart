@@ -7,7 +7,7 @@ import '../../common/widgets/failure_widget.dart';
 
 import '../../common/widgets/modals.dart';
 import '../../home/data/models/room.dart';
-import '../../voice_messanger/cubit/voice_manager_cubit.dart';
+import '../../voice_messenger/cubit/voice_manager_cubit.dart';
 import '../cubit/room_cubit.dart';
 
 import '../data/repositories/room_rep.dart';
@@ -112,6 +112,12 @@ class _RoomPageState extends State<RoomPage>
               if (state.sendSucces()) {
                 Modals.showInformationDialog(
                     _, 'Заявка успешна отправлена!', Icons.check);
+              }
+
+              if (state.failure()) {
+                Navigator.pop(context);
+                Modals.showInformationDialog(_, 'Ошибка на стороне сервера!',
+                    Icons.error_outline_rounded);
               }
             },
             builder: (context, state) {
