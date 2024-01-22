@@ -16,8 +16,4 @@ class ImageModel with _$ImageModel {
 
   factory ImageModel.fromJson(Map<String, dynamic> json) =>
       _$ImageModelFromJson(json);
-
-  static List<ImageModel> getImageModels(List<String> images) {
-    return images.map((e) => ImageModel.fromDevice(e)).toList();
-  }
 }

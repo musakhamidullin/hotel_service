@@ -1,11 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../cubit/comments_cubit.dart';
 import '../../data/models/message_value.dart';
 
@@ -19,8 +18,6 @@ class InputCard extends StatefulWidget {
 class _InputCardState extends State<InputCard> {
   final _textController = TextEditingController();
   var _messageValue = const MessageValue();
-
-  final ValueNotifier<bool> _canSend = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -42,7 +39,6 @@ class _InputCardState extends State<InputCard> {
           ),
           onChanged: (value) {
             _messageValue = _messageValue.copyWith(text: value);
-            _canSend.value = _messageValue.canSend();
           },
           onSubmitted: (value) {
             _messageValue = _messageValue.copyWith(text: value);
@@ -50,63 +46,15 @@ class _InputCardState extends State<InputCard> {
             FocusManager.instance.primaryFocus?.unfocus();
             //todo clear after success send
             _textController.clear();
-            _messageValue = _messageValue.copyWith(text: '');
-            _canSend.value = _messageValue.canSend();
           },
         ),
-        if (_messageValue.buffImages?.isNotEmpty ?? false)
-          SizedBox(
-            height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: _messageValue.buffImages!
-                  .map((e) => // Image(
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Image(
-                          image: CacheMemoryImageProvider(
-                            tag:
-                                _messageValue.buffImages!.indexOf(e).toString(),
-                            img: e,
-                          ),
-                          fit: BoxFit.cover,
-                          width: 90,
-                        ),
-                      ))
-                  .toList(),
-            ),
-          ),
-        ValueListenableBuilder(
-          valueListenable: _canSend,
-          builder: (context, value, child) {
-            return InputButtons(
-              canSend: value,
-              onPhotographed: (value) {
-                setState(() {
-                  _messageValue = _messageValue.copyWith(
-                      buffImages: [...?_messageValue.buffImages, value]);
-                });
-                _canSend.value = _messageValue.canSend();
-              },
-              onSend: () {
-                context.read<CommentsCubit>().sendMessage(_messageValue);
-                FocusManager.instance.primaryFocus?.unfocus();
-                //todo clear after success send
-                _textController.clear();
-                setState(() {
-                  _messageValue = const MessageValue();
-                });
-                _canSend.value = _messageValue.canSend();
-              },
-              onClear: () {
-                _textController.clear();
-                setState(() {
-                  _messageValue = const MessageValue();
-                });
-                _canSend.value = _messageValue.canSend();
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-            );
+        InputButtons(
+          textEditingController: _textController,
+          onSend: () {
+            context.read<CommentsCubit>().sendMessage(_messageValue);
+            FocusManager.instance.primaryFocus?.unfocus();
+            //todo clear after success send
+            _textController.clear();
           },
         )
       ],
@@ -118,26 +66,46 @@ class InputButtons extends StatefulWidget {
   const InputButtons({
     super.key,
     required this.onSend,
-    required this.onClear,
-    required this.onPhotographed,
-    required this.canSend,
+    required this.textEditingController,
   });
 
   final Function() onSend;
-  final Function() onClear;
-  final Function(Uint8List) onPhotographed;
-  final bool canSend;
+  final TextEditingController textEditingController;
 
   @override
   State<InputButtons> createState() => _InputButtonsState();
 }
 
 class _InputButtonsState extends State<InputButtons> {
+  final List<String> _images = [];
+  var _hasText = false;
+
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage?.path == null) return;
-    widget.onPhotographed(File(pickedImage!.path).readAsBytesSync());
+    if (pickedImage != null) {
+      setState(() {
+        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.textEditingController.addListener(_textListener);
+  }
+
+  @override
+  void dispose() {
+    widget.textEditingController.removeListener(_textListener);
+    super.dispose();
+  }
+
+  void _textListener() {
+    setState(() {
+      _hasText = widget.textEditingController.text.isNotEmpty;
+    });
   }
 
   @override
@@ -164,11 +132,17 @@ class _InputButtonsState extends State<InputButtons> {
           icon: const Icon(Icons.mic),
         ),
         IconButton(
-          onPressed: widget.canSend ? widget.onSend : null,
+          onPressed: _hasText ? widget.onSend : null,
           icon: const Icon(Icons.send),
         ),
         IconButton(
-          onPressed: widget.canSend ? widget.onClear : null,
+          onPressed: _hasText
+              ? () {
+            //todo clear all images
+                  widget.textEditingController.clear();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              : null,
           icon: const Icon(Icons.clear),
         ),
       ],

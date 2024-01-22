@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
 import '../models/defect_status.dart';
@@ -57,6 +55,8 @@ final class RoomRep {
 
     final result = await DioClient()
         .post(path: 'HouseKeeping/ReportCleaningListProblem', data: data);
-    debugPrint(result.toString());
+    // if (result =) throw Exception();
+
+    print(result);
   }
 }

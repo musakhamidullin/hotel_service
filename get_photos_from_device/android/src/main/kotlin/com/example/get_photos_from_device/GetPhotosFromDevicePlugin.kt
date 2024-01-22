@@ -42,7 +42,6 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
                 result.notImplemented()
             }
         }
-
         @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
         private fun checkReadMediaPermission(result: MethodChannel.Result) {
             resultPermissionHandler = result

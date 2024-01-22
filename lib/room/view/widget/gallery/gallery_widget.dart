@@ -76,7 +76,6 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ImagesWidget(
-              isPhotoFromDevice: true,
               images: _images,
               onClearPressed: () => setState(() {
                 widget.onClearPressed();
@@ -101,11 +100,6 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                     NativePhotoParserWidget(
                       callImagePicker: () => _onSelectedFromGalleryPressed(),
                       callCamera: () => _onSelectedCameraPressed(),
-                      onAddPhotosPressed: (List<String> images) {
-                        final photos = ImageModel.getImageModels(images);
-                        _images.addAll(photos);
-                        setState(() {});
-                      },
                     ));
               },
               title: const Text('Выбрать из галереи'),

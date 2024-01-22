@@ -4,6 +4,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../cubit/room_cubit.dart';
+
 part 'defect_status.freezed.dart';
 part 'defect_status.g.dart';
 

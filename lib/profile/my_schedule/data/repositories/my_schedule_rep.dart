@@ -5,7 +5,7 @@ class MyScheduleRep {
     required DateTime date,
     required int ownerId,
   }) async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 2));
     return [
       ScheduleValue(
         startDay: DateTime(2024, DateTime.now().month, DateTime.now().day, 8),
