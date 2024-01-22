@@ -43,6 +43,8 @@ class RoomCubit extends Cubit<RoomState> {
               (d) => IssuesModel.filledByDefect(d, departments, defectStatuses))
           .toList();
 
+      if (isClosed) return;
+
       emit(
         state.copyWith(
           departments: departments,
@@ -231,8 +233,7 @@ class RoomCubit extends Cubit<RoomState> {
       // emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
-    } catch (e) {
-      print(e);
+    } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.sendError));
     }
   }
