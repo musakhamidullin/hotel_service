@@ -93,7 +93,7 @@ class MyPluginName {
           await _channelCheckPermission.invokeMethod('checkReadMedia') as bool;
       return result;
     } on PlatformException catch (e) {
-      print("Failed to get permission: '${e.message}'.");
+      debugPrint("Failed to get permission: '${e.message}'.");
     }
     return false;
   }
@@ -107,7 +107,7 @@ class MyPluginName {
         photos.add(photo as String);
       }
     } on PlatformException catch (e) {
-      print("Failed to get all photos: '${e.message}'.");
+      debugPrint("Failed to get all photos: '${e.message}'.");
     }
     return photos;
   }

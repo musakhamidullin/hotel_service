@@ -207,7 +207,8 @@ class RoomCubit extends Cubit<RoomState> {
       if (tabController?.index != 0) tabController?.animateTo(0);
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
-    } catch (_) {
+    } catch (e) {
+      print(e);
       emit(state.copyWith(fetchStatus: FetchStatus.sendError));
     }
   }
@@ -231,8 +232,7 @@ class RoomCubit extends Cubit<RoomState> {
       // emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
-    } catch (e) {
-      print(e);
+    } catch (_) {
       emit(state.copyWith(fetchStatus: FetchStatus.sendError));
     }
   }

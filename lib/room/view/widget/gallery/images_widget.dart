@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../../common/widgets/cash_memory_image_provider.dart';
 import '../../../data/models/image.dart';
 import 'add_photos.dart';
 
@@ -13,12 +11,14 @@ class ImagesWidget extends StatelessWidget {
       required this.images,
       required this.onClearPressed,
       required this.onDeleteItemPressed,
-      required this.scrollController});
+      required this.scrollController,
+      required this.isPhotoFromDevice});
 
   final List<ImageModel> images;
   final VoidCallback onClearPressed;
   final void Function(int i) onDeleteItemPressed;
   final ScrollController scrollController;
+  final bool isPhotoFromDevice;
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +64,19 @@ class ImagesWidget extends StatelessWidget {
                 itemBuilder: (_, i) => Stack(
                   children: [
                     Positioned.fill(
-                      child: Image(
-                        image: CacheMemoryImageProvider(
-                          tag: images[i].image,
-                          img: const Base64Decoder().convert(images[i].image),
-                        ),
-                        fit: BoxFit.cover,
-                      ),
+                      child: isPhotoFromDevice
+                          ? Image.file(
+                              File(
+                                images[i].image,
+                              ),
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.none,
+                              key: ValueKey(i),
+                            )
+                          : Image.file(
+                              File(images[i].image),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned.fill(
                       top: 6,
