@@ -60,19 +60,20 @@ class _InputCardState extends State<InputCard> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: _messageValue.buffImages!
-                  .map((e) => // Image(
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Image(
-                          image: CacheMemoryImageProvider(
-                            tag:
-                                _messageValue.buffImages!.indexOf(e).toString(),
-                            img: e,
-                          ),
-                          fit: BoxFit.cover,
-                          width: 90,
+                  .map(
+                    (e) => // Image(
+                        Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: Image(
+                        image: CacheMemoryImageProvider(
+                          tag: _messageValue.buffImages!.indexOf(e).toString(),
+                          img: e,
                         ),
-                      ))
+                        fit: BoxFit.cover,
+                        width: 90,
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
           ),
