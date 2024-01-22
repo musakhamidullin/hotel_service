@@ -49,7 +49,7 @@ class _RecordTimerState extends State<RecordTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
           borderRadius: const BorderRadius.all(

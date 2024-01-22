@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MessageValue {
   String? get text => throw _privateConstructorUsedError;
   List<Uint8List>? get buffImages => throw _privateConstructorUsedError;
+  List<VoiceValue>? get buffAudio => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MessageValueCopyWith<MessageValue> get copyWith =>
@@ -30,7 +31,8 @@ abstract class $MessageValueCopyWith<$Res> {
           MessageValue value, $Res Function(MessageValue) then) =
       _$MessageValueCopyWithImpl<$Res, MessageValue>;
   @useResult
-  $Res call({String? text, List<Uint8List>? buffImages});
+  $Res call(
+      {String? text, List<Uint8List>? buffImages, List<VoiceValue>? buffAudio});
 }
 
 /// @nodoc
@@ -48,6 +50,7 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
   $Res call({
     Object? text = freezed,
     Object? buffImages = freezed,
+    Object? buffAudio = freezed,
   }) {
     return _then(_value.copyWith(
       text: freezed == text
@@ -58,6 +61,10 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
           ? _value.buffImages
           : buffImages // ignore: cast_nullable_to_non_nullable
               as List<Uint8List>?,
+      buffAudio: freezed == buffAudio
+          ? _value.buffAudio
+          : buffAudio // ignore: cast_nullable_to_non_nullable
+              as List<VoiceValue>?,
     ) as $Val);
   }
 }
@@ -70,7 +77,8 @@ abstract class _$$MessageValueImplCopyWith<$Res>
       __$$MessageValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? text, List<Uint8List>? buffImages});
+  $Res call(
+      {String? text, List<Uint8List>? buffImages, List<VoiceValue>? buffAudio});
 }
 
 /// @nodoc
@@ -86,6 +94,7 @@ class __$$MessageValueImplCopyWithImpl<$Res>
   $Res call({
     Object? text = freezed,
     Object? buffImages = freezed,
+    Object? buffAudio = freezed,
   }) {
     return _then(_$MessageValueImpl(
       text: freezed == text
@@ -96,6 +105,10 @@ class __$$MessageValueImplCopyWithImpl<$Res>
           ? _value._buffImages
           : buffImages // ignore: cast_nullable_to_non_nullable
               as List<Uint8List>?,
+      buffAudio: freezed == buffAudio
+          ? _value._buffAudio
+          : buffAudio // ignore: cast_nullable_to_non_nullable
+              as List<VoiceValue>?,
     ));
   }
 }
@@ -103,8 +116,12 @@ class __$$MessageValueImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MessageValueImpl extends _MessageValue {
-  const _$MessageValueImpl({this.text, final List<Uint8List>? buffImages})
+  const _$MessageValueImpl(
+      {this.text,
+      final List<Uint8List>? buffImages,
+      final List<VoiceValue>? buffAudio})
       : _buffImages = buffImages,
+        _buffAudio = buffAudio,
         super._();
 
   @override
@@ -119,9 +136,19 @@ class _$MessageValueImpl extends _MessageValue {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<VoiceValue>? _buffAudio;
+  @override
+  List<VoiceValue>? get buffAudio {
+    final value = _buffAudio;
+    if (value == null) return null;
+    if (_buffAudio is EqualUnmodifiableListView) return _buffAudio;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'MessageValue(text: $text, buffImages: $buffImages)';
+    return 'MessageValue(text: $text, buffImages: $buffImages, buffAudio: $buffAudio)';
   }
 
   @override
@@ -131,12 +158,17 @@ class _$MessageValueImpl extends _MessageValue {
             other is _$MessageValueImpl &&
             (identical(other.text, text) || other.text == text) &&
             const DeepCollectionEquality()
-                .equals(other._buffImages, _buffImages));
+                .equals(other._buffImages, _buffImages) &&
+            const DeepCollectionEquality()
+                .equals(other._buffAudio, _buffAudio));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, text, const DeepCollectionEquality().hash(_buffImages));
+      runtimeType,
+      text,
+      const DeepCollectionEquality().hash(_buffImages),
+      const DeepCollectionEquality().hash(_buffAudio));
 
   @JsonKey(ignore: true)
   @override
@@ -148,13 +180,16 @@ class _$MessageValueImpl extends _MessageValue {
 abstract class _MessageValue extends MessageValue {
   const factory _MessageValue(
       {final String? text,
-      final List<Uint8List>? buffImages}) = _$MessageValueImpl;
+      final List<Uint8List>? buffImages,
+      final List<VoiceValue>? buffAudio}) = _$MessageValueImpl;
   const _MessageValue._() : super._();
 
   @override
   String? get text;
   @override
   List<Uint8List>? get buffImages;
+  @override
+  List<VoiceValue>? get buffAudio;
   @override
   @JsonKey(ignore: true)
   _$$MessageValueImplCopyWith<_$MessageValueImpl> get copyWith =>
