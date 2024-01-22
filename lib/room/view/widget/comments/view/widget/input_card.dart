@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../../../common/widgets/cash_memory_image_provider.dart';
+import '../../../../../../voice_messenger/view/record_button.dart';
 import '../../cubit/comments_cubit.dart';
 import '../../data/models/message_value.dart';
 
@@ -47,11 +48,11 @@ class _InputCardState extends State<InputCard> {
           onSubmitted: (value) {
             _messageValue = _messageValue.copyWith(text: value);
             context.read<CommentsCubit>().sendMessage(_messageValue);
-            FocusManager.instance.primaryFocus?.unfocus();
             //todo clear after success send
             _textController.clear();
             _messageValue = _messageValue.copyWith(text: '');
             _canSend.value = _messageValue.canSend();
+            FocusManager.instance.primaryFocus?.unfocus();
           },
         ),
         if (_messageValue.buffImages?.isNotEmpty ?? false)
@@ -91,13 +92,13 @@ class _InputCardState extends State<InputCard> {
               },
               onSend: () {
                 context.read<CommentsCubit>().sendMessage(_messageValue);
-                FocusManager.instance.primaryFocus?.unfocus();
                 //todo clear after success send
                 _textController.clear();
                 setState(() {
                   _messageValue = const MessageValue();
                 });
                 _canSend.value = _messageValue.canSend();
+                FocusManager.instance.primaryFocus?.unfocus();
               },
               onClear: () {
                 _textController.clear();
@@ -160,9 +161,9 @@ class _InputButtonsState extends State<InputButtons> {
               // Modals.showBottomSheet(context, const CommentGallery());
             },
             icon: const Icon(Icons.attach_file)),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.mic),
+        RecordButton(
+          onRecord: (value) {},
+          onStop: (value) {},
         ),
         IconButton(
           onPressed: widget.canSend ? widget.onSend : null,
