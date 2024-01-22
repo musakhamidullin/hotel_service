@@ -76,7 +76,6 @@ class _GalleryWidgetState extends State<GalleryWidget> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ImagesWidget(
-              isPhotoFromDevice: true,
               images: _images,
               onClearPressed: () => setState(() {
                 widget.onClearPressed();
