@@ -173,7 +173,7 @@ class _$ScheduleInfoImpl implements _ScheduleInfo {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ScheduleInfoImpl &&
