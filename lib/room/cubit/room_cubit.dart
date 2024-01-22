@@ -43,6 +43,8 @@ class RoomCubit extends Cubit<RoomState> {
               (d) => IssuesModel.filledByDefect(d, departments, defectStatuses))
           .toList();
 
+      if (isClosed) return;
+
       emit(
         state.copyWith(
           departments: departments,
