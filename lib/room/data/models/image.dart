@@ -7,12 +7,16 @@ part 'image.g.dart';
 class ImageModel with _$ImageModel {
   factory ImageModel(
       {@Default(false) bool isFromApi,
+      @Default(false) bool isFromCamera,
       @Default('') String image}) = _ImageModel;
 
   factory ImageModel.fromApi(String image) =>
       ImageModel(isFromApi: true, image: image);
 
   factory ImageModel.fromDevice(String image) => ImageModel(image: image);
+
+  factory ImageModel.fromCamera(String image) =>
+      ImageModel(image: image, isFromCamera: true);
 
   factory ImageModel.fromJson(Map<String, dynamic> json) =>
       _$ImageModelFromJson(json);

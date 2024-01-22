@@ -8,6 +8,7 @@ import 'defect.dart';
 import 'defect_status.dart';
 import 'department_info.dart';
 import 'image.dart';
+import 'issue_report.dart';
 
 part 'issues.freezed.dart';
 part 'issues.g.dart';
@@ -46,14 +47,15 @@ class IssuesModel extends Equatable with _$IssuesModel {
     final audios = <AudioModel>[];
 
     for (final e in defect.hotelDefectMedias) {
+      final mediaType = MediaType.getMediaType(e.media);
 
-      if (e.mediaType.isAudio()) {
+      if (mediaType.isAudio()) {
         audios.add(AudioModel.fromApi(e.media));
       } else {
         images.add(ImageModel.fromApi(e.media));
       }
-    } 
-    
+    }
+
     return IssuesModel(
       id: defect.id,
       personName: defect.personName,

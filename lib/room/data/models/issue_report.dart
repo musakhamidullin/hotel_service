@@ -139,8 +139,6 @@ class ProblemMedia with _$ProblemMedia {
   factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
       ProblemMedia(mediaType: extension, media: '', mediaBase64: bytes);
 
-  factory ProblemMedia.fromJson(Map<String, dynamic> json) {
-    json['MediaType'] = json['Media'] as String;
-    return _$ProblemMediaFromJson(json);
-  }
+  factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
+      _$ProblemMediaFromJson(json);
 }
