@@ -47,8 +47,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        _images.add(ImageModel.fromDevice(
-            base64Encode(File(pickedImage.path).readAsBytesSync())));
+        _images.add(ImageModel.fromDevice(pickedImage.path));
       });
     }
   }

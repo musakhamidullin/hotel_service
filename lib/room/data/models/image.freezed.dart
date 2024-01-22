@@ -21,7 +21,6 @@ ImageModel _$ImageModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ImageModel {
   bool get isFromApi => throw _privateConstructorUsedError;
-  bool get isFromCamera => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +35,7 @@ abstract class $ImageModelCopyWith<$Res> {
           ImageModel value, $Res Function(ImageModel) then) =
       _$ImageModelCopyWithImpl<$Res, ImageModel>;
   @useResult
-  $Res call({bool isFromApi, bool isFromCamera, String image});
+  $Res call({bool isFromApi, String image});
 }
 
 /// @nodoc
@@ -53,17 +52,12 @@ class _$ImageModelCopyWithImpl<$Res, $Val extends ImageModel>
   @override
   $Res call({
     Object? isFromApi = null,
-    Object? isFromCamera = null,
     Object? image = null,
   }) {
     return _then(_value.copyWith(
       isFromApi: null == isFromApi
           ? _value.isFromApi
           : isFromApi // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFromCamera: null == isFromCamera
-          ? _value.isFromCamera
-          : isFromCamera // ignore: cast_nullable_to_non_nullable
               as bool,
       image: null == image
           ? _value.image
@@ -81,7 +75,7 @@ abstract class _$$ImageModelImplCopyWith<$Res>
       __$$ImageModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isFromApi, bool isFromCamera, String image});
+  $Res call({bool isFromApi, String image});
 }
 
 /// @nodoc
@@ -96,17 +90,12 @@ class __$$ImageModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isFromApi = null,
-    Object? isFromCamera = null,
     Object? image = null,
   }) {
     return _then(_$ImageModelImpl(
       isFromApi: null == isFromApi
           ? _value.isFromApi
           : isFromApi // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFromCamera: null == isFromCamera
-          ? _value.isFromCamera
-          : isFromCamera // ignore: cast_nullable_to_non_nullable
               as bool,
       image: null == image
           ? _value.image
@@ -119,8 +108,7 @@ class __$$ImageModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ImageModelImpl implements _ImageModel {
-  _$ImageModelImpl(
-      {this.isFromApi = false, this.isFromCamera = false, this.image = ''});
+  _$ImageModelImpl({this.isFromApi = false, this.image = ''});
 
   factory _$ImageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ImageModelImplFromJson(json);
@@ -130,14 +118,11 @@ class _$ImageModelImpl implements _ImageModel {
   final bool isFromApi;
   @override
   @JsonKey()
-  final bool isFromCamera;
-  @override
-  @JsonKey()
   final String image;
 
   @override
   String toString() {
-    return 'ImageModel(isFromApi: $isFromApi, isFromCamera: $isFromCamera, image: $image)';
+    return 'ImageModel(isFromApi: $isFromApi, image: $image)';
   }
 
   @override
@@ -147,14 +132,12 @@ class _$ImageModelImpl implements _ImageModel {
             other is _$ImageModelImpl &&
             (identical(other.isFromApi, isFromApi) ||
                 other.isFromApi == isFromApi) &&
-            (identical(other.isFromCamera, isFromCamera) ||
-                other.isFromCamera == isFromCamera) &&
             (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, isFromApi, isFromCamera, image);
+  int get hashCode => Object.hash(runtimeType, isFromApi, image);
 
   @JsonKey(ignore: true)
   @override
@@ -171,18 +154,14 @@ class _$ImageModelImpl implements _ImageModel {
 }
 
 abstract class _ImageModel implements ImageModel {
-  factory _ImageModel(
-      {final bool isFromApi,
-      final bool isFromCamera,
-      final String image}) = _$ImageModelImpl;
+  factory _ImageModel({final bool isFromApi, final String image}) =
+      _$ImageModelImpl;
 
   factory _ImageModel.fromJson(Map<String, dynamic> json) =
       _$ImageModelImpl.fromJson;
 
   @override
   bool get isFromApi;
-  @override
-  bool get isFromCamera;
   @override
   String get image;
   @override

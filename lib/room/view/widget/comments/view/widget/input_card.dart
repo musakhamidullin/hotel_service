@@ -85,7 +85,7 @@ class _InputButtonsState extends State<InputButtons> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
-        _images.add(base64Encode(File(pickedImage.path).readAsBytesSync()));
+        _images.add(pickedImage.path);
       });
     }
   }
@@ -138,7 +138,7 @@ class _InputButtonsState extends State<InputButtons> {
         IconButton(
           onPressed: _hasText
               ? () {
-            //todo clear all images
+                  //todo clear all images
                   widget.textEditingController.clear();
                   FocusManager.instance.primaryFocus?.unfocus();
                 }
