@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'message_value.freezed.dart';
@@ -6,6 +8,11 @@ part 'message_value.freezed.dart';
 class MessageValue with _$MessageValue {
   const factory MessageValue({
     String? text,
-    List<Object>? images,
-}) = _MessageValue;
+    List<Uint8List>? buffImages,
+  }) = _MessageValue;
+
+  const MessageValue._();
+
+  bool canSend() =>
+      (buffImages?.isNotEmpty ?? false) || (text?.isNotEmpty ?? false);
 }

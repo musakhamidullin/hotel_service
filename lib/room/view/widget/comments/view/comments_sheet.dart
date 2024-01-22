@@ -8,11 +8,12 @@ import 'widget/input_card.dart';
 import 'widget/message_card.dart';
 
 class CommentsSheet extends StatefulWidget {
-  const CommentsSheet(
-      {super.key,
-      required this.issue,
-      required this.index,
-      required this.cubit});
+  const CommentsSheet({
+    super.key,
+    required this.issue,
+    required this.index,
+    required this.cubit,
+  });
 
   final IssuesModel issue;
   final int index;
@@ -68,7 +69,6 @@ class _CommentsSheetState extends State<CommentsSheet> {
                       listenWhen: (prev, curr) =>
                           prev.messages.length != curr.messages.length,
                       listener: (context, state) {
-                        print(controller.position.viewportDimension);
                         controller.jumpTo(controller.position.maxScrollExtent);
                       },
                       builder: (context, state) {

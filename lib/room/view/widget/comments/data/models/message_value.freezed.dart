@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MessageValue {
   String? get text => throw _privateConstructorUsedError;
-  List<Object>? get images => throw _privateConstructorUsedError;
+  List<Uint8List>? get buffImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MessageValueCopyWith<MessageValue> get copyWith =>
@@ -30,7 +30,7 @@ abstract class $MessageValueCopyWith<$Res> {
           MessageValue value, $Res Function(MessageValue) then) =
       _$MessageValueCopyWithImpl<$Res, MessageValue>;
   @useResult
-  $Res call({String? text, List<Object>? images});
+  $Res call({String? text, List<Uint8List>? buffImages});
 }
 
 /// @nodoc
@@ -47,17 +47,17 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
   @override
   $Res call({
     Object? text = freezed,
-    Object? images = freezed,
+    Object? buffImages = freezed,
   }) {
     return _then(_value.copyWith(
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
-      images: freezed == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<Object>?,
+      buffImages: freezed == buffImages
+          ? _value.buffImages
+          : buffImages // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List>?,
     ) as $Val);
   }
 }
@@ -70,7 +70,7 @@ abstract class _$$MessageValueImplCopyWith<$Res>
       __$$MessageValueImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? text, List<Object>? images});
+  $Res call({String? text, List<Uint8List>? buffImages});
 }
 
 /// @nodoc
@@ -85,42 +85,43 @@ class __$$MessageValueImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? text = freezed,
-    Object? images = freezed,
+    Object? buffImages = freezed,
   }) {
     return _then(_$MessageValueImpl(
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
-      images: freezed == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<Object>?,
+      buffImages: freezed == buffImages
+          ? _value._buffImages
+          : buffImages // ignore: cast_nullable_to_non_nullable
+              as List<Uint8List>?,
     ));
   }
 }
 
 /// @nodoc
 
-class _$MessageValueImpl implements _MessageValue {
-  const _$MessageValueImpl({this.text, final List<Object>? images})
-      : _images = images;
+class _$MessageValueImpl extends _MessageValue {
+  const _$MessageValueImpl({this.text, final List<Uint8List>? buffImages})
+      : _buffImages = buffImages,
+        super._();
 
   @override
   final String? text;
-  final List<Object>? _images;
+  final List<Uint8List>? _buffImages;
   @override
-  List<Object>? get images {
-    final value = _images;
+  List<Uint8List>? get buffImages {
+    final value = _buffImages;
     if (value == null) return null;
-    if (_images is EqualUnmodifiableListView) return _images;
+    if (_buffImages is EqualUnmodifiableListView) return _buffImages;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'MessageValue(text: $text, images: $images)';
+    return 'MessageValue(text: $text, buffImages: $buffImages)';
   }
 
   @override
@@ -129,12 +130,13 @@ class _$MessageValueImpl implements _MessageValue {
         (other.runtimeType == runtimeType &&
             other is _$MessageValueImpl &&
             (identical(other.text, text) || other.text == text) &&
-            const DeepCollectionEquality().equals(other._images, _images));
+            const DeepCollectionEquality()
+                .equals(other._buffImages, _buffImages));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, text, const DeepCollectionEquality().hash(_images));
+      runtimeType, text, const DeepCollectionEquality().hash(_buffImages));
 
   @JsonKey(ignore: true)
   @override
@@ -143,14 +145,16 @@ class _$MessageValueImpl implements _MessageValue {
       __$$MessageValueImplCopyWithImpl<_$MessageValueImpl>(this, _$identity);
 }
 
-abstract class _MessageValue implements MessageValue {
+abstract class _MessageValue extends MessageValue {
   const factory _MessageValue(
-      {final String? text, final List<Object>? images}) = _$MessageValueImpl;
+      {final String? text,
+      final List<Uint8List>? buffImages}) = _$MessageValueImpl;
+  const _MessageValue._() : super._();
 
   @override
   String? get text;
   @override
-  List<Object>? get images;
+  List<Uint8List>? get buffImages;
   @override
   @JsonKey(ignore: true)
   _$$MessageValueImplCopyWith<_$MessageValueImpl> get copyWith =>
