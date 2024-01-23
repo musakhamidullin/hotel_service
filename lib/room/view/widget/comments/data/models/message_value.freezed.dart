@@ -25,7 +25,7 @@ mixin _$MessageValue {
   @JsonKey(includeFromJson: false)
   List<VoiceValue> get buffAudio => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  String get date => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
   int get personId => throw _privateConstructorUsedError;
   String get personName => throw _privateConstructorUsedError;
   bool get isEdited => throw _privateConstructorUsedError;
@@ -47,7 +47,7 @@ abstract class $MessageValueCopyWith<$Res> {
       {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
       @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
       String text,
-      String date,
+      DateTime? date,
       int personId,
       String personName,
       bool isEdited,
@@ -70,7 +70,7 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
     Object? buffImages = null,
     Object? buffAudio = null,
     Object? text = null,
-    Object? date = null,
+    Object? date = freezed,
     Object? personId = null,
     Object? personName = null,
     Object? isEdited = null,
@@ -89,10 +89,10 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      date: null == date
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime?,
       personId: null == personId
           ? _value.personId
           : personId // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ abstract class _$$MessageValueImplCopyWith<$Res>
       {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
       @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
       String text,
-      String date,
+      DateTime? date,
       int personId,
       String personName,
       bool isEdited,
@@ -146,7 +146,7 @@ class __$$MessageValueImplCopyWithImpl<$Res>
     Object? buffImages = null,
     Object? buffAudio = null,
     Object? text = null,
-    Object? date = null,
+    Object? date = freezed,
     Object? personId = null,
     Object? personName = null,
     Object? isEdited = null,
@@ -165,10 +165,10 @@ class __$$MessageValueImplCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      date: null == date
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime?,
       personId: null == personId
           ? _value.personId
           : personId // ignore: cast_nullable_to_non_nullable
@@ -199,7 +199,7 @@ class _$MessageValueImpl extends _MessageValue {
       @JsonKey(includeFromJson: false)
       final List<VoiceValue> buffAudio = const <VoiceValue>[],
       this.text = '',
-      this.date = '',
+      this.date,
       this.personId = 0,
       this.personName = '',
       this.isEdited = false,
@@ -234,8 +234,7 @@ class _$MessageValueImpl extends _MessageValue {
   @JsonKey()
   final String text;
   @override
-  @JsonKey()
-  final String date;
+  final DateTime? date;
   @override
   @JsonKey()
   final int personId;
@@ -311,7 +310,7 @@ abstract class _MessageValue extends MessageValue {
       {@JsonKey(includeFromJson: false) final List<Uint8List> buffImages,
       @JsonKey(includeFromJson: false) final List<VoiceValue> buffAudio,
       final String text,
-      final String date,
+      final DateTime? date,
       final int personId,
       final String personName,
       final bool isEdited,
@@ -330,7 +329,7 @@ abstract class _MessageValue extends MessageValue {
   @override
   String get text;
   @override
-  String get date;
+  DateTime? get date;
   @override
   int get personId;
   @override

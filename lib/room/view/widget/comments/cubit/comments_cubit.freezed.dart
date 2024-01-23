@@ -16,11 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CommentsState {
-  FetchMessageStatus get fetchStatus => throw _privateConstructorUsedError;
+  FetchStatus get fetchStatus => throw _privateConstructorUsedError;
   List<MessageValue> get messages => throw _privateConstructorUsedError;
   ReportCleaningProblemUpdate get reportCleaningProblemUpdate =>
       throw _privateConstructorUsedError;
-  PagedMessages get pagedMessages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CommentsStateCopyWith<CommentsState> get copyWith =>
@@ -34,13 +33,11 @@ abstract class $CommentsStateCopyWith<$Res> {
       _$CommentsStateCopyWithImpl<$Res, CommentsState>;
   @useResult
   $Res call(
-      {FetchMessageStatus fetchStatus,
+      {FetchStatus fetchStatus,
       List<MessageValue> messages,
-      ReportCleaningProblemUpdate reportCleaningProblemUpdate,
-      PagedMessages pagedMessages});
+      ReportCleaningProblemUpdate reportCleaningProblemUpdate});
 
   $ReportCleaningProblemUpdateCopyWith<$Res> get reportCleaningProblemUpdate;
-  $PagedMessagesCopyWith<$Res> get pagedMessages;
 }
 
 /// @nodoc
@@ -59,13 +56,12 @@ class _$CommentsStateCopyWithImpl<$Res, $Val extends CommentsState>
     Object? fetchStatus = null,
     Object? messages = null,
     Object? reportCleaningProblemUpdate = null,
-    Object? pagedMessages = null,
   }) {
     return _then(_value.copyWith(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
-              as FetchMessageStatus,
+              as FetchStatus,
       messages: null == messages
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -74,10 +70,6 @@ class _$CommentsStateCopyWithImpl<$Res, $Val extends CommentsState>
           ? _value.reportCleaningProblemUpdate
           : reportCleaningProblemUpdate // ignore: cast_nullable_to_non_nullable
               as ReportCleaningProblemUpdate,
-      pagedMessages: null == pagedMessages
-          ? _value.pagedMessages
-          : pagedMessages // ignore: cast_nullable_to_non_nullable
-              as PagedMessages,
     ) as $Val);
   }
 
@@ -87,14 +79,6 @@ class _$CommentsStateCopyWithImpl<$Res, $Val extends CommentsState>
     return $ReportCleaningProblemUpdateCopyWith<$Res>(
         _value.reportCleaningProblemUpdate, (value) {
       return _then(_value.copyWith(reportCleaningProblemUpdate: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PagedMessagesCopyWith<$Res> get pagedMessages {
-    return $PagedMessagesCopyWith<$Res>(_value.pagedMessages, (value) {
-      return _then(_value.copyWith(pagedMessages: value) as $Val);
     });
   }
 }
@@ -108,15 +92,12 @@ abstract class _$$CommentsStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {FetchMessageStatus fetchStatus,
+      {FetchStatus fetchStatus,
       List<MessageValue> messages,
-      ReportCleaningProblemUpdate reportCleaningProblemUpdate,
-      PagedMessages pagedMessages});
+      ReportCleaningProblemUpdate reportCleaningProblemUpdate});
 
   @override
   $ReportCleaningProblemUpdateCopyWith<$Res> get reportCleaningProblemUpdate;
-  @override
-  $PagedMessagesCopyWith<$Res> get pagedMessages;
 }
 
 /// @nodoc
@@ -133,13 +114,12 @@ class __$$CommentsStateImplCopyWithImpl<$Res>
     Object? fetchStatus = null,
     Object? messages = null,
     Object? reportCleaningProblemUpdate = null,
-    Object? pagedMessages = null,
   }) {
     return _then(_$CommentsStateImpl(
       fetchStatus: null == fetchStatus
           ? _value.fetchStatus
           : fetchStatus // ignore: cast_nullable_to_non_nullable
-              as FetchMessageStatus,
+              as FetchStatus,
       messages: null == messages
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -148,27 +128,23 @@ class __$$CommentsStateImplCopyWithImpl<$Res>
           ? _value.reportCleaningProblemUpdate
           : reportCleaningProblemUpdate // ignore: cast_nullable_to_non_nullable
               as ReportCleaningProblemUpdate,
-      pagedMessages: null == pagedMessages
-          ? _value.pagedMessages
-          : pagedMessages // ignore: cast_nullable_to_non_nullable
-              as PagedMessages,
     ));
   }
 }
 
 /// @nodoc
 
-class _$CommentsStateImpl implements _CommentsState {
+class _$CommentsStateImpl extends _CommentsState {
   const _$CommentsStateImpl(
-      {this.fetchStatus = FetchMessageStatus.init,
+      {this.fetchStatus = FetchStatus.init,
       final List<MessageValue> messages = const <MessageValue>[],
-      this.reportCleaningProblemUpdate = const ReportCleaningProblemUpdate(),
-      this.pagedMessages = const PagedMessages()})
-      : _messages = messages;
+      this.reportCleaningProblemUpdate = const ReportCleaningProblemUpdate()})
+      : _messages = messages,
+        super._();
 
   @override
   @JsonKey()
-  final FetchMessageStatus fetchStatus;
+  final FetchStatus fetchStatus;
   final List<MessageValue> _messages;
   @override
   @JsonKey()
@@ -181,13 +157,10 @@ class _$CommentsStateImpl implements _CommentsState {
   @override
   @JsonKey()
   final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
-  @override
-  @JsonKey()
-  final PagedMessages pagedMessages;
 
   @override
   String toString() {
-    return 'CommentsState(fetchStatus: $fetchStatus, messages: $messages, reportCleaningProblemUpdate: $reportCleaningProblemUpdate, pagedMessages: $pagedMessages)';
+    return 'CommentsState(fetchStatus: $fetchStatus, messages: $messages, reportCleaningProblemUpdate: $reportCleaningProblemUpdate)';
   }
 
   @override
@@ -201,9 +174,7 @@ class _$CommentsStateImpl implements _CommentsState {
             (identical(other.reportCleaningProblemUpdate,
                     reportCleaningProblemUpdate) ||
                 other.reportCleaningProblemUpdate ==
-                    reportCleaningProblemUpdate) &&
-            (identical(other.pagedMessages, pagedMessages) ||
-                other.pagedMessages == pagedMessages));
+                    reportCleaningProblemUpdate));
   }
 
   @override
@@ -211,8 +182,7 @@ class _$CommentsStateImpl implements _CommentsState {
       runtimeType,
       fetchStatus,
       const DeepCollectionEquality().hash(_messages),
-      reportCleaningProblemUpdate,
-      pagedMessages);
+      reportCleaningProblemUpdate);
 
   @JsonKey(ignore: true)
   @override
@@ -221,21 +191,20 @@ class _$CommentsStateImpl implements _CommentsState {
       __$$CommentsStateImplCopyWithImpl<_$CommentsStateImpl>(this, _$identity);
 }
 
-abstract class _CommentsState implements CommentsState {
+abstract class _CommentsState extends CommentsState {
   const factory _CommentsState(
-      {final FetchMessageStatus fetchStatus,
-      final List<MessageValue> messages,
-      final ReportCleaningProblemUpdate reportCleaningProblemUpdate,
-      final PagedMessages pagedMessages}) = _$CommentsStateImpl;
+          {final FetchStatus fetchStatus,
+          final List<MessageValue> messages,
+          final ReportCleaningProblemUpdate reportCleaningProblemUpdate}) =
+      _$CommentsStateImpl;
+  const _CommentsState._() : super._();
 
   @override
-  FetchMessageStatus get fetchStatus;
+  FetchStatus get fetchStatus;
   @override
   List<MessageValue> get messages;
   @override
   ReportCleaningProblemUpdate get reportCleaningProblemUpdate;
-  @override
-  PagedMessages get pagedMessages;
   @override
   @JsonKey(ignore: true)
   _$$CommentsStateImplCopyWith<_$CommentsStateImpl> get copyWith =>

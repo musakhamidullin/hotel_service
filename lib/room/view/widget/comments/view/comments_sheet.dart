@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../common/widgets/failure_widget.dart';
 import '../../../../../voice_messenger/cubit/voice_manager_cubit.dart';
 import '../../../../cubit/room_cubit.dart';
 import '../../../../data/models/issues.dart';
@@ -11,12 +12,13 @@ import 'widget/input_card.dart';
 import 'widget/message_card.dart';
 
 class CommentsSheet extends StatefulWidget {
-  const CommentsSheet(
-      {super.key,
-      required this.issue,
-      required this.index,
-      required this.cubit,
-      required this.reportCleaningProblemUpdate});
+  const CommentsSheet({
+    super.key,
+    required this.issue,
+    required this.index,
+    required this.cubit,
+    required this.reportCleaningProblemUpdate,
+  });
 
   final IssuesModel issue;
   final int index;
@@ -35,9 +37,10 @@ class _CommentsSheetState extends State<CommentsSheet> {
   @override
   void initState() {
     super.initState();
-    _commentsCubit =
-        CommentsCubit(CommentRepo(), widget.reportCleaningProblemUpdate)
-          ..fetchMessages();
+    _commentsCubit = CommentsCubit(
+      commentRepo: CommentRepo(),
+      reportCleaningProblemUpdate: widget.reportCleaningProblemUpdate,
+    )..fetchMessages();
   }
 
   @override
@@ -90,10 +93,18 @@ class _CommentsSheetState extends State<CommentsSheet> {
                       listenWhen: (prev, curr) =>
                           prev.messages.length != curr.messages.length,
                       listener: (context, state) {
-                        print(controller.position.viewportDimension);
-                        controller.jumpTo(controller.position.maxScrollExtent);
+                        // controller.jumpTo(controller.position.maxScrollExtent);
                       },
                       builder: (context, state) {
+                        if (state.loading() && state.messages.isEmpty) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (state.failure()) {
+                          return FailureWidget(
+                            onPressed: () {},
+                          );
+                        }
                         return ListView.builder(
                           controller: controller,
                           reverse: false,
