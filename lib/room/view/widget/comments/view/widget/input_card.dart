@@ -66,41 +66,74 @@ class _InputCardState extends State<InputCard> {
             );
           },
         ),
-        if (_messageValue.buffImages?.isNotEmpty ?? false)
-          SizedBox(
-            height: 100,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: _messageValue.buffImages!
-                  .map(
-                    (e) => // Image(
-                        Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: Image(
-                        image: CacheMemoryImageProvider(
-                          tag: _messageValue.buffImages!.indexOf(e).toString(),
-                          img: e,
+        if (_messageValue.buffImages.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: SizedBox(
+              height: 100,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: _messageValue.buffImages
+                    .map(
+                      (e) => // Image(
+                          Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(4)),
+                              child: Image(
+                                image: CacheMemoryImageProvider(
+                                  tag: _messageValue.buffImages
+                                      .indexOf(e)
+                                      .toString(),
+                                  img: e,
+                                ),
+                                fit: BoxFit.cover,
+                                width: 90,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        fit: BoxFit.cover,
-                        width: 90,
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             ),
           ),
-        if (_messageValue.buffAudio?.isNotEmpty ?? false)
+        const SizedBox(height: 8,),
+        if (_messageValue.buffAudio.isNotEmpty)
           Column(
-            children: _messageValue.buffAudio!
+            children: _messageValue.buffAudio
                 .map((e) => MessageAudioPlayer(
                       key: ObjectKey(e),
+                      margin: const EdgeInsets.only(bottom: 8),
                       voiceValue: e,
-                      index: _messageValue.buffAudio!.indexOf(e),
-                      playerKey: '${_messageValue.buffAudio!.indexOf(e)}',
+                      index: _messageValue.buffAudio.indexOf(e),
+                      playerKey: '${_messageValue.buffAudio.indexOf(e)}',
                       onRemove: (value) {
                         setState(() {
                           _messageValue = _messageValue.copyWith(
-                              buffAudio: [...?_messageValue.buffAudio]
+                              buffAudio: [..._messageValue.buffAudio]
                                 ..removeAt(value));
                         });
                       },
@@ -116,14 +149,14 @@ class _InputCardState extends State<InputCard> {
               onPhotographed: (value) {
                 setState(() {
                   _messageValue = _messageValue.copyWith(
-                      buffImages: [...?_messageValue.buffImages, value]);
+                      buffImages: [...value, ..._messageValue.buffImages]);
                 });
                 _canSend.value = _messageValue.canSend();
               },
-              onAudioRecordered: (value) {
+              onAudioRecorded: (value) {
                 setState(() {
-                  _messageValue = _messageValue.copyWith(
-                      buffAudio: [...?_messageValue.buffAudio, value]);
+                  _messageValue = _messageValue
+                      .copyWith(buffAudio: [..._messageValue.buffAudio, value]);
                 });
                 _canSend.value = _messageValue.canSend();
               },
@@ -161,13 +194,13 @@ class InputButtons extends StatefulWidget {
     required this.onPhotographed,
     required this.canSend,
     required this.disableInput,
-    required this.onAudioRecordered,
+    required this.onAudioRecorded,
   });
 
   final Function() onSend;
   final Function() onClear;
-  final Function(Uint8List) onPhotographed;
-  final Function(VoiceValue) onAudioRecordered;
+  final Function(List<Uint8List>) onPhotographed;
+  final Function(VoiceValue) onAudioRecorded;
   final bool canSend;
   final ValueNotifier<bool> disableInput;
 
@@ -180,7 +213,7 @@ class _InputButtonsState extends State<InputButtons> {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedImage?.path == null) return;
-    widget.onPhotographed(File(pickedImage!.path).readAsBytesSync());
+    widget.onPhotographed([File(pickedImage!.path).readAsBytesSync()]);
   }
 
   @override
@@ -193,16 +226,24 @@ class _InputButtonsState extends State<InputButtons> {
           icon: const Icon(Icons.photo_camera_outlined),
         ),
         GetPhotosButton(
-            onSelectedFromNativeGalleryPressed: (photos) {},
-            onSelectedFromImagePickerPressed: (photos) {},
-            onSelectedCameraPressed: (photo) {},
+            onSelectedFromNativeGalleryPressed: (photos) {
+              widget.onPhotographed(
+                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
+            },
+            onSelectedFromImagePickerPressed: (photos) {
+              widget.onPhotographed(
+                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
+            },
+            onSelectedCameraPressed: (photo) {
+              widget.onPhotographed([File(photo.image).readAsBytesSync()]);
+            },
             iconData: Icons.attach_file),
         RecordButton(
           onRecord: (value) {
             widget.disableInput.value = value;
           },
           onStop: (value) {
-            widget.onAudioRecordered(
+            widget.onAudioRecorded(
                 VoiceValue(audio: AudioModel.fromDevice(value)));
           },
         ),

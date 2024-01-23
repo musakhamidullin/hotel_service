@@ -14,8 +14,10 @@ class MessageAudioPlayer extends StatefulWidget {
     required this.playerKey,
     required this.onRemove,
     required this.index,
+    this.margin,
   });
 
+  final EdgeInsetsGeometry? margin;
   final VoiceValue voiceValue;
   final String playerKey;
   final Function(int) onRemove;
@@ -94,6 +96,7 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
     }
     return Card(
       elevation: 6,
+      margin: widget.margin,
       child: Stack(
         children: [
           Row(

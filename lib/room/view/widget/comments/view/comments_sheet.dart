@@ -55,7 +55,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
       expand: false,
       initialChildSize: 1.0,
       maxChildSize: 1.0,
-      minChildSize: .4,
+      minChildSize: .7,
       builder: (_, controller) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
