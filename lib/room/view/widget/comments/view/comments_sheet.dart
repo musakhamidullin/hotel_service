@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../cubit/room_cubit.dart';
 import '../../../../data/models/issues.dart';
 import '../cubit/comments_cubit.dart';
+import '../data/models/report_update.dart';
+import '../repositories/comment_repo.dart';
 import 'widget/input_card.dart';
 import 'widget/message_card.dart';
 
@@ -12,11 +14,13 @@ class CommentsSheet extends StatefulWidget {
       {super.key,
       required this.issue,
       required this.index,
-      required this.cubit});
+      required this.cubit,
+      required this.reportCleaningProblemUpdate});
 
   final IssuesModel issue;
   final int index;
   final RoomCubit cubit;
+  final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
 
   @override
   State<CommentsSheet> createState() => _CommentsSheetState();
@@ -24,7 +28,14 @@ class CommentsSheet extends StatefulWidget {
 
 class _CommentsSheetState extends State<CommentsSheet> {
   final TextEditingController _textEditingController = TextEditingController();
-  final _commentsCubit = CommentsCubit();
+  late final CommentsCubit _commentsCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _commentsCubit =
+        CommentsCubit(CommentRepo(), widget.reportCleaningProblemUpdate);
+  }
 
   @override
   void dispose() {

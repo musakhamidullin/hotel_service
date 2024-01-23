@@ -11,6 +11,7 @@ import '../../cubit/room_cubit.dart';
 
 import '../../data/models/image.dart';
 import '../../data/models/issues.dart';
+import 'comments/data/models/report_update.dart';
 import 'status_card.dart';
 import 'comments/view/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
@@ -299,6 +300,9 @@ class _IssueCardState extends State<IssueCard> {
                             issue: widget.issue,
                             index: widget.index,
                             cubit: cubit,
+                            reportCleaningProblemUpdate:
+                                ReportCleaningProblemUpdate.modelForComments(
+                                    cubit.state, widget.issue),
                           ),
                         );
                       },

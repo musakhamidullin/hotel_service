@@ -9,7 +9,6 @@ import '../data/models/audio.dart';
 import '../data/models/defect_status.dart';
 import '../data/models/department_info.dart';
 
-import '../data/models/issue_created_report.dart';
 import '../data/models/issue_report.dart';
 import '../data/models/issues.dart';
 import '../data/repositories/room_rep.dart';
@@ -207,30 +206,6 @@ class RoomCubit extends Cubit<RoomState> {
           fetchStatus: FetchStatus.sendSuccess, issues: updatedIssues));
 
       if (tabController?.index != 0) tabController?.animateTo(0);
-      // пока нужен т к .sendReport(report) ничего не возвращает
-      await fetchRoom(state.room.roomId, refresh: true);
-    } catch (_) {
-      emit(state.copyWith(fetchStatus: FetchStatus.sendError));
-    }
-  }
-
-  void onSendCreatedPressed(
-    IssuesModel issuesModel,
-  ) async {
-    try {
-      emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
-
-      //todo как менять уже созданные?
-      final issue = state.issues[0]?.firstWhere((i) => i == issuesModel);
-
-      if (issue == null) return;
-
-      final report = IssueCreatedReport.fill(state, issue);
-
-      //todo тут мы должны получать обновленную заявку
-      await _roomRep.sendCreatedReport(report);
-
-      // emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
       // пока нужен т к .sendReport(report) ничего не возвращает
       await fetchRoom(state.room.roomId, refresh: true);
     } catch (_) {

@@ -28,9 +28,9 @@ class IssuesList extends StatelessWidget {
         onSendPressed: () {
           final cubit = context.read<RoomCubit>();
           if (tabName.contains('Созданные')) {
-            cubit.onSendCreatedPressed(
-              issues[i],
-            );
+            // cubit.onSendCreatedPressed(
+            //   issues[i],
+            // );
 
             return;
           }

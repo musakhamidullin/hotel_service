@@ -4,7 +4,6 @@ import '../../../app/dio_client.dart';
 import '../../../home/data/models/room.dart';
 import '../models/defect_status.dart';
 import '../models/department_info.dart';
-import '../models/issue_created_report.dart';
 import '../models/issue_report.dart';
 import '../models/reports.dart';
 
@@ -45,11 +44,6 @@ final class RoomRep {
     await DioClient()
         .dio
         .post('HouseKeeping/ReportCleaningProblem', data: report.toJson());
-  }
-
-  Future<void> sendCreatedReport(IssueCreatedReport report) async {
-    await DioClient().dio.post('HouseKeeping/ReportCleaningProblemUpdate',
-        data: report.toJson());
   }
 
   Future<void> sendReports(Reports reports) async {

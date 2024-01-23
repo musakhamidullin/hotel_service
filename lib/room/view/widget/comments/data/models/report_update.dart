@@ -4,34 +4,35 @@ import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../cubit/room_cubit.dart';
-import 'issue_report.dart';
-import 'issues.dart';
+import '../../../../../cubit/room_cubit.dart';
+import '../../../../../data/models/issue_report.dart';
+import '../../../../../data/models/issues.dart';
 
-part 'issue_created_report.freezed.dart';
-part 'issue_created_report.g.dart';
-
-extension MapWhere<T> on Iterable<T> {
-  Iterable<R> mapWhere<R>(bool Function(T) filter, R Function(T) transform) {
-    return where(filter).map(transform);
-  }
-}
+part 'report_update.freezed.dart';
+part 'report_update.g.dart';
 
 @freezed
-class IssueCreatedReport with _$IssueCreatedReport {
+class ReportCleaningProblemUpdate with _$ReportCleaningProblemUpdate {
   @JsonSerializable(fieldRename: FieldRename.pascal)
-  const factory IssueCreatedReport({
+  const factory ReportCleaningProblemUpdate({
     @Default(0) int personId,
     @Default(0) int defectId,
     @Default(0) int departmentId,
     @Default('') String comment,
     @Default([]) List<ProblemMedia> problemMedia,
-  }) = _IssueCreatedReport;
+  }) = _ReportCleaningProblemUpdate;
 
-  factory IssueCreatedReport.fromJson(Map<String, dynamic> json) =>
-      _$IssueCreatedReportFromJson(json);
+  factory ReportCleaningProblemUpdate.fromJson(Map<String, dynamic> json) =>
+      _$ReportCleaningProblemUpdateFromJson(json);
 
-  static IssueCreatedReport fill(RoomState roomState, IssuesModel issue) {
+  factory ReportCleaningProblemUpdate.modelForComments(
+          RoomState roomState, IssuesModel issue) =>
+      ReportCleaningProblemUpdate(
+          personId: roomState.user.personInfo.id,
+          departmentId: issue.department.id,
+          defectId: issue.id);
+
+  static ReportCleaningProblemUpdate fill(IssuesModel issue) {
     final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
       final bytesFromFile = base64Encode(File(e.image).readAsBytesSync());
       final bytes = const Base64Decoder().convert(bytesFromFile);
@@ -43,12 +44,10 @@ class IssueCreatedReport with _$IssueCreatedReport {
         .mapWhere((e) => !e.isFromApi,
             (e) => ProblemMedia.fromFile(e.audio, MediaType.m4a))
         .toList();
-    return IssueCreatedReport(
-        departmentId: issue.department.id,
-        comment: issue.comment,
-        personId: roomState.user.personInfo.id,
-        problemMedia: [...images, ...audio],
-        defectId: issue.id);
+    return ReportCleaningProblemUpdate(
+      comment: issue.comment,
+      problemMedia: [...images, ...audio],
+    );
   }
 
   static MediaType _getExtension(Uint8List data) {

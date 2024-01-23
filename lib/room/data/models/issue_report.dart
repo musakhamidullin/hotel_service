@@ -5,12 +5,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
 
 import '../../cubit/room_cubit.dart';
-import 'issue_created_report.dart';
 import 'issues.dart';
 
 part 'issue_report.freezed.dart';
 
 part 'issue_report.g.dart';
+
+extension MapWhere<T> on Iterable<T> {
+  Iterable<R> mapWhere<R>(bool Function(T) filter, R Function(T) transform) {
+    return where(filter).map(transform);
+  }
+}
 
 IssueReport issueReportFromJson(String str) =>
     IssueReport.fromJson(json.decode(str));

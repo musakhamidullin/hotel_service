@@ -16,7 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CommentsState {
+  FetchMessageStatus get fetchStatus => throw _privateConstructorUsedError;
   List<MessageValue> get messages => throw _privateConstructorUsedError;
+  ReportCleaningProblemUpdate get reportCleaningProblemUpdate =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CommentsStateCopyWith<CommentsState> get copyWith =>
@@ -29,7 +32,12 @@ abstract class $CommentsStateCopyWith<$Res> {
           CommentsState value, $Res Function(CommentsState) then) =
       _$CommentsStateCopyWithImpl<$Res, CommentsState>;
   @useResult
-  $Res call({List<MessageValue> messages});
+  $Res call(
+      {FetchMessageStatus fetchStatus,
+      List<MessageValue> messages,
+      ReportCleaningProblemUpdate reportCleaningProblemUpdate});
+
+  $ReportCleaningProblemUpdateCopyWith<$Res> get reportCleaningProblemUpdate;
 }
 
 /// @nodoc
@@ -45,57 +53,97 @@ class _$CommentsStateCopyWithImpl<$Res, $Val extends CommentsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? fetchStatus = null,
     Object? messages = null,
+    Object? reportCleaningProblemUpdate = null,
   }) {
     return _then(_value.copyWith(
+      fetchStatus: null == fetchStatus
+          ? _value.fetchStatus
+          : fetchStatus // ignore: cast_nullable_to_non_nullable
+              as FetchMessageStatus,
       messages: null == messages
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<MessageValue>,
+      reportCleaningProblemUpdate: null == reportCleaningProblemUpdate
+          ? _value.reportCleaningProblemUpdate
+          : reportCleaningProblemUpdate // ignore: cast_nullable_to_non_nullable
+              as ReportCleaningProblemUpdate,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ReportCleaningProblemUpdateCopyWith<$Res> get reportCleaningProblemUpdate {
+    return $ReportCleaningProblemUpdateCopyWith<$Res>(
+        _value.reportCleaningProblemUpdate, (value) {
+      return _then(_value.copyWith(reportCleaningProblemUpdate: value) as $Val);
+    });
   }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res>
+abstract class _$$CommentsStateImplCopyWith<$Res>
     implements $CommentsStateCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+  factory _$$CommentsStateImplCopyWith(
+          _$CommentsStateImpl value, $Res Function(_$CommentsStateImpl) then) =
+      __$$CommentsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<MessageValue> messages});
+  $Res call(
+      {FetchMessageStatus fetchStatus,
+      List<MessageValue> messages,
+      ReportCleaningProblemUpdate reportCleaningProblemUpdate});
+
+  @override
+  $ReportCleaningProblemUpdateCopyWith<$Res> get reportCleaningProblemUpdate;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$CommentsStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$CommentsStateImplCopyWithImpl<$Res>
+    extends _$CommentsStateCopyWithImpl<$Res, _$CommentsStateImpl>
+    implements _$$CommentsStateImplCopyWith<$Res> {
+  __$$CommentsStateImplCopyWithImpl(
+      _$CommentsStateImpl _value, $Res Function(_$CommentsStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? fetchStatus = null,
     Object? messages = null,
+    Object? reportCleaningProblemUpdate = null,
   }) {
-    return _then(_$InitialImpl(
+    return _then(_$CommentsStateImpl(
+      fetchStatus: null == fetchStatus
+          ? _value.fetchStatus
+          : fetchStatus // ignore: cast_nullable_to_non_nullable
+              as FetchMessageStatus,
       messages: null == messages
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<MessageValue>,
+      reportCleaningProblemUpdate: null == reportCleaningProblemUpdate
+          ? _value.reportCleaningProblemUpdate
+          : reportCleaningProblemUpdate // ignore: cast_nullable_to_non_nullable
+              as ReportCleaningProblemUpdate,
     ));
   }
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl(
-      {final List<MessageValue> messages = const <MessageValue>[]})
+class _$CommentsStateImpl implements _CommentsState {
+  const _$CommentsStateImpl(
+      {this.fetchStatus = FetchMessageStatus.init,
+      final List<MessageValue> messages = const <MessageValue>[],
+      this.reportCleaningProblemUpdate = const ReportCleaningProblemUpdate()})
       : _messages = messages;
 
+  @override
+  @JsonKey()
+  final FetchMessageStatus fetchStatus;
   final List<MessageValue> _messages;
   @override
   @JsonKey()
@@ -106,36 +154,57 @@ class _$InitialImpl implements _Initial {
   }
 
   @override
+  @JsonKey()
+  final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
+
+  @override
   String toString() {
-    return 'CommentsState(messages: $messages)';
+    return 'CommentsState(fetchStatus: $fetchStatus, messages: $messages, reportCleaningProblemUpdate: $reportCleaningProblemUpdate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InitialImpl &&
-            const DeepCollectionEquality().equals(other._messages, _messages));
+            other is _$CommentsStateImpl &&
+            (identical(other.fetchStatus, fetchStatus) ||
+                other.fetchStatus == fetchStatus) &&
+            const DeepCollectionEquality().equals(other._messages, _messages) &&
+            (identical(other.reportCleaningProblemUpdate,
+                    reportCleaningProblemUpdate) ||
+                other.reportCleaningProblemUpdate ==
+                    reportCleaningProblemUpdate));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_messages));
+  int get hashCode => Object.hash(
+      runtimeType,
+      fetchStatus,
+      const DeepCollectionEquality().hash(_messages),
+      reportCleaningProblemUpdate);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
-      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
+  _$$CommentsStateImplCopyWith<_$CommentsStateImpl> get copyWith =>
+      __$$CommentsStateImplCopyWithImpl<_$CommentsStateImpl>(this, _$identity);
 }
 
-abstract class _Initial implements CommentsState {
-  const factory _Initial({final List<MessageValue> messages}) = _$InitialImpl;
+abstract class _CommentsState implements CommentsState {
+  const factory _CommentsState(
+          {final FetchMessageStatus fetchStatus,
+          final List<MessageValue> messages,
+          final ReportCleaningProblemUpdate reportCleaningProblemUpdate}) =
+      _$CommentsStateImpl;
 
+  @override
+  FetchMessageStatus get fetchStatus;
   @override
   List<MessageValue> get messages;
   @override
+  ReportCleaningProblemUpdate get reportCleaningProblemUpdate;
+  @override
   @JsonKey(ignore: true)
-  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+  _$$CommentsStateImplCopyWith<_$CommentsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

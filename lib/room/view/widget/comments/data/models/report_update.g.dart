@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'issue_created_report.dart';
+part of 'report_update.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$IssueCreatedReportImpl _$$IssueCreatedReportImplFromJson(
+_$ReportCleaningProblemUpdateImpl _$$ReportCleaningProblemUpdateImplFromJson(
         Map<String, dynamic> json) =>
-    _$IssueCreatedReportImpl(
+    _$ReportCleaningProblemUpdateImpl(
       personId: json['PersonId'] as int? ?? 0,
       defectId: json['DefectId'] as int? ?? 0,
       departmentId: json['DepartmentId'] as int? ?? 0,
@@ -19,8 +19,8 @@ _$IssueCreatedReportImpl _$$IssueCreatedReportImplFromJson(
           const [],
     );
 
-Map<String, dynamic> _$$IssueCreatedReportImplToJson(
-        _$IssueCreatedReportImpl instance) =>
+Map<String, dynamic> _$$ReportCleaningProblemUpdateImplToJson(
+        _$ReportCleaningProblemUpdateImpl instance) =>
     <String, dynamic>{
       'PersonId': instance.personId,
       'DefectId': instance.defectId,
