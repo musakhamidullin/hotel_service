@@ -23,8 +23,6 @@ class CommentsCubit extends Cubit<CommentsState> {
     try {
       emit(state.copyWith(fetchStatus: FetchMessageStatus.loading));
 
-      if (isClosed) return;
-
       // final result = _commentRepo.sendComment();
 
       emit(state.copyWith(
