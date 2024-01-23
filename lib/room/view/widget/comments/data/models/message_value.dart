@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../../../voice_messenger/data/models/voice_value.dart';
 
 part 'message_value.freezed.dart';
 
@@ -6,6 +10,14 @@ part 'message_value.freezed.dart';
 class MessageValue with _$MessageValue {
   const factory MessageValue({
     String? text,
-    List<Object>? images,
-}) = _MessageValue;
+    List<Uint8List>? buffImages,
+    List<VoiceValue>? buffAudio,
+  }) = _MessageValue;
+
+  const MessageValue._();
+
+  bool canSend() =>
+      (buffImages?.isNotEmpty ?? false) ||
+      (text?.isNotEmpty ?? false) ||
+      (buffAudio?.isNotEmpty ?? false);
 }
