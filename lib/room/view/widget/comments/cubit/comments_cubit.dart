@@ -33,11 +33,15 @@ class CommentsCubit extends Cubit<CommentsState> {
   }
 
   Future<void> updatePagedMessage(PagedMessages pagedMessages) async {
+    if (isClosed) return;
+
     emit(state.copyWith(pagedMessages: pagedMessages));
   }
 
   Future<void> updateReportCleaningProblemUpdate(
       ReportCleaningProblemUpdate reportCleaningProblemUpdate) async {
+    if (isClosed) return;
+
     emit(state.copyWith(
         reportCleaningProblemUpdate: reportCleaningProblemUpdate));
   }
