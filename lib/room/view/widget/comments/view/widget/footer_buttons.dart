@@ -33,6 +33,7 @@ class FooterButtons extends StatefulWidget {
 
 class _FooterButtonsState extends State<FooterButtons> {
   var _recording = false;
+
   Future<void> _onSelectedCameraPressed() async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.camera);
@@ -43,7 +44,8 @@ class _FooterButtonsState extends State<FooterButtons> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment:
+          _recording ? MainAxisAlignment.end : MainAxisAlignment.spaceAround,
       children: [
         Visibility(
           visible: !_recording,
@@ -56,14 +58,12 @@ class _FooterButtonsState extends State<FooterButtons> {
           visible: !_recording,
           child: GetPhotosButton(
             onSelectedFromNativeGalleryPressed: (photos) {
-              widget.onPhotographed(photos
-                  .map((e) => File(e.image).readAsBytesSync())
-                  .toList());
+              widget.onPhotographed(
+                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
             },
             onSelectedFromImagePickerPressed: (photos) {
-              widget.onPhotographed(photos
-                  .map((e) => File(e.image).readAsBytesSync())
-                  .toList());
+              widget.onPhotographed(
+                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
             },
             onSelectedCameraPressed: (photo) {
               widget.onPhotographed([File(photo.image).readAsBytesSync()]);
@@ -83,13 +83,19 @@ class _FooterButtonsState extends State<FooterButtons> {
                 VoiceValue(audio: AudioModel.fromDevice(value)));
           },
         ),
-        IconButton(
-          onPressed: widget.canSend ? widget.onSend : null,
-          icon: const Icon(Icons.send),
+        Visibility(
+          visible: !_recording,
+          child: IconButton(
+            onPressed: widget.canSend ? widget.onSend : null,
+            icon: const Icon(Icons.send),
+          ),
         ),
-        IconButton(
-          onPressed: widget.canSend ? widget.onClear : null,
-          icon: const Icon(Icons.clear),
+        Visibility(
+          visible: !_recording,
+          child: IconButton(
+            onPressed: widget.canSend ? widget.onClear : null,
+            icon: const Icon(Icons.clear),
+          ),
         ),
       ],
     );

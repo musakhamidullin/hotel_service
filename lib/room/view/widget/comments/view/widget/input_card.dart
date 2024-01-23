@@ -125,7 +125,7 @@ class _InputCardState extends State<InputCard> {
               ),
             ),
           ),
-        const SizedBox(height: 8,),
+        SizedBox(height: _messageValue.buffImages.isEmpty ? 8 : 0),
         if (_messageValue.buffAudio.isNotEmpty)
           Column(
             children: _messageValue.buffAudio
