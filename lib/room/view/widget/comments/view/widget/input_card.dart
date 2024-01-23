@@ -10,6 +10,7 @@ import '../../../../../../voice_messenger/data/models/voice_value.dart';
 import '../../../../../../voice_messenger/view/message_audio_player.dart';
 import '../../../../../../voice_messenger/view/record_button.dart';
 import '../../../../../data/models/audio.dart';
+import '../../../gallery/view/widget/get_photos_button.dart';
 import '../../cubit/comments_cubit.dart';
 import '../../data/models/message_value.dart';
 
@@ -191,16 +192,11 @@ class _InputButtonsState extends State<InputButtons> {
           onPressed: () async => await _onSelectedCameraPressed(),
           icon: const Icon(Icons.photo_camera_outlined),
         ),
-        IconButton(
-            onPressed: () async {
-              // final result = await GetPhotos.isCheckPermission();
-              // await Future.sync(() => ScaffoldMessenger.of(context)
-              //     .showSnackBar(SnackBar(
-              //         content: Text('Permission is: $result'))));
-
-              // Modals.showBottomSheet(context, const CommentGallery());
-            },
-            icon: const Icon(Icons.attach_file)),
+        GetPhotosButton(
+            onSelectedFromNativeGalleryPressed: (photos) {},
+            onSelectedFromImagePickerPressed: (photos) {},
+            onSelectedCameraPressed: (photo) {},
+            iconData: Icons.attach_file),
         RecordButton(
           onRecord: (value) {
             widget.disableInput.value = value;
