@@ -14,12 +14,24 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+MessageValue _$MessageValueFromJson(Map<String, dynamic> json) {
+  return _MessageValue.fromJson(json);
+}
+
 /// @nodoc
 mixin _$MessageValue {
-  String? get text => throw _privateConstructorUsedError;
-  List<Uint8List>? get buffImages => throw _privateConstructorUsedError;
-  List<VoiceValue>? get buffAudio => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false)
+  List<Uint8List> get buffImages => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false)
+  List<VoiceValue> get buffAudio => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
+  int get personId => throw _privateConstructorUsedError;
+  String get personName => throw _privateConstructorUsedError;
+  bool get isEdited => throw _privateConstructorUsedError;
+  List<ProblemMedia> get medias => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MessageValueCopyWith<MessageValue> get copyWith =>
       throw _privateConstructorUsedError;
@@ -32,7 +44,14 @@ abstract class $MessageValueCopyWith<$Res> {
       _$MessageValueCopyWithImpl<$Res, MessageValue>;
   @useResult
   $Res call(
-      {String? text, List<Uint8List>? buffImages, List<VoiceValue>? buffAudio});
+      {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
+      @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
+      String text,
+      String date,
+      int personId,
+      String personName,
+      bool isEdited,
+      List<ProblemMedia> medias});
 }
 
 /// @nodoc
@@ -48,23 +67,48 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = freezed,
-    Object? buffImages = freezed,
-    Object? buffAudio = freezed,
+    Object? buffImages = null,
+    Object? buffAudio = null,
+    Object? text = null,
+    Object? date = null,
+    Object? personId = null,
+    Object? personName = null,
+    Object? isEdited = null,
+    Object? medias = null,
   }) {
     return _then(_value.copyWith(
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      buffImages: freezed == buffImages
+      buffImages: null == buffImages
           ? _value.buffImages
           : buffImages // ignore: cast_nullable_to_non_nullable
-              as List<Uint8List>?,
-      buffAudio: freezed == buffAudio
+              as List<Uint8List>,
+      buffAudio: null == buffAudio
           ? _value.buffAudio
           : buffAudio // ignore: cast_nullable_to_non_nullable
-              as List<VoiceValue>?,
+              as List<VoiceValue>,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      personId: null == personId
+          ? _value.personId
+          : personId // ignore: cast_nullable_to_non_nullable
+              as int,
+      personName: null == personName
+          ? _value.personName
+          : personName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isEdited: null == isEdited
+          ? _value.isEdited
+          : isEdited // ignore: cast_nullable_to_non_nullable
+              as bool,
+      medias: null == medias
+          ? _value.medias
+          : medias // ignore: cast_nullable_to_non_nullable
+              as List<ProblemMedia>,
     ) as $Val);
   }
 }
@@ -78,7 +122,14 @@ abstract class _$$MessageValueImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? text, List<Uint8List>? buffImages, List<VoiceValue>? buffAudio});
+      {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
+      @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
+      String text,
+      String date,
+      int personId,
+      String personName,
+      bool isEdited,
+      List<ProblemMedia> medias});
 }
 
 /// @nodoc
@@ -92,63 +143,120 @@ class __$$MessageValueImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? text = freezed,
-    Object? buffImages = freezed,
-    Object? buffAudio = freezed,
+    Object? buffImages = null,
+    Object? buffAudio = null,
+    Object? text = null,
+    Object? date = null,
+    Object? personId = null,
+    Object? personName = null,
+    Object? isEdited = null,
+    Object? medias = null,
   }) {
     return _then(_$MessageValueImpl(
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      buffImages: freezed == buffImages
+      buffImages: null == buffImages
           ? _value._buffImages
           : buffImages // ignore: cast_nullable_to_non_nullable
-              as List<Uint8List>?,
-      buffAudio: freezed == buffAudio
+              as List<Uint8List>,
+      buffAudio: null == buffAudio
           ? _value._buffAudio
           : buffAudio // ignore: cast_nullable_to_non_nullable
-              as List<VoiceValue>?,
+              as List<VoiceValue>,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      personId: null == personId
+          ? _value.personId
+          : personId // ignore: cast_nullable_to_non_nullable
+              as int,
+      personName: null == personName
+          ? _value.personName
+          : personName // ignore: cast_nullable_to_non_nullable
+              as String,
+      isEdited: null == isEdited
+          ? _value.isEdited
+          : isEdited // ignore: cast_nullable_to_non_nullable
+              as bool,
+      medias: null == medias
+          ? _value._medias
+          : medias // ignore: cast_nullable_to_non_nullable
+              as List<ProblemMedia>,
     ));
   }
 }
 
 /// @nodoc
 
+@JsonSerializable(fieldRename: FieldRename.pascal)
 class _$MessageValueImpl extends _MessageValue {
   const _$MessageValueImpl(
-      {this.text,
-      final List<Uint8List>? buffImages,
-      final List<VoiceValue>? buffAudio})
+      {@JsonKey(includeFromJson: false)
+      final List<Uint8List> buffImages = const <Uint8List>[],
+      @JsonKey(includeFromJson: false)
+      final List<VoiceValue> buffAudio = const <VoiceValue>[],
+      this.text = '',
+      this.date = '',
+      this.personId = 0,
+      this.personName = '',
+      this.isEdited = false,
+      final List<ProblemMedia> medias = const <ProblemMedia>[]})
       : _buffImages = buffImages,
         _buffAudio = buffAudio,
+        _medias = medias,
         super._();
 
+  factory _$MessageValueImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MessageValueImplFromJson(json);
+
+  final List<Uint8List> _buffImages;
   @override
-  final String? text;
-  final List<Uint8List>? _buffImages;
-  @override
-  List<Uint8List>? get buffImages {
-    final value = _buffImages;
-    if (value == null) return null;
+  @JsonKey(includeFromJson: false)
+  List<Uint8List> get buffImages {
     if (_buffImages is EqualUnmodifiableListView) return _buffImages;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_buffImages);
   }
 
-  final List<VoiceValue>? _buffAudio;
+  final List<VoiceValue> _buffAudio;
   @override
-  List<VoiceValue>? get buffAudio {
-    final value = _buffAudio;
-    if (value == null) return null;
+  @JsonKey(includeFromJson: false)
+  List<VoiceValue> get buffAudio {
     if (_buffAudio is EqualUnmodifiableListView) return _buffAudio;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_buffAudio);
+  }
+
+  @override
+  @JsonKey()
+  final String text;
+  @override
+  @JsonKey()
+  final String date;
+  @override
+  @JsonKey()
+  final int personId;
+  @override
+  @JsonKey()
+  final String personName;
+  @override
+  @JsonKey()
+  final bool isEdited;
+  final List<ProblemMedia> _medias;
+  @override
+  @JsonKey()
+  List<ProblemMedia> get medias {
+    if (_medias is EqualUnmodifiableListView) return _medias;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_medias);
   }
 
   @override
   String toString() {
-    return 'MessageValue(text: $text, buffImages: $buffImages, buffAudio: $buffAudio)';
+    return 'MessageValue(buffImages: $buffImages, buffAudio: $buffAudio, text: $text, date: $date, personId: $personId, personName: $personName, isEdited: $isEdited, medias: $medias)';
   }
 
   @override
@@ -156,40 +264,81 @@ class _$MessageValueImpl extends _MessageValue {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MessageValueImpl &&
-            (identical(other.text, text) || other.text == text) &&
             const DeepCollectionEquality()
                 .equals(other._buffImages, _buffImages) &&
             const DeepCollectionEquality()
-                .equals(other._buffAudio, _buffAudio));
+                .equals(other._buffAudio, _buffAudio) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.personId, personId) ||
+                other.personId == personId) &&
+            (identical(other.personName, personName) ||
+                other.personName == personName) &&
+            (identical(other.isEdited, isEdited) ||
+                other.isEdited == isEdited) &&
+            const DeepCollectionEquality().equals(other._medias, _medias));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      text,
       const DeepCollectionEquality().hash(_buffImages),
-      const DeepCollectionEquality().hash(_buffAudio));
+      const DeepCollectionEquality().hash(_buffAudio),
+      text,
+      date,
+      personId,
+      personName,
+      isEdited,
+      const DeepCollectionEquality().hash(_medias));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MessageValueImplCopyWith<_$MessageValueImpl> get copyWith =>
       __$$MessageValueImplCopyWithImpl<_$MessageValueImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MessageValueImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _MessageValue extends MessageValue {
   const factory _MessageValue(
-      {final String? text,
-      final List<Uint8List>? buffImages,
-      final List<VoiceValue>? buffAudio}) = _$MessageValueImpl;
+      {@JsonKey(includeFromJson: false) final List<Uint8List> buffImages,
+      @JsonKey(includeFromJson: false) final List<VoiceValue> buffAudio,
+      final String text,
+      final String date,
+      final int personId,
+      final String personName,
+      final bool isEdited,
+      final List<ProblemMedia> medias}) = _$MessageValueImpl;
   const _MessageValue._() : super._();
 
+  factory _MessageValue.fromJson(Map<String, dynamic> json) =
+      _$MessageValueImpl.fromJson;
+
   @override
-  String? get text;
+  @JsonKey(includeFromJson: false)
+  List<Uint8List> get buffImages;
   @override
-  List<Uint8List>? get buffImages;
+  @JsonKey(includeFromJson: false)
+  List<VoiceValue> get buffAudio;
   @override
-  List<VoiceValue>? get buffAudio;
+  String get text;
+  @override
+  String get date;
+  @override
+  int get personId;
+  @override
+  String get personName;
+  @override
+  bool get isEdited;
+  @override
+  List<ProblemMedia> get medias;
   @override
   @JsonKey(ignore: true)
   _$$MessageValueImplCopyWith<_$MessageValueImpl> get copyWith =>

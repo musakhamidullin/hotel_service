@@ -36,7 +36,8 @@ class _CommentsSheetState extends State<CommentsSheet> {
   void initState() {
     super.initState();
     _commentsCubit =
-        CommentsCubit(CommentRepo(), widget.reportCleaningProblemUpdate);
+        CommentsCubit(CommentRepo(), widget.reportCleaningProblemUpdate)
+          ..fetchMessages();
   }
 
   @override
@@ -87,7 +88,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                   Expanded(
                     child: BlocConsumer<CommentsCubit, CommentsState>(
                       listenWhen: (prev, curr) =>
-                      prev.messages.length != curr.messages.length,
+                          prev.messages.length != curr.messages.length,
                       listener: (context, state) {
                         print(controller.position.viewportDimension);
                         controller.jumpTo(controller.position.maxScrollExtent);

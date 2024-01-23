@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../data/models/message_value.dart';
+import '../data/models/paged_messages.dart';
 import '../data/models/report_update.dart';
 import '../repositories/comment_repo.dart';
 
@@ -13,9 +14,27 @@ class CommentsCubit extends Cubit<CommentsState> {
       ReportCleaningProblemUpdate reportCleaningProblemUpdate)
       : _commentRepo = commentRepo,
         super(CommentsState(
-            reportCleaningProblemUpdate: reportCleaningProblemUpdate));
+            reportCleaningProblemUpdate: reportCleaningProblemUpdate,
+            pagedMessages: PagedMessages.getDefectId(
+                reportCleaningProblemUpdate.defectId)));
 
   final CommentRepo _commentRepo;
+
+  Future<void> fetchMessages() async {
+    if (isClosed) return;
+
+    try {
+      emit(state.copyWith(fetchStatus: FetchMessageStatus.loading));
+
+      final result = _commentRepo.fetchComments(state.pagedMessages);
+
+      emit(state.copyWith(fetchStatus: FetchMessageStatus.success));
+    } catch (_) {}
+  }
+
+  Future<void> updatePagedMessage(PagedMessages pagedMessages) async {
+    emit(state.copyWith(pagedMessages: pagedMessages));
+  }
 
   Future<void> sendMessage(MessageValue value) async {
     if (isClosed) return;
