@@ -26,7 +26,7 @@ class CommentsCubit extends Cubit<CommentsState> {
     try {
       emit(state.copyWith(fetchStatus: FetchMessageStatus.loading));
 
-      final result = _commentRepo.fetchComments(state.pagedMessages);
+      final result = await _commentRepo.fetchComments(state.pagedMessages);
 
       emit(state.copyWith(fetchStatus: FetchMessageStatus.success));
     } catch (_) {}
@@ -42,7 +42,8 @@ class CommentsCubit extends Cubit<CommentsState> {
     try {
       emit(state.copyWith(fetchStatus: FetchMessageStatus.loading));
 
-      // final result = _commentRepo.sendComment();
+      final result =
+          _commentRepo.sendComment(state.reportCleaningProblemUpdate);
 
       emit(state.copyWith(
           messages: [...state.messages, value],

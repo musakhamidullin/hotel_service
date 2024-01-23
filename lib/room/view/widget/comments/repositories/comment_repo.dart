@@ -1,4 +1,6 @@
 import '../../../../../app/dio_client.dart';
+import '../data/models/message_value.dart';
+import '../data/models/page_data.dart';
 import '../data/models/paged_messages.dart';
 import '../data/models/report_update.dart';
 
@@ -8,9 +10,15 @@ final class CommentRepo {
         data: report.toJson());
   }
 
-  Future<void> fetchComments(PagedMessages pagedMessages) async {
-    await DioClient()
+  Future<List<MessageValue>> fetchComments(PagedMessages pagedMessages) async {
+    final result = await DioClient()
         .dio
         .post('HouseKeeping/PagedCommentListGet', data: pagedMessages.toJson());
+
+    if (result.data.isEmpty) throw Exception();
+
+    final messages = PageMessagesData.fromJson(result.data).data;
+
+    return messages;
   }
 }
