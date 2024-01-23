@@ -60,28 +60,4 @@ class CommentsCubit extends Cubit<CommentsState> {
           fetchStatus: FetchMessageStatus.success));
     } catch (_) {}
   }
-
-  // void onSendCreatedPressed(
-  //   IssuesModel issuesModel,
-  // ) async {
-  //   try {
-  //     emit(state.copyWith(fetchStatus: FetchStatus.refreshing));
-
-  //     //todo как менять уже созданные?
-  //     final issue = state.issues[0]?.firstWhere((i) => i == issuesModel);
-
-  //     if (issue == null) return;
-
-  //     final report = IssueCreatedReport.fill(state, issue);
-
-  //     //todo тут мы должны получать обновленную заявку
-  //     await _roomRep.sendCreatedReport(report);
-
-  //     // emit(state.copyWith(fetchStatus: FetchStatus.sendSuccess));
-  //     // пока нужен т к .sendReport(report) ничего не возвращает
-  //     await fetchRoom(state.room.roomId, refresh: true);
-  //   } catch (_) {
-  //     emit(state.copyWith(fetchStatus: FetchStatus.sendError));
-  //   }
-  // }
 }
