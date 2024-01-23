@@ -30,9 +30,8 @@ class _RecordButtonState extends State<RecordButton> {
         return Stack(
           alignment: Alignment.centerRight,
           children: [
-            SizedBox(
-              height: 50,
-              width: 50,
+            SizedBox.square(
+              dimension: 50,
               child: InkWell(
                 customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
