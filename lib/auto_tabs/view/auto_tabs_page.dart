@@ -24,7 +24,12 @@ class _AutoTabPageState extends State<AutoTabPage> {
         StatisticsTab(),
         ProfileTab()
       ],
-      bottomNavigationBuilder: (_, tabsRouter) {
+      bottomNavigationBuilder: (context, tabsRouter) {
+        final commentsRoute =
+            context.router.topRoute.name == CommentsRoute.name;
+        if (commentsRoute) {
+          return const SizedBox.shrink();
+        }
         return BottomNavBar(
           currentIndex: tabsRouter.activeIndex,
           onTap: (index) {

@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../app/router/router.gr.dart';
 import '../../../common/widgets/modals.dart';
 
 import '../../../voice_messenger/data/models/voice_value.dart';
@@ -13,7 +15,6 @@ import '../../data/models/image.dart';
 import '../../data/models/issues.dart';
 import 'comments/data/models/report_update.dart';
 import 'status_card.dart';
-import 'comments/view/comments_sheet.dart';
 import 'gallery/gallery_widget.dart';
 import 'mini_images.dart';
 import 'departments_list.dart';
@@ -294,17 +295,15 @@ class _IssueCardState extends State<IssueCard> {
                   IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
-                        Modals.showBottomSheet(
-                          context,
-                          CommentsSheet(
-                            issue: widget.issue,
-                            index: widget.index,
-                            cubit: cubit,
-                            reportCleaningProblemUpdate:
-                                ReportCleaningProblemUpdate.modelForComments(
-                                    cubit.state, widget.issue),
+                        context.router.push(CommentsRoute(
+                          issue: widget.issue,
+                          index: widget.index,
+                          reportCleaningProblemUpdate:
+                          ReportCleaningProblemUpdate.modelForComments(
+                            cubit.state,
+                            widget.issue,
                           ),
-                        );
+                        ),);
                       },
                       icon: const Icon(Icons.message)),
                   // const SizedBox(

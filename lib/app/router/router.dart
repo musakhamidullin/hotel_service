@@ -23,6 +23,10 @@ class AppRouter extends $AppRouter {
               path: '',
               page: RoomRoute.page,
             ),
+            AutoRoute(
+              path: '',
+              page: CommentsRoute.page,
+            ),
           ],
         ),
         AutoRoute(
