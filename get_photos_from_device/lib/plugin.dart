@@ -91,3 +91,69 @@ final class GetPhotosFromDevicePlugin {
     return throw '''Couldn't take a picture''';
   }
 }
+
+abstract final class MediaService {
+  Future<List<XFile>> onSelectedFromGalleryPressed() async {
+    final photos = await ImagePicker().pickMultiImage();
+
+    if (photos.isEmpty) throw '''Couldn't select photos''';
+
+    return photos;
+  }
+
+  Future<XFile> onSelectedCameraPressed() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedImage != null) return pickedImage;
+
+    return throw '''Couldn't take a picture''';
+  }
+}
+
+abstract interface class IMobilePhotoManager {
+  Future<bool> checkPermission();
+  Future<(String, bool)> getPhotoFromCamera();
+  Future<(List<String>, bool)> getPhotosFromGallery();
+}
+
+final class AndroidPlatform extends MediaService
+    implements IMobilePhotoManager {
+  @override
+  Future<bool> checkPermission() {
+    // TODO: implement checkPermission
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<(String, bool)> getPhotoFromCamera() {
+    // TODO: implement getPhotoFromCamera
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<(List<String>, bool)> getPhotosFromGallery() {
+    // TODO: implement getPhotosFromGallery
+    throw UnimplementedError();
+  }
+}
+
+final class IOsPlatform extends MediaService implements IMobilePhotoManager {
+  @override
+  Future<bool> checkPermission() {
+    // TODO: implement checkPermission
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<(String, bool)> getPhotoFromCamera() {
+    // TODO: implement getPhotoFromCamera
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<(List<String>, bool)> getPhotosFromGallery() {
+    // TODO: implement getPhotosFromGallery
+    throw UnimplementedError();
+  }
+}
