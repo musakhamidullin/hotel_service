@@ -5,7 +5,7 @@ import '../../../../../auth/data/model/user.dart';
 import '../../../../data/models/issue_report.dart';
 import '../data/models/message_value.dart';
 import '../data/models/report_update.dart';
-import '../repositories/comment_repo.dart';
+import '../data/repositories/comment_repo.dart';
 
 part 'comments_state.dart';
 

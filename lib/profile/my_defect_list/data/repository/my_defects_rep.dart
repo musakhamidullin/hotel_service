@@ -14,11 +14,15 @@ class MyDefectsRep {
     final defectStatuses = await _fetchDefectStatus(ownerId);
 
     return result.data
-        ?.map((e) => IssuesModel.filledByDefect(
-            Defect.fromJson(e as Map<String, dynamic>),
-            departments,
-            defectStatuses))
-        .toList() ?? [];
+            ?.map(
+              (e) => IssuesModel.filledByDefect(
+                Defect.fromJson(e as Map<String, dynamic>),
+                departments,
+                defectStatuses,
+              ),
+            )
+            .toList() ??
+        [];
   }
 
   Future<List<Department>> _fetchDepartment(int ownerId) async {

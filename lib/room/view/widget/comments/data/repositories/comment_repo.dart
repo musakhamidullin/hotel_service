@@ -1,7 +1,7 @@
-import '../../../../../app/dio_client.dart';
-import '../data/models/message_value.dart';
-import '../data/models/page_data.dart';
-import '../data/models/report_update.dart';
+import '../../../../../../app/dio_client.dart';
+import '../models/message_value.dart';
+import '../models/page_data.dart';
+import '../models/report_update.dart';
 
 final class CommentRepo {
   Future<void> sendComment(ReportCleaningProblemUpdate report) async {

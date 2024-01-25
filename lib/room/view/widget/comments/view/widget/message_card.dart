@@ -93,6 +93,31 @@ class MessageCard extends StatelessWidget {
                       .toList(),
                 ),
               ),
+            if (messageValue.images().isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: messageValue.images()
+                      .map(
+                        (e) => SizedBox.square(
+                      dimension: 100,
+                      child: ClipRRect(
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(4)),
+                        child: Image.network(
+                          e.media,
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: 100,
+                        ),
+                      ),
+                    ),
+                  )
+                      .toList(),
+                ),
+              ),
             if (messageValue.buffAudio.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -106,6 +131,22 @@ class MessageCard extends StatelessWidget {
                             playerKey: '${messageValue.buffAudio.indexOf(e)}',
                             onRemove: (value) {},
                           ))
+                      .toList(),
+                ),
+              ),
+            if (messageValue.audio().isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: messageValue.audio()
+                      .map((e) => MessageAudioPlayer(
+                    key: ObjectKey(e),
+                    margin: const EdgeInsets.only(bottom: 8),
+                    voiceValue: e,
+                    index: messageValue.buffAudio.indexOf(e),
+                    playerKey: '${messageValue.buffAudio.indexOf(e)}',
+                    onRemove: (value) {},
+                  ))
                       .toList(),
                 ),
               ),

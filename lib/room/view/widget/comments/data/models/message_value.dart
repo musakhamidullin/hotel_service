@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../../voice_messenger/data/models/voice_value.dart';
+import '../../../../../data/models/audio.dart';
 import '../../../../../data/models/issue_report.dart';
 
 part 'message_value.freezed.dart';
@@ -38,4 +39,13 @@ class MessageValue with _$MessageValue {
 
   bool canSend() =>
       buffImages.isNotEmpty || text.isNotEmpty || buffAudio.isNotEmpty;
+
+  List<ProblemMedia> images() =>
+      medias.where((e) => e.mediaType != MediaType.m4a).toList();
+
+  List<VoiceValue> audio() => medias
+      .where((e) => e.mediaType == MediaType.m4a)
+      .map(
+          (e) => VoiceValue(audio: AudioModel(isFromApi: true, audio: e.media)))
+      .toList();
 }

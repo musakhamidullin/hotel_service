@@ -8,7 +8,7 @@ import '../../../../../common/widgets/modals.dart';
 import '../../../../../voice_messenger/cubit/voice_manager_cubit.dart';
 import '../cubit/comments_cubit.dart';
 import '../data/models/report_update.dart';
-import '../repositories/comment_repo.dart';
+import '../data/repositories/comment_repo.dart';
 import 'widget/input_card.dart';
 import 'widget/message_card.dart';
 
