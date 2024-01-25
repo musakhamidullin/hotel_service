@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get_photos_from_device/plugin.dart';
 
 import '../../../data/models/image.dart';
 
@@ -28,15 +28,15 @@ class GalleryWidget extends StatefulWidget {
 class _GalleryWidgetState extends State<GalleryWidget> {
   final List<ImageModel> _images = [];
 
-  Future<void> _onSelectedCameraPressed() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage != null) {
-      setState(() {
-        _images.add(ImageModel.fromDevice(pickedImage.path));
-      });
-    }
+  Future<ImageModel> _onSelectedCameraPressed() async {
+    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhoto();
+
+    if (!isGrant) return noPermission();
+
+    return ImageModel.fromDevice(data);
   }
+
+  Never noPermission() => throw StateError('Empty photo from camera');
 
   @override
   void initState() {

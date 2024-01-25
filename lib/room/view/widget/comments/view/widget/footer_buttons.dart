@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get_photos_from_device/plugin.dart';
 
 import '../../../../../../voice_messenger/data/models/voice_value.dart';
 import '../../../../../../voice_messenger/view/record_button.dart';
 import '../../../../../data/models/audio.dart';
+import '../../../../../data/models/image.dart';
 import '../../../gallery/view/widget/get_photos_button.dart';
 
 class FooterButtons extends StatefulWidget {
@@ -34,12 +35,15 @@ class FooterButtons extends StatefulWidget {
 class _FooterButtonsState extends State<FooterButtons> {
   var _recording = false;
 
-  Future<void> _onSelectedCameraPressed() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage?.path == null) return;
-    widget.onPhotographed([File(pickedImage!.path).readAsBytesSync()]);
+  Future<ImageModel> _onSelectedCameraPressed() async {
+    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhoto();
+
+    if (!isGrant) return noPermission();
+
+    return ImageModel.fromDevice(data);
   }
+
+  Never noPermission() => throw StateError('Empty photo from camera');
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get_photos_from_device/plugin.dart';
+
 import '../../../../../../common/widgets/modals.dart';
 import '../../../../../data/models/image.dart';
 import '../../gallery_native.dart';
@@ -22,24 +20,22 @@ class GetPhotosButton extends StatelessWidget {
   final IconData iconData;
 
   Future<List<ImageModel>> _onSelectedFromGalleryPressed() async {
-    final pickedImages = await ImagePicker().pickMultiImage();
+    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhotos();
 
-    return pickedImages
-        .map((e) =>
-            ImageModel.fromDevice(base64Encode(File(e.path).readAsBytesSync())))
-        .toList();
+    if (!isGrant) return noPermission();
+
+    return data.map((e) => ImageModel.fromDevice(e)).toList();
   }
 
   Future<ImageModel> _onSelectedCameraPressed() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedImage != null) {
-      return ImageModel.fromDevice(pickedImage.path);
-    }
-    return empty();
+    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhoto();
+
+    if (!isGrant) return noPermission();
+
+    return ImageModel.fromDevice(data);
   }
 
-  Never empty() => throw StateError('Empty photo from camera');
+  Never noPermission() => throw StateError('Empty photo from camera');
 
   void onTap(BuildContext context) async {
     Modals.showBottomSheet(

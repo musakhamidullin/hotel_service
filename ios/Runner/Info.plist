@@ -49,5 +49,13 @@
     <string>For voice recorde enable permission</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Для отправки голосовых сообщений, нажмите "ОК"</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string></string>
 </dict>
 </plist>
