@@ -39,7 +39,7 @@ class Person with _$Person {
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
-  String fullName() => '$firstName $lastName';
+  String fullName() => '$lastName $firstName';
 }
 
 @Freezed(unionValueCase: FreezedUnionCase.pascal)

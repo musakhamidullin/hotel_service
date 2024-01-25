@@ -58,6 +58,7 @@ class _RoomPageState extends State<RoomPage>
     with SingleTickerProviderStateMixin {
   late final RoomCubit _roomCubit;
   late final TabController _tabController;
+  final _voiceManager = VoiceManagerCubit();
 
   @override
   void initState() {
@@ -76,6 +77,7 @@ class _RoomPageState extends State<RoomPage>
   void dispose() {
     _roomCubit.close();
     _tabController.dispose();
+    _voiceManager.close();
     super.dispose();
   }
 
@@ -141,7 +143,7 @@ class _RoomPageState extends State<RoomPage>
                       ];
                     },
                     body: BlocProvider(
-                      create: (context) => VoiceManagerCubit(),
+                      create: (context) => _voiceManager,
                       child: TabBarView(
                         controller: _tabController,
                         children: [

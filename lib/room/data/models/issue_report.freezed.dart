@@ -365,11 +365,12 @@ class __$$ProblemMediaImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.pascal)
-class _$ProblemMediaImpl implements _ProblemMedia {
+class _$ProblemMediaImpl extends _ProblemMedia {
   const _$ProblemMediaImpl(
       {this.mediaBase64 = '',
       @MediaTypeConverter() this.mediaType = MediaType.unknown,
-      @JsonSerializable(includeIfNull: false) this.media = ''});
+      @JsonSerializable(includeIfNull: false) this.media = ''})
+      : super._();
 
   factory _$ProblemMediaImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProblemMediaImplFromJson(json);
@@ -421,12 +422,13 @@ class _$ProblemMediaImpl implements _ProblemMedia {
   }
 }
 
-abstract class _ProblemMedia implements ProblemMedia {
+abstract class _ProblemMedia extends ProblemMedia {
   const factory _ProblemMedia(
           {final String mediaBase64,
           @MediaTypeConverter() final MediaType mediaType,
           @JsonSerializable(includeIfNull: false) final String media}) =
       _$ProblemMediaImpl;
+  const _ProblemMedia._() : super._();
 
   factory _ProblemMedia.fromJson(Map<String, dynamic> json) =
       _$ProblemMediaImpl.fromJson;

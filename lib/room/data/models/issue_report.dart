@@ -39,8 +39,7 @@ class IssueReport with _$IssueReport {
   static IssueReport fill(RoomState roomState, IssuesModel issue) {
     final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
       final bytesFromFile = base64Encode(File(e.image).readAsBytesSync());
-      final bytes = const Base64Decoder().convert(bytesFromFile);
-      return ProblemMedia.fromFile(bytesFromFile, _getExtension(bytes));
+      return ProblemMedia.fromBytesString(bytesFromFile);
     }).toList();
 
     //харкод типа аудио записи
@@ -55,38 +54,6 @@ class IssueReport with _$IssueReport {
       problemText: issue.comment,
       roomId: roomState.room.roomId,
     );
-  }
-
-  static MediaType _getExtension(Uint8List data) {
-    if (data[0] == 0xff && data[1] == 0xd8) {
-      return MediaType.jpg;
-    } else if (data[0] == 0x89 &&
-        data[1] == 0x50 &&
-        data[2] == 0x4e &&
-        data[3] == 0x47) {
-      return MediaType.png;
-    } else if (data[0] == 0x47 && data[1] == 0x49 && data[2] == 0x46) {
-      return MediaType.gif;
-    } else if (data[0] == 0x49 && data[1] == 0x44 && data[2] == 0x33) {
-      int offset = 10;
-      while (offset + 10 < data.length) {
-        int frameSize = ((data[offset + 4] << 24) |
-            (data[offset + 5] << 16) |
-            (data[offset + 6] << 8) |
-            data[offset + 7]);
-        if (frameSize + offset > data.length) {
-          break;
-        }
-        if (data[offset] == 0x54 &&
-            data[offset + 1] == 0x50 &&
-            data[offset + 2] == 0x45 &&
-            data[offset + 3] == 0x31) {
-          return MediaType.mp3;
-        }
-        offset += frameSize + 10;
-      }
-    }
-    return throw Exception('none format');
   }
 }
 
@@ -128,6 +95,7 @@ class MediaTypeConverter implements JsonConverter<MediaType, String> {
 
   @override
   MediaType fromJson(String value) => MediaType.getMediaType(value);
+
   @override
   String toJson(MediaType value) => '.${value.name}';
 }
@@ -141,9 +109,61 @@ class ProblemMedia with _$ProblemMedia {
     @JsonSerializable(includeIfNull: false) @Default('') String media,
   }) = _ProblemMedia;
 
+  const ProblemMedia._();
+
   factory ProblemMedia.fromFile(String bytes, MediaType extension) =>
       ProblemMedia(mediaType: extension, media: '', mediaBase64: bytes);
 
+  factory ProblemMedia.fromBytesString(
+    String bytes,
+  ) =>
+      ProblemMedia(
+        mediaType: _getExtension(const Base64Decoder().convert(bytes)),
+        media: '',
+        mediaBase64: bytes,
+      );
+
+  factory ProblemMedia.fromBytes(
+    Uint8List bytes,
+  ) =>
+      ProblemMedia(
+        mediaType: _getExtension(bytes),
+        media: '',
+        mediaBase64: const Base64Encoder().convert(bytes),
+      );
+
   factory ProblemMedia.fromJson(Map<String, dynamic> json) =>
       _$ProblemMediaFromJson(json);
+
+  static MediaType _getExtension(Uint8List data) {
+    if (data[0] == 0xff && data[1] == 0xd8) {
+      return MediaType.jpg;
+    } else if (data[0] == 0x89 &&
+        data[1] == 0x50 &&
+        data[2] == 0x4e &&
+        data[3] == 0x47) {
+      return MediaType.png;
+    } else if (data[0] == 0x47 && data[1] == 0x49 && data[2] == 0x46) {
+      return MediaType.gif;
+    } else if (data[0] == 0x49 && data[1] == 0x44 && data[2] == 0x33) {
+      int offset = 10;
+      while (offset + 10 < data.length) {
+        int frameSize = ((data[offset + 4] << 24) |
+            (data[offset + 5] << 16) |
+            (data[offset + 6] << 8) |
+            data[offset + 7]);
+        if (frameSize + offset > data.length) {
+          break;
+        }
+        if (data[offset] == 0x54 &&
+            data[offset + 1] == 0x50 &&
+            data[offset + 2] == 0x45 &&
+            data[offset + 3] == 0x31) {
+          return MediaType.mp3;
+        }
+        offset += frameSize + 10;
+      }
+    }
+    return throw Exception('none format');
+  }
 }

@@ -11,10 +11,10 @@
 import 'package:auto_route/auto_route.dart' as _i12;
 import 'package:flutter/material.dart' as _i13;
 import 'package:hotel_service/app/router/router.dart' as _i5;
-import 'package:hotel_service/auth/data/model/user.dart' as _i16;
+import 'package:hotel_service/auth/data/model/user.dart' as _i17;
 import 'package:hotel_service/auth/view/login_page.dart' as _i6;
 import 'package:hotel_service/auto_tabs/view/auto_tabs_page.dart' as _i1;
-import 'package:hotel_service/home/data/models/room.dart' as _i15;
+import 'package:hotel_service/home/data/models/room.dart' as _i16;
 import 'package:hotel_service/home/view/home_page.dart' as _i4;
 import 'package:hotel_service/profile/edit_user/view/edit_user_page.dart'
     as _i3;
@@ -29,6 +29,8 @@ import 'package:hotel_service/room/view/widget/comments/data/models/report_updat
 import 'package:hotel_service/room/view/widget/comments/view/comments_page.dart'
     as _i2;
 import 'package:hotel_service/statistics/view/statistics_page.dart' as _i11;
+import 'package:hotel_service/voice_messenger/cubit/voice_manager_cubit.dart'
+    as _i15;
 
 abstract class $AppRouter extends _i12.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -48,6 +50,7 @@ abstract class $AppRouter extends _i12.RootStackRouter {
         child: _i2.CommentsPage(
           key: args.key,
           reportCleaningProblemUpdate: args.reportCleaningProblemUpdate,
+          voiceManagerCubit: args.voiceManagerCubit,
         ),
       );
     },
@@ -145,12 +148,14 @@ class CommentsRoute extends _i12.PageRouteInfo<CommentsRouteArgs> {
   CommentsRoute({
     _i13.Key? key,
     required _i14.ReportCleaningProblemUpdate reportCleaningProblemUpdate,
+    required _i15.VoiceManagerCubit voiceManagerCubit,
     List<_i12.PageRouteInfo>? children,
   }) : super(
           CommentsRoute.name,
           args: CommentsRouteArgs(
             key: key,
             reportCleaningProblemUpdate: reportCleaningProblemUpdate,
+            voiceManagerCubit: voiceManagerCubit,
           ),
           initialChildren: children,
         );
@@ -165,15 +170,18 @@ class CommentsRouteArgs {
   const CommentsRouteArgs({
     this.key,
     required this.reportCleaningProblemUpdate,
+    required this.voiceManagerCubit,
   });
 
   final _i13.Key? key;
 
   final _i14.ReportCleaningProblemUpdate reportCleaningProblemUpdate;
 
+  final _i15.VoiceManagerCubit voiceManagerCubit;
+
   @override
   String toString() {
-    return 'CommentsRouteArgs{key: $key, reportCleaningProblemUpdate: $reportCleaningProblemUpdate}';
+    return 'CommentsRouteArgs{key: $key, reportCleaningProblemUpdate: $reportCleaningProblemUpdate, voiceManagerCubit: $voiceManagerCubit}';
   }
 }
 
@@ -294,8 +302,8 @@ class ProfileTab extends _i12.PageRouteInfo<void> {
 class RoomRoute extends _i12.PageRouteInfo<RoomRouteArgs> {
   RoomRoute({
     _i13.Key? key,
-    required _i15.Room room,
-    required _i16.User user,
+    required _i16.Room room,
+    required _i17.User user,
     List<_i12.PageRouteInfo>? children,
   }) : super(
           RoomRoute.name,
@@ -322,9 +330,9 @@ class RoomRouteArgs {
 
   final _i13.Key? key;
 
-  final _i15.Room room;
+  final _i16.Room room;
 
-  final _i16.User user;
+  final _i17.User user;
 
   @override
   String toString() {

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../auth/data/model/user.dart';
+import '../../../../data/models/issue_report.dart';
 import '../data/models/message_value.dart';
 import '../data/models/report_update.dart';
 import '../repositories/comment_repo.dart';
@@ -13,10 +15,12 @@ class CommentsCubit extends Cubit<CommentsState> {
   CommentsCubit({
     required this.commentRepo,
     required this.reportCleaningProblemUpdate,
+    required this.user,
   }) : super(const CommentsState());
 
   final CommentRepo commentRepo;
   final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
+  final User user;
 
   var _currPage = 0;
 
@@ -58,18 +62,20 @@ class CommentsCubit extends Cubit<CommentsState> {
   Future<FetchStatus> sendMessage(MessageValue value) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      final report = ReportCleaningProblemUpdate(
-        personId: reportCleaningProblemUpdate.personId,
-        defectId: reportCleaningProblemUpdate.defectId,
-        departmentId: reportCleaningProblemUpdate.departmentId,
+      final media = [
+        ...value.buffImages.map((e) => ProblemMedia.fromBytes(e)).toList(),
+        ...value.buffAudio.map((e) => ProblemMedia.fromFile(e.audio.audio, MediaType.m4a)).toList(),
+      ];
+      final report = reportCleaningProblemUpdate.copyWith(
         comment: value.text,
+        problemMedia: media,
       );
       await commentRepo.sendComment(report);
 
       emit(state.copyWith(
         fetchStatus: FetchStatus.success,
         messages: [
-          value,
+          value.copyWith(personName: user.personInfo.fullName()),
           ...state.messages,
         ],
       ));

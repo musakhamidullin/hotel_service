@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../common/widgets/cash_memory_image_provider.dart';
+import '../../../../../../voice_messenger/view/message_audio_player.dart';
 import '../../data/models/message_value.dart';
 
 class MessageCard extends StatelessWidget {
@@ -30,11 +32,6 @@ class MessageCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (messageValue.text.isNotEmpty)
-              Text(
-                messageValue.text,
-                textAlign: TextAlign.right,
-              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
@@ -61,6 +58,57 @@ class MessageCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (messageValue.text.isNotEmpty)
+              Text(
+                messageValue.text,
+                textAlign: TextAlign.right,
+              ),
+            if (messageValue.buffImages.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: messageValue.buffImages
+                      .map(
+                        (e) => SizedBox.square(
+                          dimension: 100,
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(4)),
+                            child: Image(
+                              image: CacheMemoryImageProvider(
+                                tag: messageValue.buffImages
+                                    .indexOf(e)
+                                    .toString(),
+                                img: e,
+                              ),
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            if (messageValue.buffAudio.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: messageValue.buffAudio
+                      .map((e) => MessageAudioPlayer(
+                            key: ObjectKey(e),
+                            margin: const EdgeInsets.only(bottom: 8),
+                            voiceValue: e,
+                            index: messageValue.buffAudio.indexOf(e),
+                            playerKey: '${messageValue.buffAudio.indexOf(e)}',
+                            onRemove: (value) {},
+                          ))
+                      .toList(),
+                ),
+              ),
           ],
         ),
       ),
