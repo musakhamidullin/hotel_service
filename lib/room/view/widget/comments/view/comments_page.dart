@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../common/widgets/failure_widget.dart';
+import '../../../../../common/widgets/modals.dart';
 import '../../../../../voice_messenger/cubit/voice_manager_cubit.dart';
-import '../../../../data/models/issues.dart';
 import '../cubit/comments_cubit.dart';
 import '../data/models/report_update.dart';
 import '../repositories/comment_repo.dart';
@@ -15,13 +15,9 @@ import 'widget/message_card.dart';
 class CommentsPage extends StatefulWidget {
   const CommentsPage({
     super.key,
-    required this.issue,
-    required this.index,
     required this.reportCleaningProblemUpdate,
   });
 
-  final IssuesModel issue;
-  final int index;
   final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
 
   @override
@@ -32,6 +28,7 @@ class _CommentsPageState extends State<CommentsPage> {
   final TextEditingController _textEditingController = TextEditingController();
   final _voiceManagerCubit = VoiceManagerCubit();
   late final CommentsCubit _commentsCubit;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -39,11 +36,12 @@ class _CommentsPageState extends State<CommentsPage> {
     _commentsCubit = CommentsCubit(
       commentRepo: CommentRepo(),
       reportCleaningProblemUpdate: widget.reportCleaningProblemUpdate,
-    )..fetchMessages();
+    )..fetchMessages(firstPage: true);
   }
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _textEditingController.dispose();
     _commentsCubit.close();
     _voiceManagerCubit.close();
@@ -63,30 +61,57 @@ class _CommentsPageState extends State<CommentsPage> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(title: const Text('Комментарии'),),
+        appBar: AppBar(
+          title: const Text('Комментарии'),
+        ),
         bottomNavigationBar: const InputCard(),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: (value) {
+            if (value.metrics.pixels >= value.metrics.maxScrollExtent &&
+                !value.metrics.outOfRange) {
+              //todo fetch new page
+              // _commentsCubit.fetchMessages();
+            }
+            return true;
+          },
           child: BlocConsumer<CommentsCubit, CommentsState>(
             listenWhen: (prev, curr) =>
-            prev.messages.length != curr.messages.length,
+                prev.messages.length != curr.messages.length,
             listener: (context, state) {
+              if (state.messages.isNotEmpty && state.failure()) {
+                Modals.showInformationDialog(context, 'Заявка не отправлена',
+                    Icons.warning_amber_rounded);
+              } else if (state.success()) {
+                Future(() {
+                  _scrollController
+                      .jumpTo(_scrollController.position.minScrollExtent);
+                });
+              }
             },
             builder: (context, state) {
               if (state.loading() && state.messages.isEmpty) {
-                return const Center(
-                    child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
-              if (state.failure()) {
+              if (state.failure() && state.messages.isEmpty) {
                 return FailureWidget(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _commentsCubit.fetchMessages(firstPage: true);
+                  },
                 );
               }
-              return ListView.builder(
-                reverse: false,
-                itemCount: state.messages.length,
-                itemBuilder: (context, index) =>
-                    MessageCard(messageValue: state.messages[index]),
+              return Stack(
+                children: [
+                  ListView.builder(
+                    controller: _scrollController,
+                    reverse: true,
+                    padding: const EdgeInsets.all(12.0),
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) =>
+                        MessageCard(messageValue: state.messages[index]),
+                  ),
+                  if (state.loading() && state.messages.isNotEmpty)
+                    const Center(child: CircularProgressIndicator()),
+                ],
               );
             },
           ),

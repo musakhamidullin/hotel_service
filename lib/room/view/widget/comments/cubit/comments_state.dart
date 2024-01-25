@@ -1,14 +1,12 @@
 part of 'comments_cubit.dart';
 
-enum FetchStatus { init, loading, refreshing, success, failure, paging, none }
+enum FetchStatus { init, loading, refreshing, success, failure, paging, messaging, none }
 
 @freezed
 class CommentsState with _$CommentsState {
   const factory CommentsState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(<MessageValue>[]) List<MessageValue> messages,
-    @Default(ReportCleaningProblemUpdate())
-    ReportCleaningProblemUpdate reportCleaningProblemUpdate,
   }) = _CommentsState;
 
   const CommentsState._();

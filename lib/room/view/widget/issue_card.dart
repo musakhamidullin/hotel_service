@@ -295,15 +295,15 @@ class _IssueCardState extends State<IssueCard> {
                   IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
-                        context.router.push(CommentsRoute(
-                          issue: widget.issue,
-                          index: widget.index,
-                          reportCleaningProblemUpdate:
-                          ReportCleaningProblemUpdate.modelForComments(
-                            cubit.state,
-                            widget.issue,
+                        context.router.push(
+                          CommentsRoute(
+                            reportCleaningProblemUpdate:
+                                ReportCleaningProblemUpdate.modelForComments(
+                              cubit.state,
+                              widget.issue,
+                            ),
                           ),
-                        ),);
+                        );
                       },
                       icon: const Icon(Icons.message)),
                   // const SizedBox(

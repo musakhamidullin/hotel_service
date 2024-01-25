@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../data/models/message_value.dart';
-import '../data/models/paged_messages.dart';
 import '../data/models/report_update.dart';
 import '../repositories/comment_repo.dart';
 
@@ -14,29 +13,36 @@ class CommentsCubit extends Cubit<CommentsState> {
   CommentsCubit({
     required this.commentRepo,
     required this.reportCleaningProblemUpdate,
-  }) : super(CommentsState(
-            reportCleaningProblemUpdate: reportCleaningProblemUpdate));
+  }) : super(const CommentsState());
 
   final CommentRepo commentRepo;
   final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
 
-  var _currPage = 1;
+  var _currPage = 0;
 
   Map<String, dynamic> _toBody({required int defectId}) => {
         "Page": _currPage,
-        "PageSize": 10,
+        "PageSize": 15,
         "DefectId": defectId,
       };
 
-  Future<void> fetchMessages() async {
-    if (isClosed) return;
-
+  Future<void> fetchMessages({bool firstPage = false}) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
+      if (firstPage) _currPage = 0;
 
-      await Future.delayed(Duration(seconds: 2));
+      _currPage++;
+
       final result = await commentRepo.fetchComments(
           _toBody(defectId: reportCleaningProblemUpdate.defectId));
+
+      if (result.isEmpty) {
+        return emit(
+          state.copyWith(
+            fetchStatus: FetchStatus.success,
+          ),
+        );
+      }
 
       emit(
         state.copyWith(
@@ -49,29 +55,28 @@ class CommentsCubit extends Cubit<CommentsState> {
     }
   }
 
-  Future<void> updatePagedMessage(PagedMessages pagedMessages) async {
-    if (isClosed) return;
-  }
-
-  Future<void> updateReportCleaningProblemUpdate(
-      ReportCleaningProblemUpdate reportCleaningProblemUpdate) async {
-    if (isClosed) return;
-
-    emit(state.copyWith(
-        reportCleaningProblemUpdate: reportCleaningProblemUpdate));
-  }
-
-  Future<void> sendMessage(MessageValue value) async {
-    if (isClosed) return;
-
+  Future<FetchStatus> sendMessage(MessageValue value) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-
-      final result = commentRepo.sendComment(state.reportCleaningProblemUpdate);
+      final report = ReportCleaningProblemUpdate(
+        personId: reportCleaningProblemUpdate.personId,
+        defectId: reportCleaningProblemUpdate.defectId,
+        departmentId: reportCleaningProblemUpdate.departmentId,
+        comment: value.text,
+      );
+      await commentRepo.sendComment(report);
 
       emit(state.copyWith(
-          messages: [...state.messages, value],
-          fetchStatus: FetchStatus.success));
-    } catch (_) {}
+        fetchStatus: FetchStatus.success,
+        messages: [
+          value,
+          ...state.messages,
+        ],
+      ));
+      return FetchStatus.success;
+    } catch (_) {
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+      return FetchStatus.failure;
+    }
   }
 }

@@ -9,6 +9,7 @@ import '../../../../../data/models/issue_report.dart';
 import '../../../../../data/models/issues.dart';
 
 part 'report_update.freezed.dart';
+
 part 'report_update.g.dart';
 
 @freezed
@@ -28,9 +29,10 @@ class ReportCleaningProblemUpdate with _$ReportCleaningProblemUpdate {
   factory ReportCleaningProblemUpdate.modelForComments(
           RoomState roomState, IssuesModel issue) =>
       ReportCleaningProblemUpdate(
-          personId: roomState.user.personInfo.id,
-          departmentId: issue.department.id,
-          defectId: issue.id);
+        personId: roomState.user.personInfo.id,
+        departmentId: issue.department.id,
+        defectId: issue.id,
+      );
 
   static ReportCleaningProblemUpdate fill(IssuesModel issue) {
     final images = issue.images.mapWhere((e) => !e.isFromApi, (e) {
