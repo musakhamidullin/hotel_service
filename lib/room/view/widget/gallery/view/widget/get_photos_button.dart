@@ -49,7 +49,7 @@ class GetPhotosButton extends StatelessWidget {
     return ImageModel.fromDevice(data);
   }
 
-  Never noPermission() => throw StateError('Empty photo from camera');
+  Never noPermission() => throw StateError('No permission');
 
   void onTap(BuildContext context) async {
     Modals.showBottomSheet(

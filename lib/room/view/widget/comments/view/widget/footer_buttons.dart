@@ -49,7 +49,7 @@ class _FooterButtonsState extends State<FooterButtons> {
     return ImageModel.fromDevice(data);
   }
 
-  Never noPermission() => throw StateError('Empty photo from camera');
+  Never noPermission() => throw StateError('No permission');
 
   @override
   Widget build(BuildContext context) {
