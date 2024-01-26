@@ -36,7 +36,13 @@ class _FooterButtonsState extends State<FooterButtons> {
   var _recording = false;
 
   Future<ImageModel> _onSelectedCameraPressed() async {
-    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhoto();
+    final mediaService = MediaService();
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: mediaService)
+        : IOsPlatform(iMediaService: mediaService);
+    final (data, isGrant) =
+        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
+            .getPhoto();
 
     if (!isGrant) return noPermission();
 

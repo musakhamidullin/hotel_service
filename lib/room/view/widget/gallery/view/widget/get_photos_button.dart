@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_photos_from_device/plugin.dart';
 
@@ -20,7 +22,13 @@ class GetPhotosButton extends StatelessWidget {
   final IconData iconData;
 
   Future<List<ImageModel>> _onSelectedFromGalleryPressed() async {
-    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhotos();
+    final mediaService = MediaService();
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: mediaService)
+        : IOsPlatform(iMediaService: mediaService);
+    final (data, isGrant) =
+        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
+            .getPhotos();
 
     if (!isGrant) return noPermission();
 
@@ -28,7 +36,13 @@ class GetPhotosButton extends StatelessWidget {
   }
 
   Future<ImageModel> _onSelectedCameraPressed() async {
-    final (data, isGrant) = await GetPhotosFromDevicePlugin.getPhoto();
+    final mediaService = MediaService();
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: mediaService)
+        : IOsPlatform(iMediaService: mediaService);
+    final (data, isGrant) =
+        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
+            .getPhoto();
 
     if (!isGrant) return noPermission();
 

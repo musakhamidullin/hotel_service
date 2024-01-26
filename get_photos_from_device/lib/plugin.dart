@@ -1,18 +1,83 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 final class GetPhotosFromDevicePlugin {
-  static const MethodChannel _channelGetPhoto = MethodChannel('get_photo');
-  static const MethodChannel _channelCheckPermission =
-      MethodChannel('get_permission');
+  GetPhotosFromDevicePlugin({required IMobilePhotoManager iMobilePhotoManager})
+      : _iMobilePhotoManager = iMobilePhotoManager;
 
-  static Future<bool> _isCheckPermission() async {
+  final IMobilePhotoManager _iMobilePhotoManager;
+
+  Future<(List<String>, bool)> getPhotos() async {
+    final isCheck = await _iMobilePhotoManager.checkPermission();
+
+    if (isCheck) return await _iMobilePhotoManager.getPhotosFromGallery();
+
+    return (<String>[], false);
+  }
+
+  Future<(String, bool)> getPhoto() async {
+    final isCheck = await _iMobilePhotoManager.checkPermission();
+
+    if (isCheck) return await _iMobilePhotoManager.getPhotoFromCamera();
+
+    return ('', false);
+  }
+}
+
+sealed class AppEnv {
+  final MethodChannel channelGetPhoto = const MethodChannel('get_photo');
+  final MethodChannel channelCheckPermission =
+      const MethodChannel('get_permission');
+}
+
+abstract interface class IMediaService {
+  Future<(List<String>, bool)> getImagesFromGallery();
+  Future<(String, bool)> getImageFromCamera();
+}
+
+final class MediaService implements IMediaService {
+  @override
+  Future<(List<String>, bool)> getImagesFromGallery() async {
+    final files = await ImagePicker().pickMultiImage();
+
+    final photos = files.map((e) => e.path).toList();
+
+    if (photos.isEmpty) return (<String>[], false);
+
+    return (photos, true);
+  }
+
+  @override
+  Future<(String, bool)> getImageFromCamera() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedImage == null) return ('', false);
+
+    return (pickedImage.path, true);
+  }
+}
+
+abstract interface class IMobilePhotoManager {
+  Future<bool> checkPermission();
+
+  Future<(String, bool)> getPhotoFromCamera();
+
+  Future<(List<String>, bool)> getPhotosFromGallery();
+}
+
+final class AndroidPlatform extends AppEnv implements IMobilePhotoManager {
+  AndroidPlatform({required IMediaService iMediaService})
+      : _iMediaService = iMediaService;
+
+  final IMediaService _iMediaService;
+
+  @override
+  Future<bool> checkPermission() async {
     try {
       final result =
-          await _channelCheckPermission.invokeMethod('checkReadMedia') as bool;
+          await channelCheckPermission.invokeMethod('checkReadMedia') as bool;
       return result;
     } on PlatformException catch (e) {
       debugPrint("Failed to get permission: '${e.message}'.");
@@ -20,105 +85,34 @@ final class GetPhotosFromDevicePlugin {
     return false;
   }
 
-  static Future<(List<String>, bool)> getPhotos() async {
-    if (Platform.isAndroid) {
-      final isGranted = await _isCheckPermission();
+  @override
+  Future<(String, bool)> getPhotoFromCamera() async =>
+      await _iMediaService.getImageFromCamera();
 
-      if (isGranted) {
-        return (await _getAllPhotos(), isGranted);
-      }
-
-      final files = await _onSelectedFromGalleryPressed();
-
-      if (files.isNotEmpty) {
-        final photos = files.map((e) => e.path).toList();
-
-        return (photos, true);
-      }
-
-      return (<String>[], isGranted);
-    }
-
-    if (Platform.isIOS) {
-      return throw '''In development''';
-    }
-    return (<String>[], false);
-  }
-
-  static Future<(String, bool)> getPhoto() async {
-    try {
-      if (Platform.isAndroid) {
-        final photo = await _onSelectedCameraPressed();
-        return (photo.path, true);
-      }
-      if (Platform.isIOS) {}
-
-      return ('', false);
-    } catch (e) {
-      debugPrint(e.toString());
-      return ('', false);
-    }
-  }
-
-  static Future<List<String>> _getAllPhotos() async {
+  @override
+  Future<(List<String>, bool)> getPhotosFromGallery() async {
     List<String> photos = [];
     try {
       final List<dynamic> result =
-          await _channelGetPhoto.invokeMethod('getAllPhotos');
+          await channelGetPhoto.invokeMethod('getAllPhotos');
       for (final photo in result) {
         photos.add(photo as String);
       }
+
+      return (photos, true);
     } on PlatformException catch (e) {
       debugPrint("Failed to get permission: '${e.message}'.");
+      return (<String>[], false);
     }
-    return photos;
-  }
-
-  static Future<List<XFile>> _onSelectedFromGalleryPressed() async {
-    final photos = await ImagePicker().pickMultiImage();
-
-    if (photos.isEmpty) throw '''Couldn't select photos''';
-
-    return photos;
-  }
-
-  static Future<XFile> _onSelectedCameraPressed() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedImage != null) return pickedImage;
-
-    return throw '''Couldn't take a picture''';
   }
 }
 
-abstract final class MediaService {
-  Future<List<XFile>> onSelectedFromGalleryPressed() async {
-    final photos = await ImagePicker().pickMultiImage();
+final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
+  IOsPlatform({required IMediaService iMediaService})
+      : _iMediaService = iMediaService;
 
-    if (photos.isEmpty) throw '''Couldn't select photos''';
+  final IMediaService _iMediaService;
 
-    return photos;
-  }
-
-  Future<XFile> onSelectedCameraPressed() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (pickedImage != null) return pickedImage;
-
-    return throw '''Couldn't take a picture''';
-  }
-}
-
-abstract interface class IMobilePhotoManager {
-  Future<bool> checkPermission();
-  Future<(String, bool)> getPhotoFromCamera();
-  Future<(List<String>, bool)> getPhotosFromGallery();
-}
-
-final class AndroidPlatform extends MediaService
-    implements IMobilePhotoManager {
   @override
   Future<bool> checkPermission() {
     // TODO: implement checkPermission
@@ -126,34 +120,28 @@ final class AndroidPlatform extends MediaService
   }
 
   @override
-  Future<(String, bool)> getPhotoFromCamera() {
-    // TODO: implement getPhotoFromCamera
-    throw UnimplementedError();
-  }
+  Future<(String, bool)> getPhotoFromCamera() async =>
+      await _iMediaService.getImageFromCamera();
 
   @override
-  Future<(List<String>, bool)> getPhotosFromGallery() {
-    // TODO: implement getPhotosFromGallery
-    throw UnimplementedError();
-  }
-}
+  Future<(List<String>, bool)> getPhotosFromGallery() async {
+    final (data, isGranted) = await _iMediaService.getImagesFromGallery();
 
-final class IOsPlatform extends MediaService implements IMobilePhotoManager {
-  @override
-  Future<bool> checkPermission() {
-    // TODO: implement checkPermission
-    throw UnimplementedError();
-  }
+    if (!isGranted) {
+      List<String> photos = [];
+      try {
+        final List<dynamic> result =
+            await channelGetPhoto.invokeMethod('getAllPhotos');
+        for (final photo in result) {
+          photos.add(photo as String);
+        }
 
-  @override
-  Future<(String, bool)> getPhotoFromCamera() {
-    // TODO: implement getPhotoFromCamera
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<(List<String>, bool)> getPhotosFromGallery() {
-    // TODO: implement getPhotosFromGallery
-    throw UnimplementedError();
+        return (photos, true);
+      } on PlatformException catch (e) {
+        debugPrint("Failed to get permission: '${e.message}'.");
+        return (<String>[], false);
+      }
+    }
+    return (data, isGranted);
   }
 }

@@ -21,7 +21,13 @@ class NativePhotoParserWidget extends StatefulWidget {
 
 class _NativePhotoParserWidgetState extends State<NativePhotoParserWidget> {
   Future<List<String>> _getPhotos() async {
-    final (data, isGranted) = await GetPhotosFromDevicePlugin.getPhotos();
+    final mediaService = MediaService();
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: mediaService)
+        : IOsPlatform(iMediaService: mediaService);
+    final (data, isGranted) =
+        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
+            .getPhotos();
 
     if (!isGranted) {
       widget.callImagePicker();
