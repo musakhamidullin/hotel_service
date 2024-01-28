@@ -39,16 +39,30 @@ class _CommentsPageState extends State<CommentsPage> {
       commentRepo: CommentRepo(),
       reportCleaningProblemUpdate: widget.reportCleaningProblemUpdate,
       user: context.read<AuthRep>().user,
-    )
-      ..fetchMessages(firstPage: true);
+    )..fetchFirstPage();
+
+    _scrollController.addListener(_listenScroll);
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_listenScroll);
     _scrollController.dispose();
     _textEditingController.dispose();
     _commentsCubit.close();
     super.dispose();
+  }
+
+  Future<void> _listenScroll() async {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      await _commentsCubit.fetchNewPage();
+    } else if (_scrollController.position.pixels <=
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      await _commentsCubit.fetchFirstPage();
+    }
   }
 
   @override
@@ -67,56 +81,64 @@ class _CommentsPageState extends State<CommentsPage> {
             title: const Text('Комментарии'),
           ),
           bottomNavigationBar: const InputCard(),
-          body: NotificationListener<ScrollNotification>(
-            onNotification: (value) {
-              if (value.metrics.pixels >= value.metrics.maxScrollExtent &&
-                  !value.metrics.outOfRange) {
-                //todo fetch new page
-                // _commentsCubit.fetchMessages();
-              }
-              return true;
-            },
-            child: BlocConsumer<CommentsCubit, CommentsState>(
-              listenWhen: (prev, curr) =>
-              prev.messages.length != curr.messages.length,
-              listener: (context, state) {
-                if (state.messages.isNotEmpty && state.failure()) {
-                  Modals.showInformationDialog(context, 'Заявка не отправлена',
-                      Icons.warning_amber_rounded);
-                } else if (state.success()) {
-                  Future(() {
-                    _scrollController
-                        .jumpTo(_scrollController.position.minScrollExtent);
-                  });
-                }
-              },
-              builder: (context, state) {
-                if (state.loading() && state.messages.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state.failure() && state.messages.isEmpty) {
-                  return FailureWidget(
-                    onPressed: () async {
-                      await _commentsCubit.fetchMessages(firstPage: true);
-                    },
-                  );
-                }
-                return Stack(
-                  children: [
-                    ListView.builder(
-                      controller: _scrollController,
-                      reverse: true,
-                      padding: const EdgeInsets.all(12.0),
-                      itemCount: state.messages.length,
-                      itemBuilder: (context, index) =>
-                          MessageCard(messageValue: state.messages[index]),
-                    ),
-                    if (state.loading() && state.messages.isNotEmpty)
-                      const Center(child: CircularProgressIndicator()),
-                  ],
+          body: BlocConsumer<CommentsCubit, CommentsState>(
+            listener: (context, state) {
+              if (state.messages.isNotEmpty && state.failure()) {
+                Modals.showInformationDialog(
+                  context,
+                  'Ошибка',
+                  Icons.warning_amber_rounded,
                 );
-              },
-            ),
+              } else if (state.success()) {
+                // Future(() {
+                //   _scrollController
+                //       .jumpTo(_scrollController.position.minScrollExtent);
+                // });
+              }
+            },
+            builder: (context, state) {
+              if (state.loading() && state.messages.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state.failure() && state.messages.isEmpty) {
+                return FailureWidget(
+                  onPressed: () async {
+                    await _commentsCubit.fetchFirstPage();
+                  },
+                );
+              }
+              return Stack(
+                children: [
+                  ListView.builder(
+                    controller: _scrollController,
+                    reverse: true,
+                    padding: const EdgeInsets.fromLTRB(12, 46, 12, 12),
+                    itemCount: state.messages.length,
+                    itemBuilder: (context, index) {
+                      final card = MessageCard(
+                        key: ObjectKey(state.messages[index]),
+                        messageValue: state.messages[index],
+                      );
+                      if (state.paging() &&
+                          index == (state.messages.length - 1)) {
+                        return Column(
+                          children: [
+                            const SizedBox.square(
+                              dimension: 34,
+                              child: CircularProgressIndicator(),
+                            ),
+                            card,
+                          ],
+                        );
+                      }
+                      return card;
+                    },
+                  ),
+                  if (state.loading() && state.messages.isNotEmpty)
+                    const Center(child: CircularProgressIndicator()),
+                ],
+              );
+            },
           ),
         ),
       ),

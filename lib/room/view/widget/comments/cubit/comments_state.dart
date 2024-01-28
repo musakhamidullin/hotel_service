@@ -1,6 +1,6 @@
 part of 'comments_cubit.dart';
 
-enum FetchStatus { init, loading, refreshing, success, failure, paging, messaging, none }
+enum FetchStatus { init, loading, refreshing, success, failure, paging, none }
 
 @freezed
 class CommentsState with _$CommentsState {

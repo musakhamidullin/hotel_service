@@ -20,7 +20,8 @@ AudioModel _$AudioModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AudioModel {
-  bool get isFromApi => throw _privateConstructorUsedError;
+  bool get isFromApi =>
+      throw _privateConstructorUsedError; //todo check by key word 'http'
   String get audio => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -116,6 +117,7 @@ class _$AudioModelImpl implements _AudioModel {
   @override
   @JsonKey()
   final bool isFromApi;
+//todo check by key word 'http'
   @override
   @JsonKey()
   final String audio;
@@ -162,7 +164,7 @@ abstract class _AudioModel implements AudioModel {
 
   @override
   bool get isFromApi;
-  @override
+  @override //todo check by key word 'http'
   String get audio;
   @override
   @JsonKey(ignore: true)

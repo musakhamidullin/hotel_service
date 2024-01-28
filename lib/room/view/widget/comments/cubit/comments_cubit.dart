@@ -23,6 +23,7 @@ class CommentsCubit extends Cubit<CommentsState> {
   final User user;
 
   var _currPage = 0;
+  var _pages = 0;
 
   Map<String, dynamic> _toBody({required int defectId}) => {
         "Page": _currPage,
@@ -30,31 +31,47 @@ class CommentsCubit extends Cubit<CommentsState> {
         "DefectId": defectId,
       };
 
-  Future<void> fetchMessages({bool firstPage = false}) async {
+  Future<void> fetchFirstPage() async {
     try {
+      _currPage = 1;
+
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-      if (firstPage) _currPage = 0;
 
-      _currPage++;
-
-      final result = await commentRepo.fetchComments(
+      final (messages, pages) = await commentRepo.fetchComments(
           _toBody(defectId: reportCleaningProblemUpdate.defectId));
 
-      if (result.isEmpty) {
-        return emit(
-          state.copyWith(
-            fetchStatus: FetchStatus.success,
-          ),
-        );
-      }
+      _pages = pages;
 
       emit(
         state.copyWith(
           fetchStatus: FetchStatus.success,
-          messages: result,
+          messages: messages,
         ),
       );
-    } catch (_) {
+    } catch (_, t) {
+      print(t);
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+    }
+  }
+
+  Future<void> fetchNewPage() async {
+    try {
+      if (_currPage >= _pages) return;
+      _currPage++;
+
+      emit(state.copyWith(fetchStatus: FetchStatus.paging));
+
+      final (messages, _) = await commentRepo.fetchComments(
+          _toBody(defectId: reportCleaningProblemUpdate.defectId));
+
+      emit(
+        state.copyWith(
+          fetchStatus: FetchStatus.success,
+          messages: [...state.messages,...messages],
+        ),
+      );
+    } catch (_, t) {
+      print(t);
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }

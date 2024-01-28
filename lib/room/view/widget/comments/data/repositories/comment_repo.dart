@@ -1,6 +1,5 @@
 import '../../../../../../app/dio_client.dart';
 import '../models/message_value.dart';
-import '../models/page_data.dart';
 import '../models/report_update.dart';
 
 final class CommentRepo {
@@ -9,15 +8,24 @@ final class CommentRepo {
         data: report.toJson());
   }
 
-  Future<List<MessageValue>> fetchComments(Map<String, dynamic> data) async {
-    final result = await DioClient()
-        .dio
-        .post('HouseKeeping/PagedCommentListGet', data: data);
+  Future<(List<MessageValue> messages, int pages)> fetchComments(
+      Map<String, dynamic> data) async {
+    final result = await DioClient().dio.post<Map<String, dynamic>>(
+        'HouseKeeping/PagedCommentListGet',
+        data: data);
 
-    if (result.data.isEmpty) throw Exception();
+    if (result.data == null) throw Exception();
 
-    final messages = PageMessagesData.fromJson(result.data).data;
+    final {
+      'Data': {
+        'hotelDefectMedias': List<dynamic> messages,
+        'pageCount': double pages,
+      },
+    } = result.data!;
 
-    return messages;
+    return (
+      messages.map((e) => MessageValue.fromJson(e)).toList(),
+      pages.toInt(),
+    );
   }
 }
