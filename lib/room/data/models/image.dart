@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'image.freezed.dart';
+
 part 'image.g.dart';
 
 @freezed
@@ -17,6 +19,8 @@ class ImageModel with _$ImageModel {
 
   factory ImageModel.fromDevice(String image) => ImageModel(image: image);
 
+  factory ImageModel.empty() => ImageModel();
+
   factory ImageModel.fromJson(Map<String, dynamic> json) =>
       _$ImageModelFromJson(json);
 
@@ -24,6 +28,8 @@ class ImageModel with _$ImageModel {
       .map(
           (e) => ImageModel.fromDevice(base64Encode(File(e).readAsBytesSync())))
       .toList();
+
+  static bool isEmpty(ImageModel image) => image == ImageModel.empty();
 
   static List<ImageModel> getImageModels(List<String> images) {
     return images.map((e) => ImageModel.fromDevice(e)).toList();

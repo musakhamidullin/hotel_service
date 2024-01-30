@@ -25,14 +25,11 @@ class _NativePhotoParserWidgetState extends State<NativePhotoParserWidget> {
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
         : IOsPlatform(iMediaService: mediaService);
-    final (data, isGranted) =
+    final data =
         await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
             .getPhotos();
 
-    if (!isGranted) {
-      widget.callImagePicker();
-      throw StateError('function cannot return a value');
-    }
+    if (data.isEmpty) return [];
 
     return data;
   }

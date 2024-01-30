@@ -40,16 +40,12 @@ class _FooterButtonsState extends State<FooterButtons> {
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
         : IOsPlatform(iMediaService: mediaService);
-    final (data, isGrant) =
+    final data =
         await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
             .getPhoto();
 
-    if (!isGrant) return noPermission();
-
     return ImageModel.fromDevice(data);
   }
-
-  Never noPermission() => throw StateError('No permission');
 
   @override
   Widget build(BuildContext context) {

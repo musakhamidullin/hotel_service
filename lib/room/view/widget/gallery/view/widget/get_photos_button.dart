@@ -26,11 +26,11 @@ class GetPhotosButton extends StatelessWidget {
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
         : IOsPlatform(iMediaService: mediaService);
-    final (data, isGrant) =
+    final data =
         await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
             .getPhotos();
 
-    if (!isGrant) return noPermission();
+    if (data.isEmpty) return [];
 
     return data.map((e) => ImageModel.fromDevice(e)).toList();
   }
@@ -40,16 +40,14 @@ class GetPhotosButton extends StatelessWidget {
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
         : IOsPlatform(iMediaService: mediaService);
-    final (data, isGrant) =
+    final data =
         await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
             .getPhoto();
 
-    if (!isGrant) return noPermission();
+    if (data.isEmpty) return ImageModel.empty();
 
     return ImageModel.fromDevice(data);
   }
-
-  Never noPermission() => throw StateError('No permission');
 
   void onTap(BuildContext context) async {
     Modals.showBottomSheet(
@@ -57,13 +55,21 @@ class GetPhotosButton extends StatelessWidget {
         NativePhotoParserWidget(
           callImagePicker: () async {
             final photos = await _onSelectedFromGalleryPressed();
+
+            if (photos.isEmpty) return;
+
             onSelectedFromImagePickerPressed(photos);
           },
           callCamera: () async {
             final photo = await _onSelectedCameraPressed();
+
+            if (ImageModel.isEmpty(photo)) return;
+
             onSelectedCameraPressed(photo);
           },
           onAddPhotosPressed: (List<String> images) {
+            if (images.isEmpty) return;
+
             final photos = ImageModel.getImageModels(images);
             onSelectedFromNativeGalleryPressed(photos);
           },

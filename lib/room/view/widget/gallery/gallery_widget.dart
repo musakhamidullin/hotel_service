@@ -35,16 +35,16 @@ class _GalleryWidgetState extends State<GalleryWidget> {
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
         : IOsPlatform(iMediaService: mediaService);
-    final (data, isGrant) =
+    final data =
         await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
             .getPhoto();
 
-    if (!isGrant) return noPermission();
+    if (data.isEmpty) return ImageModel.empty();
+
+    setState(() => _images.add(ImageModel.fromDevice(data)));
 
     return ImageModel.fromDevice(data);
   }
-
-  Never noPermission() => throw StateError('No permission');
 
   @override
   void initState() {
