@@ -76,75 +76,77 @@ class _GalleryWidgetState extends State<GalleryWidget> {
       minChildSize: 0.4,
       initialChildSize: 1,
       builder: (context, scrollController) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ImagesWidget(
-              images: _images,
-              onClearPressed: () => setState(() {
-                widget.onClearPressed();
-                _images.clear();
-              }),
-              onDeleteItemPressed: (i) => setState(() {
-                widget.onDeletePressed(_images[i].image);
-
-                _images.removeAt(i);
-              }),
-              scrollController: scrollController,
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            ListTile(
-              leading: getPhotosButton,
-              onTap: () {
-                getPhotosButton.onTap(context);
-              },
-              title: const Text('Выбрать из галереи'),
-            ),
-            const Divider(
-              endIndent: 16,
-              indent: 16,
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_camera_outlined),
-              onTap: () async => await _onSelectedCameraPressed(),
-              title: const Text('Сделать фото'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Отменить')),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton.tonal(
-                        onPressed: () {
-                          widget.onSavePressed(_images);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Сохранить'),
+        return SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ImagesWidget(
+                images: _images,
+                onClearPressed: () => setState(() {
+                  widget.onClearPressed();
+                  _images.clear();
+                }),
+                onDeleteItemPressed: (i) => setState(() {
+                  widget.onDeletePressed(_images[i].image);
+          
+                  _images.removeAt(i);
+                }),
+                scrollController: scrollController,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              ListTile(
+                leading: getPhotosButton,
+                onTap: () {
+                  getPhotosButton.onTap(context);
+                },
+                title: const Text('Выбрать из галереи'),
+              ),
+              const Divider(
+                endIndent: 16,
+                indent: 16,
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera_outlined),
+                onTap: () async => await _onSelectedCameraPressed(),
+                title: const Text('Сделать фото'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Отменить')),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Flexible(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.tonal(
+                          onPressed: () {
+                            widget.onSavePressed(_images);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Сохранить'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

@@ -13,6 +13,9 @@ final class GetPhotosFromDevicePlugin {
 
   Future<String> getPhoto() async =>
       await _iMobilePhotoManager.getPhotoFromCamera();
+
+  Future<bool> checkPermission() async =>
+      await _iMobilePhotoManager.checkPermission();
 }
 
 sealed class AppEnv {
@@ -109,18 +112,13 @@ final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
   final IMediaService _iMediaService;
 
   @override
-  Future<bool> checkPermission() {
-    // TODO: implement checkPermission
-    throw UnimplementedError();
-  }
+  Future<bool> checkPermission() async => false;
 
   @override
   Future<String> getPhotoFromCamera() async =>
       await _iMediaService.getImageFromCamera();
 
   @override
-  Future<List<String>> getPhotosFromGallery() async {
-    // TODO: implement checkPermission
-    throw UnimplementedError();
-  }
+  Future<List<String>> getPhotosFromGallery() async =>
+      await _iMediaService.getImagesFromGallery();
 }

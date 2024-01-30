@@ -22,6 +22,7 @@ class GetPhotosButton extends StatelessWidget {
   final IconData iconData;
 
   Future<List<ImageModel>> _onSelectedFromGalleryPressed() async {
+    // TODO refactor
     final mediaService = MediaService();
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
@@ -36,6 +37,7 @@ class GetPhotosButton extends StatelessWidget {
   }
 
   Future<ImageModel> _onSelectedCameraPressed() async {
+    // TODO refactor
     final mediaService = MediaService();
     final dynamic targetPlatform = Platform.isAndroid
         ? AndroidPlatform(iMediaService: mediaService)
@@ -49,8 +51,29 @@ class GetPhotosButton extends StatelessWidget {
     return ImageModel.fromDevice(data);
   }
 
+  Future<bool> _checkPermission() async {
+    // TODO refactor
+    final mediaService = MediaService();
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: mediaService)
+        : IOsPlatform(iMediaService: mediaService);
+    final isGranted =
+        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
+            .checkPermission();
+
+    return isGranted;
+  }
+
   void onTap(BuildContext context) async {
-    Modals.showBottomSheet(
+    final isGrant = await _checkPermission();
+
+    if (!isGrant) {
+      final photos = await _onSelectedFromGalleryPressed();
+      onSelectedFromNativeGalleryPressed(photos);
+      return;
+    }
+
+    await Future.sync(() => Modals.showBottomSheet(
         context,
         NativePhotoParserWidget(
           callImagePicker: () async {
@@ -73,7 +96,7 @@ class GetPhotosButton extends StatelessWidget {
             final photos = ImageModel.getImageModels(images);
             onSelectedFromNativeGalleryPressed(photos);
           },
-        ));
+        )));
   }
 
   @override
