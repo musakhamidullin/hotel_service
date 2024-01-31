@@ -112,13 +112,30 @@ final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
   final IMediaService _iMediaService;
 
   @override
-  Future<bool> checkPermission() async => false;
+  Future<bool> checkPermission() async => true;
 
   @override
   Future<String> getPhotoFromCamera() async =>
       await _iMediaService.getImageFromCamera();
 
   @override
-  Future<List<String>> getPhotosFromGallery() async =>
-      await _iMediaService.getImagesFromGallery();
+  Future<List<String>> getPhotosFromGallery() async {
+    final isGranted = await checkPermission();
+
+    if (isGranted) {
+      List<String> photos = [];
+      try {
+        final List<dynamic> result =
+        await channelGetPhoto.invokeMethod('getAllPhotos');
+        for (final photo in result) {
+          photos.add(photo as String);
+        }
+      } on PlatformException catch (e) {
+        debugPrint("Failed to get all photos: '${e.message}'.");
+      }
+      return photos;
+    }
+
+    return await _iMediaService.getImagesFromGallery();
+  }
 }
