@@ -221,10 +221,13 @@ class InformationAboutEmptyPhotos extends StatelessWidget {
           const SizedBox(
             height: 32,
           ),
-          Text(
-            textAlign: TextAlign.center,
-            'На Вашем устройстве отсутствуют фотографии',
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              textAlign: TextAlign.center,
+              'На Вашем устройстве отсутствуют фотографии',
+              style: theme.textTheme.bodyLarge?.copyWith(color: Colors.grey),
+            ),
           ),
           const SizedBox(height: 16),
           FilledButton.tonal(
