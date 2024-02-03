@@ -1,12 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 final class GetPhotosFromDevicePlugin {
-  GetPhotosFromDevicePlugin({required IMobilePhotoManager iMobilePhotoManager})
-      : _iMobilePhotoManager = iMobilePhotoManager;
+  GetPhotosFromDevicePlugin() {
+    _iGetService = MediaService();
 
-  final IMobilePhotoManager _iMobilePhotoManager;
+    final dynamic targetPlatform = Platform.isAndroid
+        ? AndroidPlatform(iMediaService: _iGetService)
+        : IOsPlatform(iMediaService: _iGetService);
+
+    _iMobilePhotoManager = targetPlatform;
+  }
+
+  late final IMobilePhotoManager _iMobilePhotoManager;
+  late final IMediaService _iGetService;
 
   Future<List<String>> getPhotos() async =>
       await _iMobilePhotoManager.getPhotosFromGallery();
@@ -16,9 +26,12 @@ final class GetPhotosFromDevicePlugin {
 
   Future<bool> checkPermission() async =>
       await _iMobilePhotoManager.checkPermission();
+
+  Future<List<String>> getPhotosFromImagePicker() async =>
+      await _iMobilePhotoManager.getPhotosFromImagesPicker();
 }
 
-sealed class AppEnv {
+sealed class BasePlatform implements IMobilePhotoManager {
   final MethodChannel channelGetPhoto = const MethodChannel('get_photo');
   final MethodChannel channelCheckPermission =
       const MethodChannel('get_permission');
@@ -59,9 +72,12 @@ abstract interface class IMobilePhotoManager {
   Future<String> getPhotoFromCamera();
 
   Future<List<String>> getPhotosFromGallery();
+
+  Future<List<String>> getPhotosFromImagesPicker();
 }
 
-final class AndroidPlatform extends AppEnv implements IMobilePhotoManager {
+final class AndroidPlatform extends BasePlatform
+    implements IMobilePhotoManager {
   AndroidPlatform({required IMediaService iMediaService})
       : _iMediaService = iMediaService;
 
@@ -103,16 +119,34 @@ final class AndroidPlatform extends AppEnv implements IMobilePhotoManager {
       return <String>[];
     }
   }
+
+  @override
+  Future<List<String>> getPhotosFromImagesPicker() async {
+    final isGranted = await checkPermission();
+
+    if (!isGranted) return await _iMediaService.getImagesFromGallery();
+
+    return [];
+  }
 }
 
-final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
+final class IOsPlatform extends BasePlatform implements IMobilePhotoManager {
   IOsPlatform({required IMediaService iMediaService})
       : _iMediaService = iMediaService;
 
   final IMediaService _iMediaService;
 
   @override
-  Future<bool> checkPermission() async => true;
+  Future<bool> checkPermission() async {
+    try {
+      final result =
+          await channelCheckPermission.invokeMethod('checkReadMedia') as bool;
+      return result;
+    } on PlatformException catch (e) {
+      debugPrint("Failed to get permission: '${e.message}'.");
+      return false;
+    }
+  }
 
   @override
   Future<String> getPhotoFromCamera() async =>
@@ -126,7 +160,7 @@ final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
       List<String> photos = [];
       try {
         final List<dynamic> result =
-        await channelGetPhoto.invokeMethod('getAllPhotos');
+            await channelGetPhoto.invokeMethod('getAllPhotos');
         for (final photo in result) {
           photos.add(photo as String);
         }
@@ -137,5 +171,14 @@ final class IOsPlatform extends AppEnv implements IMobilePhotoManager {
     }
 
     return await _iMediaService.getImagesFromGallery();
+  }
+
+  @override
+  Future<List<String>> getPhotosFromImagesPicker() async {
+    final isGranted = await checkPermission();
+
+    if (!isGranted) return await _iMediaService.getImagesFromGallery();
+
+    return [];
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get_photos_from_device/plugin.dart';
 
@@ -31,13 +29,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
   final List<ImageModel> _images = [];
 
   Future<ImageModel> _onSelectedCameraPressed() async {
-    final mediaService = MediaService();
-    final dynamic targetPlatform = Platform.isAndroid
-        ? AndroidPlatform(iMediaService: mediaService)
-        : IOsPlatform(iMediaService: mediaService);
-    final data =
-        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
-            .getPhoto();
+    final data = await GetPhotosFromDevicePlugin().getPhoto();
 
     if (data.isEmpty) return ImageModel.empty();
 
@@ -90,7 +82,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                 }),
                 onDeleteItemPressed: (i) => setState(() {
                   widget.onDeletePressed(_images[i].image);
-          
+
                   _images.removeAt(i);
                 }),
                 scrollController: scrollController,

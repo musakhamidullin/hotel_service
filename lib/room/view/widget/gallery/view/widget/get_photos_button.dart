@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,82 +22,65 @@ class GetPhotosButton extends StatelessWidget {
   final void Function(ImageModel) onSelectedCameraPressed;
   final IconData iconData;
 
-  Future<List<ImageModel>> _onSelectedFromGalleryPressed() async {
-    // TODO refactor
-    final mediaService = MediaService();
-    final dynamic targetPlatform = Platform.isAndroid
-        ? AndroidPlatform(iMediaService: mediaService)
-        : IOsPlatform(iMediaService: mediaService);
-    final data =
-        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
-            .getPhotos();
-
-    if (data.isEmpty) return [];
-
-    return data.map((e) => ImageModel.fromDevice(e)).toList();
-  }
-
   Future<ImageModel> _onSelectedCameraPressed() async {
-    // TODO refactor
-    final mediaService = MediaService();
-    final dynamic targetPlatform = Platform.isAndroid
-        ? AndroidPlatform(iMediaService: mediaService)
-        : IOsPlatform(iMediaService: mediaService);
-    final data =
-        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
-            .getPhoto();
+    final photo = await GetPhotosFromDevicePlugin().getPhoto();
 
-    if (data.isEmpty) return ImageModel.empty();
+    if (photo.isEmpty) return ImageModel.empty();
 
-    return ImageModel.fromDevice(data);
+    return ImageModel.fromDevice(photo);
   }
 
-  Future<bool> _checkPermission() async {
-    // TODO refactor
-    final mediaService = MediaService();
-    final dynamic targetPlatform = Platform.isAndroid
-        ? AndroidPlatform(iMediaService: mediaService)
-        : IOsPlatform(iMediaService: mediaService);
-    final isGranted =
-        await GetPhotosFromDevicePlugin(iMobilePhotoManager: targetPlatform)
-            .checkPermission();
+  Future<bool> _checkPermission() async =>
+      await GetPhotosFromDevicePlugin().checkPermission();
 
-    return isGranted;
+  Future<List<ImageModel>> _onSelectedFromImagePickerPhotos() async {
+    final photos = await GetPhotosFromDevicePlugin().getPhotosFromImagePicker();
+
+    return photos.map((e) => ImageModel.fromDevice(e)).toList();
   }
 
   void onTap(BuildContext context) async {
     final isGrant = await _checkPermission();
 
-    if (!isGrant) {
-      final photos = await _onSelectedFromGalleryPressed();
+    // если разрешение не предоставлено, открываем ImagePicker
+    if (!isGrant && Platform.isAndroid) {
+      final photos = await _onSelectedFromImagePickerPhotos();
       onSelectedFromNativeGalleryPressed(photos);
       return;
     }
 
-    await Future.sync(() => Modals.showBottomSheet(
-        context,
-        NativePhotoParserWidget(
-          callImagePicker: () async {
-            final photos = await _onSelectedFromGalleryPressed();
+    // если разрешение предоставлено, виджет NativePhotoParserWidget
+    // вызывает GetPhotosFromDevicePlugin
 
-            if (photos.isEmpty) return;
+    if (isGrant) {
+      await Future.sync(
+        () => Modals.showBottomSheet(
+            barrierColor: Colors.black,
+            context,
+            NativePhotoParserWidget(
+              callImagePicker: () async {
+                final photos = await _onSelectedFromImagePickerPhotos();
 
-            onSelectedFromImagePickerPressed(photos);
-          },
-          callCamera: () async {
-            final photo = await _onSelectedCameraPressed();
+                if (photos.isEmpty) return;
 
-            if (ImageModel.isEmpty(photo)) return;
+                onSelectedFromImagePickerPressed(photos);
+              },
+              callCamera: () async {
+                final photo = await _onSelectedCameraPressed();
 
-            onSelectedCameraPressed(photo);
-          },
-          onAddPhotosPressed: (List<String> images) {
-            if (images.isEmpty) return;
+                if (ImageModel.isEmpty(photo)) return;
 
-            final photos = ImageModel.getImageModels(images);
-            onSelectedFromNativeGalleryPressed(photos);
-          },
-        )));
+                onSelectedCameraPressed(photo);
+              },
+              onAddPhotosPressed: (List<String> images) {
+                if (images.isEmpty) return;
+
+                final photos = ImageModel.getImageModels(images);
+                onSelectedFromNativeGalleryPressed(photos);
+              },
+            )),
+      );
+    }
   }
 
   @override
