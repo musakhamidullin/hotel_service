@@ -12,15 +12,15 @@ class MessageAudioPlayer extends StatefulWidget {
     super.key,
     required this.voiceValue,
     required this.playerKey,
-    required this.onRemove,
     required this.index,
+    this.onRemove,
     this.margin,
   });
 
   final EdgeInsetsGeometry? margin;
   final VoiceValue voiceValue;
   final String playerKey;
-  final Function(int) onRemove;
+  final Function(int)? onRemove;
   final int index;
 
   @override
@@ -133,12 +133,15 @@ class _MessageAudioPlayerState extends State<MessageAudioPlayer> {
                   value: _progress,
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  widget.onRemove(widget.index);
-                },
-                icon: const Icon(Icons.delete_outline_rounded),
-              ),
+              if (widget.onRemove != null)
+                IconButton(
+                  onPressed: () {
+                    widget.onRemove!(widget.index);
+                  },
+                  icon: const Icon(Icons.delete_outline_rounded),
+                )
+              else
+                const SizedBox(width: 12),
             ],
           ),
           Positioned.fill(
