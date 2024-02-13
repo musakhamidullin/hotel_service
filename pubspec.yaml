@@ -40,6 +40,7 @@ dependencies:
 
   get_photos_from_device:
     path: get_photos_from_device
+  mime: ^1.0.5
 
 
 dev_dependencies:

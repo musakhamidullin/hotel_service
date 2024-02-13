@@ -15,9 +15,12 @@ part 'message_value.g.dart';
 class MessageValue with _$MessageValue {
   @JsonSerializable(fieldRename: FieldRename.pascal)
   const factory MessageValue({
+    // @JsonKey(includeFromJson: false)
+    // @Default(<Uint8List>[])
+    // List<Uint8List> buffImages,
     @JsonKey(includeFromJson: false)
-    @Default(<Uint8List>[])
-    List<Uint8List> buffImages,
+    @Default(<String>[])
+    List<String> pathOfImages,
     @JsonKey(includeFromJson: false)
     @Default(<VoiceValue>[])
     List<VoiceValue> buffAudio,
@@ -38,7 +41,10 @@ class MessageValue with _$MessageValue {
       DateFormat.yMEd(languageCode).add_Hm().format(date!);
 
   bool canSend() =>
-      buffImages.isNotEmpty || text.isNotEmpty || buffAudio.isNotEmpty;
+      // buffImages.isNotEmpty ||
+      text.isNotEmpty ||
+      buffAudio.isNotEmpty ||
+      pathOfImages.isNotEmpty;
 
   List<ProblemMedia> images() =>
       medias.where((e) => e.mediaType != MediaType.m4a).toList();

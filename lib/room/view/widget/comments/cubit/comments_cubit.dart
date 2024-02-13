@@ -67,7 +67,7 @@ class CommentsCubit extends Cubit<CommentsState> {
       emit(
         state.copyWith(
           fetchStatus: FetchStatus.success,
-          messages: [...state.messages,...messages],
+          messages: [...state.messages, ...messages],
         ),
       );
     } catch (_, t) {
@@ -80,8 +80,10 @@ class CommentsCubit extends Cubit<CommentsState> {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
       final media = [
-        ...value.buffImages.map((e) => ProblemMedia.fromBytes(e)).toList(),
-        ...value.buffAudio.map((e) => ProblemMedia.fromFile(e.audio.audio, MediaType.m4a)).toList(),
+        ...value.pathOfImages.map((e) => ProblemMedia.fromFilePath(e)).toList(),
+        ...value.buffAudio
+            .map((e) => ProblemMedia.fromAudioBytes(e.audio.audio))
+            .toList(),
       ];
       final report = reportCleaningProblemUpdate.copyWith(
         comment: value.text,

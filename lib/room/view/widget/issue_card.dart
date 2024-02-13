@@ -293,6 +293,7 @@ class _IssueCardState extends State<IssueCard> {
                           );
                     },
                   ),
+                  if(!widget.issue.isFromApi)
                   IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();

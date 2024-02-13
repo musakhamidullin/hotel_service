@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../../../../../common/widgets/cash_memory_image_provider.dart';
@@ -64,26 +66,21 @@ class MessageCard extends StatelessWidget {
                 messageValue.text,
                 textAlign: TextAlign.right,
               ),
-            if (messageValue.buffImages.isNotEmpty)
+            if (messageValue.pathOfImages.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Wrap(
                   spacing: 4,
                   runSpacing: 4,
-                  children: messageValue.buffImages
+                  children: messageValue.pathOfImages
                       .map(
                         (e) => SizedBox.square(
                           dimension: 100,
                           child: ClipRRect(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(4)),
-                            child: Image(
-                              image: CacheMemoryImageProvider(
-                                tag: messageValue.buffImages
-                                    .indexOf(e)
-                                    .toString(),
-                                img: e,
-                              ),
+                            child: Image.file(
+                              File(e),
                               fit: BoxFit.cover,
                               width: 100,
                               height: 100,

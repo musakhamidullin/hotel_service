@@ -20,8 +20,11 @@ MessageValue _$MessageValueFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MessageValue {
+// @JsonKey(includeFromJson: false)
+// @Default(<Uint8List>[])
+// List<Uint8List> buffImages,
   @JsonKey(includeFromJson: false)
-  List<Uint8List> get buffImages => throw _privateConstructorUsedError;
+  List<String> get pathOfImages => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false)
   List<VoiceValue> get buffAudio => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
@@ -44,7 +47,7 @@ abstract class $MessageValueCopyWith<$Res> {
       _$MessageValueCopyWithImpl<$Res, MessageValue>;
   @useResult
   $Res call(
-      {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
+      {@JsonKey(includeFromJson: false) List<String> pathOfImages,
       @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
       String text,
       DateTime? date,
@@ -67,7 +70,7 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? buffImages = null,
+    Object? pathOfImages = null,
     Object? buffAudio = null,
     Object? text = null,
     Object? date = freezed,
@@ -77,10 +80,10 @@ class _$MessageValueCopyWithImpl<$Res, $Val extends MessageValue>
     Object? medias = null,
   }) {
     return _then(_value.copyWith(
-      buffImages: null == buffImages
-          ? _value.buffImages
-          : buffImages // ignore: cast_nullable_to_non_nullable
-              as List<Uint8List>,
+      pathOfImages: null == pathOfImages
+          ? _value.pathOfImages
+          : pathOfImages // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       buffAudio: null == buffAudio
           ? _value.buffAudio
           : buffAudio // ignore: cast_nullable_to_non_nullable
@@ -122,7 +125,7 @@ abstract class _$$MessageValueImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(includeFromJson: false) List<Uint8List> buffImages,
+      {@JsonKey(includeFromJson: false) List<String> pathOfImages,
       @JsonKey(includeFromJson: false) List<VoiceValue> buffAudio,
       String text,
       DateTime? date,
@@ -143,7 +146,7 @@ class __$$MessageValueImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? buffImages = null,
+    Object? pathOfImages = null,
     Object? buffAudio = null,
     Object? text = null,
     Object? date = freezed,
@@ -153,10 +156,10 @@ class __$$MessageValueImplCopyWithImpl<$Res>
     Object? medias = null,
   }) {
     return _then(_$MessageValueImpl(
-      buffImages: null == buffImages
-          ? _value._buffImages
-          : buffImages // ignore: cast_nullable_to_non_nullable
-              as List<Uint8List>,
+      pathOfImages: null == pathOfImages
+          ? _value._pathOfImages
+          : pathOfImages // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       buffAudio: null == buffAudio
           ? _value._buffAudio
           : buffAudio // ignore: cast_nullable_to_non_nullable
@@ -195,7 +198,7 @@ class __$$MessageValueImplCopyWithImpl<$Res>
 class _$MessageValueImpl extends _MessageValue {
   const _$MessageValueImpl(
       {@JsonKey(includeFromJson: false)
-      final List<Uint8List> buffImages = const <Uint8List>[],
+      final List<String> pathOfImages = const <String>[],
       @JsonKey(includeFromJson: false)
       final List<VoiceValue> buffAudio = const <VoiceValue>[],
       this.text = '',
@@ -204,7 +207,7 @@ class _$MessageValueImpl extends _MessageValue {
       this.personName = '',
       this.isEdited = false,
       final List<ProblemMedia> medias = const <ProblemMedia>[]})
-      : _buffImages = buffImages,
+      : _pathOfImages = pathOfImages,
         _buffAudio = buffAudio,
         _medias = medias,
         super._();
@@ -212,13 +215,19 @@ class _$MessageValueImpl extends _MessageValue {
   factory _$MessageValueImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageValueImplFromJson(json);
 
-  final List<Uint8List> _buffImages;
+// @JsonKey(includeFromJson: false)
+// @Default(<Uint8List>[])
+// List<Uint8List> buffImages,
+  final List<String> _pathOfImages;
+// @JsonKey(includeFromJson: false)
+// @Default(<Uint8List>[])
+// List<Uint8List> buffImages,
   @override
   @JsonKey(includeFromJson: false)
-  List<Uint8List> get buffImages {
-    if (_buffImages is EqualUnmodifiableListView) return _buffImages;
+  List<String> get pathOfImages {
+    if (_pathOfImages is EqualUnmodifiableListView) return _pathOfImages;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_buffImages);
+    return EqualUnmodifiableListView(_pathOfImages);
   }
 
   final List<VoiceValue> _buffAudio;
@@ -255,7 +264,7 @@ class _$MessageValueImpl extends _MessageValue {
 
   @override
   String toString() {
-    return 'MessageValue(buffImages: $buffImages, buffAudio: $buffAudio, text: $text, date: $date, personId: $personId, personName: $personName, isEdited: $isEdited, medias: $medias)';
+    return 'MessageValue(pathOfImages: $pathOfImages, buffAudio: $buffAudio, text: $text, date: $date, personId: $personId, personName: $personName, isEdited: $isEdited, medias: $medias)';
   }
 
   @override
@@ -264,7 +273,7 @@ class _$MessageValueImpl extends _MessageValue {
         (other.runtimeType == runtimeType &&
             other is _$MessageValueImpl &&
             const DeepCollectionEquality()
-                .equals(other._buffImages, _buffImages) &&
+                .equals(other._pathOfImages, _pathOfImages) &&
             const DeepCollectionEquality()
                 .equals(other._buffAudio, _buffAudio) &&
             (identical(other.text, text) || other.text == text) &&
@@ -282,7 +291,7 @@ class _$MessageValueImpl extends _MessageValue {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_buffImages),
+      const DeepCollectionEquality().hash(_pathOfImages),
       const DeepCollectionEquality().hash(_buffAudio),
       text,
       date,
@@ -307,7 +316,7 @@ class _$MessageValueImpl extends _MessageValue {
 
 abstract class _MessageValue extends MessageValue {
   const factory _MessageValue(
-      {@JsonKey(includeFromJson: false) final List<Uint8List> buffImages,
+      {@JsonKey(includeFromJson: false) final List<String> pathOfImages,
       @JsonKey(includeFromJson: false) final List<VoiceValue> buffAudio,
       final String text,
       final DateTime? date,
@@ -320,9 +329,11 @@ abstract class _MessageValue extends MessageValue {
   factory _MessageValue.fromJson(Map<String, dynamic> json) =
       _$MessageValueImpl.fromJson;
 
-  @override
+  @override // @JsonKey(includeFromJson: false)
+// @Default(<Uint8List>[])
+// List<Uint8List> buffImages,
   @JsonKey(includeFromJson: false)
-  List<Uint8List> get buffImages;
+  List<String> get pathOfImages;
   @override
   @JsonKey(includeFromJson: false)
   List<VoiceValue> get buffAudio;

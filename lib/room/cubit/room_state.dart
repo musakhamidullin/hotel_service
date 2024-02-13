@@ -7,7 +7,8 @@ enum FetchStatus {
   success,
   failure,
   sendError,
-  sendSuccess
+  sendSuccess,
+  none
 }
 
 @freezed

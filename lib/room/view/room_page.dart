@@ -115,7 +115,6 @@ class _RoomPageState extends State<RoomPage>
                 Modals.showInformationDialog(
                     _, 'Заявка успешна отправлена!', Icons.check);
               }
-
               if (state.failure()) {
                 Navigator.pop(context);
                 Modals.showInformationDialog(_, 'Ошибка на стороне сервера!',

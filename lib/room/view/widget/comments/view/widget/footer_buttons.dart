@@ -23,7 +23,7 @@ class FooterButtons extends StatefulWidget {
 
   final void Function() onSend;
   final void Function() onClear;
-  final void Function(List<Uint8List>) onPhotographed;
+  final void Function(List<String>) onPhotographed;
   final void Function(VoiceValue) onAudioRecorded;
   final bool canSend;
   final ValueNotifier<bool> recording;
@@ -59,14 +59,14 @@ class _FooterButtonsState extends State<FooterButtons> {
           child: GetPhotosButton(
             onSelectedFromNativeGalleryPressed: (photos) {
               widget.onPhotographed(
-                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
+                  photos.map((e) => File(e.image).path).toList());
             },
             onSelectedFromImagePickerPressed: (photos) {
               widget.onPhotographed(
-                  photos.map((e) => File(e.image).readAsBytesSync()).toList());
+                  photos.map((e) => File(e.image).path).toList());
             },
             onSelectedCameraPressed: (photo) {
-              widget.onPhotographed([File(photo.image).readAsBytesSync()]);
+              widget.onPhotographed([File(photo.image).path]);
             },
             iconData: Icons.attach_file,
           ),

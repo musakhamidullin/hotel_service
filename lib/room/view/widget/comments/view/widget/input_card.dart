@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,14 +64,14 @@ class _InputCardState extends State<InputCard> {
               );
             },
           ),
-          if (_messageValue.buffImages.isNotEmpty)
+          if (_messageValue.pathOfImages.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 8),
               child: SizedBox(
                 height: 100,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: _messageValue.buffImages
+                  children: _messageValue.pathOfImages
                       .map(
                         (e) => // Image(
                             Padding(
@@ -80,25 +82,21 @@ class _InputCardState extends State<InputCard> {
                               ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(4)),
-                                child: Image(
-                                  image: CacheMemoryImageProvider(
-                                    tag: _messageValue.buffImages
-                                        .indexOf(e)
-                                        .toString(),
-                                    img: e,
-                                  ),
+                                child: Image.file(
+                                  File(e),
                                   fit: BoxFit.cover,
                                   width: 90,
+                                  height: 90,
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () {
                                   final index =
-                                      _messageValue.buffImages.indexOf(e);
+                                      _messageValue.pathOfImages.indexOf(e);
                                   setState(() {
                                     _messageValue = _messageValue.copyWith(
-                                        buffImages: [
-                                      ..._messageValue.buffImages
+                                        pathOfImages: [
+                                      ..._messageValue.pathOfImages
                                     ]..removeAt(index));
                                   });
                                 },
@@ -125,7 +123,7 @@ class _InputCardState extends State<InputCard> {
                 ),
               ),
             ),
-          SizedBox(height: _messageValue.buffImages.isEmpty ? 8 : 0),
+          SizedBox(height: _messageValue.pathOfImages.isEmpty ? 8 : 0),
           if (_messageValue.buffAudio.isNotEmpty)
             Column(
               children: _messageValue.buffAudio
@@ -150,7 +148,7 @@ class _InputCardState extends State<InputCard> {
             recording: _recording,
             onPhotographed: (value) {
               _messageValue = _messageValue.copyWith(
-                  buffImages: [...value, ..._messageValue.buffImages]);
+                  pathOfImages: [...value, ..._messageValue.pathOfImages]);
               _canSend = _messageValue.canSend();
 
               setState(() {});
