@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../app/router/router.gr.dart';
 import '../../../common/widgets/modals.dart';
 
+import '../../../voice_messenger/cubit/voice_manager_cubit.dart';
 import '../../../voice_messenger/data/models/voice_value.dart';
 import '../../../voice_messenger/view/message_audio_player.dart';
 import '../../../voice_messenger/view/record_button.dart';
@@ -295,15 +296,16 @@ class _IssueCardState extends State<IssueCard> {
                   IconButton(
                       onPressed: () {
                         final cubit = context.read<RoomCubit>();
-                        context.router.push(CommentsRoute(
-                          issue: widget.issue,
-                          index: widget.index,
-                          reportCleaningProblemUpdate:
-                          ReportCleaningProblemUpdate.modelForComments(
-                            cubit.state,
-                            widget.issue,
+                        context.router.push(
+                          CommentsRoute(
+                            reportCleaningProblemUpdate:
+                                ReportCleaningProblemUpdate.modelForComments(
+                              cubit.state,
+                              widget.issue,
+                            ),
+                            voiceManagerCubit: context.read<VoiceManagerCubit>(),
                           ),
-                        ),);
+                        );
                       },
                       icon: const Icon(Icons.message)),
                   // const SizedBox(

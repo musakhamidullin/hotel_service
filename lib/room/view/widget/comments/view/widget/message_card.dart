@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../common/widgets/cash_memory_image_provider.dart';
+import '../../../../../../voice_messenger/view/message_audio_player.dart';
+import '../../../../../data/models/issue_report.dart';
 import '../../data/models/message_value.dart';
 
 class MessageCard extends StatelessWidget {
@@ -30,11 +33,6 @@ class MessageCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (messageValue.text.isNotEmpty)
-              Text(
-                messageValue.text,
-                textAlign: TextAlign.right,
-              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.min,
@@ -61,8 +59,137 @@ class MessageCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (messageValue.text.isNotEmpty)
+              Text(
+                messageValue.text,
+                textAlign: TextAlign.right,
+              ),
+            if (messageValue.buffImages.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: messageValue.buffImages
+                      .map(
+                        (e) => SizedBox.square(
+                          dimension: 100,
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(4)),
+                            child: Image(
+                              image: CacheMemoryImageProvider(
+                                tag: messageValue.buffImages
+                                    .indexOf(e)
+                                    .toString(),
+                                img: e,
+                              ),
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            if (messageValue.images().isNotEmpty)
+              _ImagePreview(images: messageValue.images()),
+            if (messageValue.buffAudio.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: messageValue.buffAudio
+                      .map((e) => MessageAudioPlayer(
+                            key: ObjectKey(e),
+                            margin: EdgeInsets.only(
+                              bottom: (messageValue.audio().length - 1) ==
+                                      messageValue.audio().indexOf(e)
+                                  ? 0
+                                  : 8,
+                            ),
+                            voiceValue: e,
+                            index: messageValue.buffAudio.indexOf(e),
+                            playerKey: '${messageValue.buffAudio.indexOf(e)}',
+                          ))
+                      .toList(),
+                ),
+              ),
+            if (messageValue.audio().isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Column(
+                  children: messageValue
+                      .audio()
+                      .map((e) => MessageAudioPlayer(
+                            key: ObjectKey(e),
+                            margin: EdgeInsets.only(
+                              bottom: (messageValue.audio().length - 1) ==
+                                      messageValue.audio().indexOf(e)
+                                  ? 0
+                                  : 8,
+                            ),
+                            voiceValue: e,
+                            index: messageValue.buffAudio.indexOf(e),
+                            playerKey: '${messageValue.buffAudio.indexOf(e)}',
+                          ))
+                      .toList(),
+                ),
+              ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ImagePreview extends StatefulWidget {
+  const _ImagePreview({required this.images});
+
+  final List<ProblemMedia> images;
+
+  @override
+  State<_ImagePreview> createState() => _ImagePreviewState();
+}
+
+class _ImagePreviewState extends State<_ImagePreview> {
+  static const spacing = 8.0;
+  var _itemWidth = 0.0;
+
+  @override
+  void didChangeDependencies() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    const maxCrossCount = 3;
+    // todo calculate const value 18
+    _itemWidth =
+        (screenWidth - 18 * 2 - maxCrossCount * spacing) / maxCrossCount;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Wrap(
+        spacing: 4,
+        runSpacing: 4,
+        children: widget.images
+            .map(
+              (e) => SizedBox.square(
+                dimension: _itemWidth,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  child: Image.network(
+                    e.media,
+                    fit: BoxFit.cover,
+                    height: _itemWidth,
+                    width: _itemWidth,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

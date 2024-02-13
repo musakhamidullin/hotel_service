@@ -27,6 +27,15 @@ class _InputCardState extends State<InputCard> {
     super.dispose();
   }
 
+  void _clearInput() {
+    _textController.clear();
+
+    _messageValue = const MessageValue();
+
+    _canSend = _messageValue.canSend();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,7 +49,7 @@ class _InputCardState extends State<InputCard> {
               return TextField(
                 controller: _textController,
                 keyboardType: TextInputType.multiline,
-                maxLines: 2,
+                maxLines: null,
                 enabled: !recording,
                 decoration: const InputDecoration(
                   filled: true,
@@ -48,19 +57,7 @@ class _InputCardState extends State<InputCard> {
                 onChanged: (value) {
                   _messageValue = _messageValue.copyWith(text: value);
                   _canSend = _messageValue.canSend();
-                  if (_canSend) return;
                   setState(() {});
-                },
-                onSubmitted: (value) {
-                  _messageValue = _messageValue.copyWith(text: value);
-                  context.read<CommentsCubit>().sendMessage(_messageValue);
-                  //todo clear after success send
-                  _textController.clear();
-                  _messageValue = _messageValue.copyWith(text: '');
-                  setState(() {
-                    _canSend = _messageValue.canSend();
-                  });
-                  FocusManager.instance.primaryFocus?.unfocus();
                 },
               );
             },
@@ -100,8 +97,9 @@ class _InputCardState extends State<InputCard> {
                                       _messageValue.buffImages.indexOf(e);
                                   setState(() {
                                     _messageValue = _messageValue.copyWith(
-                                        buffImages: [..._messageValue.buffImages]
-                                          ..removeAt(index));
+                                        buffImages: [
+                                      ..._messageValue.buffImages
+                                    ]..removeAt(index));
                                   });
                                 },
                                 child: Container(
@@ -151,8 +149,8 @@ class _InputCardState extends State<InputCard> {
             canSend: _canSend,
             recording: _recording,
             onPhotographed: (value) {
-              _messageValue = _messageValue
-                  .copyWith(buffImages: [...value, ..._messageValue.buffImages]);
+              _messageValue = _messageValue.copyWith(
+                  buffImages: [...value, ..._messageValue.buffImages]);
               _canSend = _messageValue.canSend();
 
               setState(() {});
@@ -164,25 +162,19 @@ class _InputCardState extends State<InputCard> {
               _canSend = _messageValue.canSend();
               setState(() {});
             },
-            onSend: () {
-              context.read<CommentsCubit>().sendMessage(_messageValue);
-              //todo clear after success send
-              _textController.clear();
-
-              _messageValue = const MessageValue();
-
-              _canSend = _messageValue.canSend();
+            onSend: () async {
               FocusManager.instance.primaryFocus?.unfocus();
-              setState(() {});
+              final status = await context
+                  .read<CommentsCubit>()
+                  .sendMessage(_messageValue.copyWith(date: DateTime.now()));
+
+              if (status == FetchStatus.failure) return;
+
+              _clearInput();
             },
             onClear: () {
-              _textController.clear();
-
-              _messageValue = const MessageValue();
-
-              _canSend = _messageValue.canSend();
               FocusManager.instance.primaryFocus?.unfocus();
-              setState(() {});
+              _clearInput();
             },
           ),
         ],

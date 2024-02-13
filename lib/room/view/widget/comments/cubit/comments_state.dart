@@ -7,8 +7,6 @@ class CommentsState with _$CommentsState {
   const factory CommentsState({
     @Default(FetchStatus.init) FetchStatus fetchStatus,
     @Default(<MessageValue>[]) List<MessageValue> messages,
-    @Default(ReportCleaningProblemUpdate())
-    ReportCleaningProblemUpdate reportCleaningProblemUpdate,
   }) = _CommentsState;
 
   const CommentsState._();

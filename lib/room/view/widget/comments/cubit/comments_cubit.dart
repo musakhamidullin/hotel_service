@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../../auth/data/model/user.dart';
+import '../../../../data/models/issue_report.dart';
 import '../data/models/message_value.dart';
-import '../data/models/paged_messages.dart';
 import '../data/models/report_update.dart';
-import '../repositories/comment_repo.dart';
+import '../data/repositories/comment_repo.dart';
 
 part 'comments_state.dart';
 
@@ -14,64 +15,91 @@ class CommentsCubit extends Cubit<CommentsState> {
   CommentsCubit({
     required this.commentRepo,
     required this.reportCleaningProblemUpdate,
-  }) : super(CommentsState(
-            reportCleaningProblemUpdate: reportCleaningProblemUpdate));
+    required this.user,
+  }) : super(const CommentsState());
 
   final CommentRepo commentRepo;
   final ReportCleaningProblemUpdate reportCleaningProblemUpdate;
+  final User user;
 
-  var _currPage = 1;
+  var _currPage = 0;
+  var _pages = 0;
 
   Map<String, dynamic> _toBody({required int defectId}) => {
         "Page": _currPage,
-        "PageSize": 10,
+        "PageSize": 15,
         "DefectId": defectId,
       };
 
-  Future<void> fetchMessages() async {
-    if (isClosed) return;
-
+  Future<void> fetchFirstPage() async {
     try {
+      _currPage = 1;
+
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
 
-      await Future.delayed(Duration(seconds: 2));
-      final result = await commentRepo.fetchComments(
+      final (messages, pages) = await commentRepo.fetchComments(
+          _toBody(defectId: reportCleaningProblemUpdate.defectId));
+
+      _pages = pages;
+
+      emit(
+        state.copyWith(
+          fetchStatus: FetchStatus.success,
+          messages: messages,
+        ),
+      );
+    } catch (_, t) {
+      print(t);
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+    }
+  }
+
+  Future<void> fetchNewPage() async {
+    try {
+      if (_currPage >= _pages) return;
+      _currPage++;
+
+      emit(state.copyWith(fetchStatus: FetchStatus.paging));
+
+      final (messages, _) = await commentRepo.fetchComments(
           _toBody(defectId: reportCleaningProblemUpdate.defectId));
 
       emit(
         state.copyWith(
           fetchStatus: FetchStatus.success,
-          messages: result,
+          messages: [...state.messages,...messages],
         ),
       );
-    } catch (_) {
+    } catch (_, t) {
+      print(t);
       emit(state.copyWith(fetchStatus: FetchStatus.failure));
     }
   }
 
-  Future<void> updatePagedMessage(PagedMessages pagedMessages) async {
-    if (isClosed) return;
-  }
-
-  Future<void> updateReportCleaningProblemUpdate(
-      ReportCleaningProblemUpdate reportCleaningProblemUpdate) async {
-    if (isClosed) return;
-
-    emit(state.copyWith(
-        reportCleaningProblemUpdate: reportCleaningProblemUpdate));
-  }
-
-  Future<void> sendMessage(MessageValue value) async {
-    if (isClosed) return;
-
+  Future<FetchStatus> sendMessage(MessageValue value) async {
     try {
       emit(state.copyWith(fetchStatus: FetchStatus.loading));
-
-      final result = commentRepo.sendComment(state.reportCleaningProblemUpdate);
+      final media = [
+        ...value.buffImages.map((e) => ProblemMedia.fromBytes(e)).toList(),
+        ...value.buffAudio.map((e) => ProblemMedia.fromFile(e.audio.audio, MediaType.m4a)).toList(),
+      ];
+      final report = reportCleaningProblemUpdate.copyWith(
+        comment: value.text,
+        problemMedia: media,
+      );
+      await commentRepo.sendComment(report);
 
       emit(state.copyWith(
-          messages: [...state.messages, value],
-          fetchStatus: FetchStatus.success));
-    } catch (_) {}
+        fetchStatus: FetchStatus.success,
+        messages: [
+          value.copyWith(personName: user.personInfo.fullName()),
+          ...state.messages,
+        ],
+      ));
+      return FetchStatus.success;
+    } catch (_) {
+      emit(state.copyWith(fetchStatus: FetchStatus.failure));
+      return FetchStatus.failure;
+    }
   }
 }

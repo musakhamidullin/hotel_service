@@ -23,13 +23,14 @@ import 'package:hotel_service/profile/my_defect_list/view/my_defect_list_page.da
 import 'package:hotel_service/profile/my_schedule/view/my_schedule_page.dart'
     as _i8;
 import 'package:hotel_service/profile/view/profile_page.dart' as _i9;
-import 'package:hotel_service/room/data/models/issues.dart' as _i14;
 import 'package:hotel_service/room/view/room_page.dart' as _i10;
 import 'package:hotel_service/room/view/widget/comments/data/models/report_update.dart'
-    as _i15;
+    as _i14;
 import 'package:hotel_service/room/view/widget/comments/view/comments_page.dart'
     as _i2;
 import 'package:hotel_service/statistics/view/statistics_page.dart' as _i11;
+import 'package:hotel_service/voice_messenger/cubit/voice_manager_cubit.dart'
+    as _i15;
 
 abstract class $AppRouter extends _i12.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -48,9 +49,8 @@ abstract class $AppRouter extends _i12.RootStackRouter {
         routeData: routeData,
         child: _i2.CommentsPage(
           key: args.key,
-          issue: args.issue,
-          index: args.index,
           reportCleaningProblemUpdate: args.reportCleaningProblemUpdate,
+          voiceManagerCubit: args.voiceManagerCubit,
         ),
       );
     },
@@ -147,17 +147,15 @@ class AutoTabRoute extends _i12.PageRouteInfo<void> {
 class CommentsRoute extends _i12.PageRouteInfo<CommentsRouteArgs> {
   CommentsRoute({
     _i13.Key? key,
-    required _i14.IssuesModel issue,
-    required int index,
-    required _i15.ReportCleaningProblemUpdate reportCleaningProblemUpdate,
+    required _i14.ReportCleaningProblemUpdate reportCleaningProblemUpdate,
+    required _i15.VoiceManagerCubit voiceManagerCubit,
     List<_i12.PageRouteInfo>? children,
   }) : super(
           CommentsRoute.name,
           args: CommentsRouteArgs(
             key: key,
-            issue: issue,
-            index: index,
             reportCleaningProblemUpdate: reportCleaningProblemUpdate,
+            voiceManagerCubit: voiceManagerCubit,
           ),
           initialChildren: children,
         );
@@ -171,22 +169,19 @@ class CommentsRoute extends _i12.PageRouteInfo<CommentsRouteArgs> {
 class CommentsRouteArgs {
   const CommentsRouteArgs({
     this.key,
-    required this.issue,
-    required this.index,
     required this.reportCleaningProblemUpdate,
+    required this.voiceManagerCubit,
   });
 
   final _i13.Key? key;
 
-  final _i14.IssuesModel issue;
+  final _i14.ReportCleaningProblemUpdate reportCleaningProblemUpdate;
 
-  final int index;
-
-  final _i15.ReportCleaningProblemUpdate reportCleaningProblemUpdate;
+  final _i15.VoiceManagerCubit voiceManagerCubit;
 
   @override
   String toString() {
-    return 'CommentsRouteArgs{key: $key, issue: $issue, index: $index, reportCleaningProblemUpdate: $reportCleaningProblemUpdate}';
+    return 'CommentsRouteArgs{key: $key, reportCleaningProblemUpdate: $reportCleaningProblemUpdate, voiceManagerCubit: $voiceManagerCubit}';
   }
 }
 
