@@ -111,7 +111,7 @@ class _RoomPageState extends State<RoomPage>
                     'Заявка не отправилась!\nПопробуйте еще раз.',
                     Icons.error_outline_rounded);
               }
-              if (state.sendSucces()) {
+              if (state.sendSuccess()) {
                 Modals.showInformationDialog(
                     _, 'Заявка успешна отправлена!', Icons.check);
               }
@@ -170,7 +170,7 @@ class _RoomPageState extends State<RoomPage>
               if (state.success() ||
                   state.refreshing() ||
                   state.sendError() ||
-                  state.sendSucces()) {
+                  state.sendSuccess()) {
                 return Stack(
                   children: [
                     mainView,

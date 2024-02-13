@@ -41,5 +41,5 @@ class RoomState with _$RoomState {
 
   bool sendError() => fetchStatus == FetchStatus.sendError;
 
-  bool sendSucces() => fetchStatus == FetchStatus.sendSuccess;
+  bool sendSuccess() => fetchStatus == FetchStatus.sendSuccess;
 }
