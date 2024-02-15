@@ -36,10 +36,24 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
           checkReadMediaPermission(result)
         }
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
-          result.success(true)
+          checkReadMediaPermissionForOldVersions(result)
         }
       } else {
         result.notImplemented()
+      }
+    }
+
+    private fun checkReadMediaPermissionForOldVersions(result: MethodChannel.Result){
+      resultPermissionHandler = result
+      val permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+      if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+        result.success(true)
+      } else {
+        if (!shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_MEDIA_IMAGES)) {
+          requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_OLDER)
+          return;
+        }
+        result.success(false)
       }
     }
 
@@ -108,6 +122,8 @@ class GetPhotosFromDevicePlugin : FlutterPlugin, ActivityAware {
     private const val METHOD_GET_ALL_PHOTOS = "getAllPhotos"
 
     const val REQUEST_CODE = 1;
+    const val REQUEST_CODE_OLDER = 2;
+
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {

@@ -25,5 +25,21 @@ class MainActivity : FlutterActivity() {
             }
             GetPhotosFromDevicePlugin.resultPermissionHandler = null
         }
+
+        if (requestCode == GetPhotosFromDevicePlugin.REQUEST_CODE_OLDER) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Добавьте проверку на одобрение разрешения
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED
+                ) {
+                    GetPhotosFromDevicePlugin.resultPermissionHandler?.success(true)
+                } else {
+                    GetPhotosFromDevicePlugin.resultPermissionHandler?.success(false)
+                }
+            } else {
+                GetPhotosFromDevicePlugin.resultPermissionHandler?.success(false)
+            }
+            GetPhotosFromDevicePlugin.resultPermissionHandler = null
+        }
     }
 }

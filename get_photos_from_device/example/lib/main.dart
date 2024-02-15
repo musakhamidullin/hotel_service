@@ -40,11 +40,11 @@ class _MyAppState extends State<MyApp> {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              // final result = await MyPluginName.isCheckPermission();
-              //
-              // await Future.sync(() => ScaffoldMessenger.of(context)
-              //     .showSnackBar(
-              //     SnackBar(content: Text('Permission is: $result'))));
+              final result = await MyPluginName.isCheckPermission();
+
+              await Future.sync(() => ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                  SnackBar(content: Text('Permission is: $result'))));
 
               await Future.sync(() async {
                 final photos = await MyPluginName.getAllPhotos();

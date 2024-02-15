@@ -54,12 +54,14 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
     return base64Encode(bytes);
   }
 
-  Future<void> playMessageFromBytes({required String base64, required String playerKey}) async {
+  Future<void> playMessageFromBytes(
+      {required String base64, required String playerKey}) async {
     _currentlyPlayerKey = playerKey;
     await _audioPlayer.play(BytesSource(base64Decode(base64)));
   }
 
-  Future<void> playMessageFromApi({required String url, required String playerKey}) async {
+  Future<void> playMessageFromApi(
+      {required String url, required String playerKey}) async {
     _currentlyPlayerKey = playerKey;
     await _audioPlayer.play(UrlSource(url));
   }
@@ -70,8 +72,8 @@ class VoiceManagerCubit extends Cubit<VoiceManagerState> {
 
   @override
   Future<void> close() async {
-    _recorder.dispose();
     _audioPlayer.dispose();
+    _recorder.dispose();
     return super.close();
   }
 }

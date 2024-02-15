@@ -75,9 +75,11 @@ class _RoomPageState extends State<RoomPage>
 
   @override
   void dispose() {
+    // нет необходимости диспоузить этот кубит,
+    // при уничтожении экрана блок сам вызывает close()
+    // _voiceManager.close();
     _roomCubit.close();
     _tabController.dispose();
-    _voiceManager.close();
     super.dispose();
   }
 
